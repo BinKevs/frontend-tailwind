@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="theme-color" content="#000000" />
+		<meta
+			name="description"
+			content="Web site created using create-react-app"
+		/>
+		<link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+		<!--
+      manifest.json provides metadata used when your web app is installed on a
+      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
+    -->
+		<link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+		<!--
+      Notice the use of %PUBLIC_URL% in the tags above.
+      It will be replaced with the URL of the `public` folder during the build.
+      Only files inside the `public` folder can be referenced from the HTML.
+
+      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running `npm run build`.
+    -->
+		<!-- jQuery Custom Scroller CDN -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+		<title>React App</title>
+	</head>
+	<body id="Body" class="antialiased">
+		<noscript>You need to enable JavaScript to run this app.</noscript>
+		<div id="root"></div>
+		<!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
+
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
+
+      To begin the development, run `npm start` or `yarn start`.
+      To create a production bundle, use `npm run build` or `yarn build`.
+    -->
+	</body>
+	<script>
+		// 'use strict';
+
+		// document.getElementById('button').addEventListener('click', toggleError);
+		// const errMessages = document.querySelectorAll('#error');
+
+		// function toggleError() {
+		// 	// Show error message
+		// 	errMessages.forEach((el) => {
+		// 		el.classList.toggle('hidden');
+		// 	});
+
+		// 	// Highlight input and label with red
+		// 	const allBorders = document.querySelectorAll('.border-gray-200');
+		// 	const allTexts = document.querySelectorAll('.text-gray-500');
+		// 	allBorders.forEach((el) => {
+		// 		el.classList.toggle('border-red-600');
+		// 	});
+		// 	allTexts.forEach((el) => {
+		// 		el.classList.toggle('text-red-600');
+		// 	});
+		// }
+
+		// Close the dropdown menu if the user clicks outside of it
+		window.onclick = function (event) {
+			if (
+				!event.target.matches('.drop-button') &&
+				!event.target.matches('.drop-search')
+			) {
+				var dropdowns = document.getElementsByClassName('dropdownlist');
+				for (var i = 0; i < dropdowns.length; i++) {
+					var openDropdown = dropdowns[i];
+					if (!openDropdown.classList.contains('invisible')) {
+						openDropdown.classList.add('invisible');
+					}
+				}
+			}
+		};
+	</script>
+
+	<script src="https://www.paypal.com/sdk/js?client-id=test&currency=USD"></script>
+	<script>
+		// Render the PayPal button into #paypal-button-container
+		paypal
+			.Buttons({
+				// Set up the transaction
+				createOrder: function (data, actions) {
+					return actions.order.create({
+						purchase_units: [
+							{
+								amount: {
+									value: '88.44',
+								},
+							},
+						],
+					});
+				},
+
+				// Finalize the transaction
+				onApprove: function (data, actions) {
+					return actions.order.capture().then(function (details) {
+						// Show a success message to the buyer
+						alert(
+							'Transaction completed by ' + details.payer.name.given_name + '!'
+						);
+					});
+				},
+			})
+			.render('#paypal-button-container');
+	</script>
+</html>

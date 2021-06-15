@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+input:focus ~ label,
+input:not(:placeholder-shown) ~ label,
+textarea:focus ~ label,
+textarea:not(:placeholder-shown) ~ label,
+select:focus ~ label,
+select:not([value='']):valid ~ label {
+	@apply transform;
+	@apply scale-75;
+	@apply -translate-y-6;
+}
+
+input:focus ~ label,
+select:focus ~ label {
+	@apply text-black;
+	@apply left-0;
+}
+
+/* image hover css */
+.middle {
+	transition: 0.5s ease;
+	opacity: 0;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+	text-align: center;
+	color: rgb(0, 0, 0);
+}
+.img-hover:hover .imgg {
+	opacity: 0.2;
+}
+.img-hover:hover .bodi {
+	opacity: 0.2;
+}
+.img-hover:active .middle {
+	font-size: 5px;
+}
+.img-hover:hover .middle {
+	opacity: 1;
+}
+::-webkit-scrollbar {
+	width: 6px;
+	height: 6px;
+}
+
+::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(200, 200, 200, 1);
+	border-radius: 15px;
+}
+
+::-webkit-scrollbar-thumb {
+	border-radius: 15px;
+	background-color: #5bc0de;
+	-webkit-box-shadow: inset 0 0 6px rgba(90, 90, 90, 0.7);
+}
+.active, .btn:hover {
+  background-color: #666;
+  color: white;
+}
