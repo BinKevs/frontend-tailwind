@@ -6,6 +6,8 @@ import InventorySetting from './components/Inventories/InventorySetting';
 import SupplierSetting from './components/Suppliers/SupplierSetting';
 import TransactionSetting from './components/Transactions/TransactionSetting';
 import TransactionItemsSetting from './components/Transactions/TransactionItemsSetting';
+import ReportIndex from './components/Reports/ReportIndex';
+import CheckoutIndex from './components/Products/Checkout/CheckoutIndex';
 const BaseRouter = () => (
 	<>
 		<Switch>
@@ -20,6 +22,8 @@ const BaseRouter = () => (
 				path="/transactions/items"
 				component={TransactionItemsSetting}
 			/>
+			<Route exact path="/reports" component={ReportIndex} />
+			<Route exact path="/checkout" component={CheckoutIndex} />
 		</Switch>
 	</>
 );

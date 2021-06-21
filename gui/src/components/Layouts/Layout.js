@@ -132,7 +132,7 @@ class Layout extends React.Component {
 								<div class="relative inline-block md:mr-2 py-2">
 									<button
 										onClick={this.setDropDown}
-										class="drop-button text-white focus:outline-none"
+										class=" text-white focus:outline-none"
 									>
 										{' '}
 										<span class="pr-2">

@@ -1,31 +1,19 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-const ProductModal = (props) => {
+const InventoryModal = (props) => {
 	const {
+		products,
 		suppliers,
-		categories,
 		onChange,
 		onAddSubmit,
-		isImageChanged,
 		onUpdateSubmit,
 		EditButtonIsClicked,
 		onEditCloseButton,
 		onModalToggleAdd,
 		modal,
 	} = props;
-	const {
-		name,
-		description,
-		price,
-		category,
-		supplier,
-		stock,
-		image,
-		id,
-		urlFile,
-	} = props.state;
-
+	const { new_stock, product, supplier, id } = props.state;
 	return (
 		<>
 			<div class={modal ? 'h-screen ' : 'h-screen hidden'}>
@@ -40,103 +28,58 @@ const ProductModal = (props) => {
 								<div className="relative p-4 md:p-8 bg-white dark:bg-gray-800 dark:border-gray-700 shadow-md rounded border border-gray-400 ">
 									<div className="flex items-center justify-center w-full">
 										<h1 className="text-center text-gray-800 dark:text-gray-100 text-2xl font-bold tracking-normal leading-tight mb-4">
-											{!EditButtonIsClicked ? 'Add' : 'Update'} Product
+											{!EditButtonIsClicked ? 'Add' : 'Update'} Inventory
 										</h1>
 									</div>
 									<div className="">
 										<div class="relative z-0 w-full mb-5">
 											<input
-												type="text"
-												name="name"
+												type="number"
+												name="new_stock"
 												onChange={onChange}
-												value={name}
 												placeholder=" "
 												required
 												class="pt-3 pb-2 block w-full px-0 mt-0 bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 focus:border-cyan-700 border-gray-200"
+												value={new_stock > 0 ? new_stock : ''}
 											/>
 											<label
-												for="name"
+												for="stock quantity"
 												class="absolute duration-300 top-3 -z-1 origin-0 text-gray-500"
 											>
-												Name
+												Stock quantity
 											</label>
 											<span class="text-sm text-red-600 hidden" id="error">
-												Name is required
+												Stock quantity is required
 											</span>
 										</div>
-										<div class="relative z-0 w-full mb-5">
-											<textarea
-												name="description"
-												onChange={onChange}
-												value={description}
-												placeholder=" "
-												required
-												class="pt-3 pb-2 block w-full px-0 mt-0 bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 focus:border-cyan-700 border-gray-200"
-											/>
-											<label
-												for="description"
-												class="absolute duration-300 top-3 -z-1 origin-0 text-gray-500"
-											>
-												Description
-											</label>
-											<span class="text-sm text-red-600 hidden" id="error">
-												Description is required
-											</span>
-										</div>
-										<div class="relative z-0 w-full mb-5 space-y-4">
-											<label class="block">Image</label>
-											<input
-												class="pt-3 pb-2 block w-full px-2 mt-0 text-gray-700 border-2 rounded-l focus:ring-0 active:border-cyan-700 border-gray-200"
-												type="file"
-												name="image"
-												onChange={onChange}
-											/>
 
-											{!EditButtonIsClicked ? (
-												<></>
-											) : (
-												<img
-													class={
-														EditButtonIsClicked
-															? 'object-cover'
-															: 'object-cover h-52'
-													}
-													src={isImageChanged ? urlFile : image}
-												/>
-											)}
-										</div>
-										<div class="w-full mb-5">
-											<button className="focus:outline-none transition duration-150 ease-in-out hover:bg-cyan-700 bg-cyan-700 rounded text-white px-8 py-2 text-sm">
-												Add Category
-											</button>
-										</div>
 										<div class="relative z-0 w-full mb-5">
-											<label class="block my-2">Select Category</label>
+											<label for="product" class="block my-2">
+												Select product
+											</label>
 											<div class="relative inline-block w-full text-gray-700">
 												<select
+													name="product"
 													onChange={onChange}
-													name="category"
 													class="w-full h-10 pl-3 pr-6 text-base placeholder-gray-600 border rounded-lg appearance-none focus:border-cyan-700"
 												>
-													<option>A regular sized select input</option>
-													<option>Another option</option>
-													<option>And one more</option>
-													{category === 0 ? (
+													{product === 0 ? (
 														<option selected>
-															Open this to select category
+															Open this to select product
 														</option>
 													) : (
 														''
 													)}
-													{categories.map((category1) => (
+													{products.map((productItem) => (
 														<option
 															selected={
-																category1.id === category ? 'selected' : ''
+																productItem.id === product ? 'selected' : ''
 															}
-															value={category1.id}
-															key={category1.id}
+															value={productItem.id}
+															className="text-dark"
+															key={productItem.id}
 														>
-															{category1.name}
+															{productItem.name}
 														</option>
 													))}
 												</select>
@@ -172,46 +115,6 @@ const ProductModal = (props) => {
 													))}
 												</select>
 											</div>
-										</div>
-										<div class="relative z-0 w-full mb-5">
-											<input
-												type="number"
-												name="price"
-												onChange={onChange}
-												value={price > 0 ? price : ''}
-												placeholder="Price"
-												required
-												class="pt-3 pb-2 block w-full px-0 mt-0 bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 focus:border-cyan-700 border-gray-200"
-											/>
-											<label
-												for="price"
-												class="absolute duration-300 top-3 -z-1 origin-0 text-gray-500"
-											>
-												Price
-											</label>
-											<span class="text-sm text-red-600 hidden" id="error">
-												Price is required
-											</span>
-										</div>
-										<div class="relative z-0 w-full mb-5">
-											<input
-												type="number"
-												name="stock"
-												onChange={onChange}
-												value={stock > 0 ? stock : ''}
-												placeholder="Stock"
-												required
-												class="pt-3 pb-2 block w-full px-0 mt-0 bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 focus:border-cyan-700 border-gray-200"
-											/>
-											<label
-												for="stock"
-												class="absolute duration-300 top-3 -z-1 origin-0 text-gray-500"
-											>
-												Stock
-											</label>
-											<span class="text-sm text-red-600 hidden" id="error">
-												Stock is required
-											</span>
 										</div>
 									</div>
 
@@ -282,11 +185,13 @@ const ProductModal = (props) => {
 		</>
 	);
 };
-ProductModal.propTypes = {
-	onAddSubmit: PropTypes.func.isRequired,
+
+InventoryModal.propTypes = {
+	onSubmit: PropTypes.func.isRequired,
 	onChange: PropTypes.func.isRequired,
 	state: PropTypes.object.isRequired,
 	suppliers: PropTypes.array.isRequired,
-	categories: PropTypes.array.isRequired,
+	products: PropTypes.array.isRequired,
 };
-export default connect(null, {})(ProductModal);
+
+export default connect(null, {})(InventoryModal);

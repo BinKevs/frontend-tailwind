@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -6,6 +7,7 @@ import {
 	removeFromCart,
 	changeCartValue,
 } from '../../../store/actions/cart/cartActions';
+
 class CartIndex extends React.Component {
 	static propTypes = {
 		removeFromCart: PropTypes.func.isRequired,
@@ -18,6 +20,14 @@ class CartIndex extends React.Component {
 		tax: 0,
 		quantity: 0,
 	};
+
+	trimmedString(stringX) {
+		if (stringX.length === 12) {
+			return stringX;
+		} else {
+			return stringX.substring(0, 24) + '...';
+		}
+	}
 	// When the quantity fields change, this function will change the quantity state value and take a item product id to be pass to store-actions-cartAction-
 	// changeCartValue together with type,id(or the product id) and the value
 	onChange(id) {
@@ -38,8 +48,12 @@ class CartIndex extends React.Component {
 	// and this CDM get the props pass by cartReducer to render it and compute for totalAmount, sub amount and tax.
 	componentDidMount() {
 		let VariableTotalAmount = 0;
+		let Variablequantity = 0;
 		this.props.cartItems.map(
-			(item) => (VariableTotalAmount += item.price * item.quantity)
+			(item) => (
+				(VariableTotalAmount += item.price * item.quantity),
+				(Variablequantity += item.quantity)
+			)
 		);
 		this.setState({
 			totalAmount: this.HandleDecimalPlaces(VariableTotalAmount),
@@ -47,6 +61,7 @@ class CartIndex extends React.Component {
 				(VariableTotalAmount -= VariableTotalAmount * 0.12)
 			),
 			tax: this.HandleDecimalPlaces(VariableTotalAmount * 0.12),
+			quantity: Variablequantity,
 		});
 	}
 	// This component did update will watch over the props from cartReducer so if the user changes
@@ -54,8 +69,12 @@ class CartIndex extends React.Component {
 	componentDidUpdate(prevProps) {
 		if (this.props.cartItems !== prevProps.cartItems) {
 			let VariableTotalAmount = 0;
+			let Variablequantity = 0;
 			this.props.cartItems.map(
-				(item) => (VariableTotalAmount += item.price * item.quantity)
+				(item) => (
+					(VariableTotalAmount += item.price * item.quantity),
+					(Variablequantity += item.quantity)
+				)
 			);
 			this.setState({
 				totalAmount: this.HandleDecimalPlaces(VariableTotalAmount),
@@ -63,12 +82,13 @@ class CartIndex extends React.Component {
 					(VariableTotalAmount -= VariableTotalAmount * 0.12)
 				),
 				tax: this.HandleDecimalPlaces(VariableTotalAmount * 0.12),
+				quantity: Variablequantity,
 			});
 		}
 	}
 	render() {
 		const { cartItems, changeCartValue, removeFromCart } = this.props;
-		const { Subtotal, tax, totalAmount } = this.state;
+		const { Subtotal, tax, totalAmount, quantity } = this.state;
 		return (
 			<>
 				<div class="lg:mx-4 -mt-4 w-full lg:w-2/5">
@@ -76,7 +96,7 @@ class CartIndex extends React.Component {
 						<div class="w-full bg-white px-10 py-10">
 							<div class="flex justify-between border-b pb-8">
 								<h1 class="font-semibold text-2xl">Shopping Cart</h1>
-								<h2 class="font-semibold text-2xl">3 Items</h2>
+								<h2 class="font-semibold text-2xl">{quantity} Items</h2>
 							</div>
 							<div class="flex justify-between mt-10 mb-5">
 								<h3 class="font-semibold text-gray-600 text-xs uppercase w-full">
@@ -93,14 +113,20 @@ class CartIndex extends React.Component {
 								</h3>
 							</div>
 							{cartItems.map((item) => (
-								<div class="flex items-center justify-between hover:bg-gray-100 py-5">
+								<div class=" flex items-center justify-between hover:bg-gray-100 py-5">
 									<>
 										<div class="flex w-full">
-											<div class="flex flex-col justify-between flex-grow h-24">
+											<div class="HoverCartProductName flex flex-col justify-between flex-grow h-24 relative">
 												<span class="font-bold text-sm">
-													{item.product_name}
+													{/* {item.product_name} */}
+													{this.trimmedString(item.product_name)}
+													<div className="CartProductName bg-gray-100 absolute top-0 z-10 w-full">
+														{item.product_name}
+													</div>
 												</span>
-												<span class="text-red-500 text-xs">Yamaha</span>
+												<span class="text-red-500 text-xs">
+													{this.trimmedString(item.supplier)}
+												</span>
 												<a
 													href="#"
 													class="font-semibold hover:text-red-500 text-gray-500 text-xs"
@@ -111,11 +137,11 @@ class CartIndex extends React.Component {
 											</div>
 										</div>
 
-										<div class="flex xl:flex-row lg:flex-col items-center justify-between w-full h-24">
+										<div class="flex xl:flex-row lg:flex-col items-center justify-between w-full h-24 my-1">
 											<i
 												class="fal fa-minus xl:order-first lg:order-last fill-current text-gray-600 w-3"
 												onClick={() => {
-													changeCartValue('minus', item.product_id);
+													changeCartValue('minus', item.product_id, item);
 												}}
 											></i>
 											<input
@@ -135,7 +161,7 @@ class CartIndex extends React.Component {
 											₱{item.price}
 										</span>
 										<span class="text-center w-full font-semibold text-sm break-words">
-											$400.0000
+											${item.price * item.quantity}
 										</span>
 									</>
 								</div>
@@ -155,18 +181,25 @@ class CartIndex extends React.Component {
 							<div className="flex flex-col border-t pt-8 gap-y-2">
 								<div class="flex justify-between">
 									<h1 class="font-semibold text-lg">Sub Total : </h1>
-									<h2 class="font-semibold text-xl">3000</h2>
+									<h2 class="font-semibold text-xl">
+										₱{this.numberWithCommas(Subtotal)}
+									</h2>
 								</div>
 								<div class="flex justify-between">
 									<h1 class="font-semibold text-lg">Tax : </h1>
-									<h2 class="font-semibold text-xl">3000</h2>
+									<h2 class="font-semibold text-xl">
+										₱{this.numberWithCommas(tax)}
+									</h2>
 								</div>
 								<div class="flex justify-between">
 									<h1 class="font-semibold text-2xl">Total : </h1>
-									<h2 class="font-semibold text-2xl">3000</h2>
+									<h2 class="font-semibold text-2xl">
+										₱{this.numberWithCommas(totalAmount)}
+									</h2>
 								</div>
-								<button
-									class="
+								<Link to="checkout">
+									<button
+										class="
 							bg-teal_custom 
 							font-semibold
 							py-3
@@ -176,9 +209,10 @@ class CartIndex extends React.Component {
 							w-full
 							rounded-lg
 						"
-								>
-									Checkout
-								</button>
+									>
+										Checkout
+									</button>
+								</Link>
 							</div>
 						</div>
 					</div>

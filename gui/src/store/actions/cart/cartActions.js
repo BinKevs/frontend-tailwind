@@ -29,21 +29,34 @@ export const addToCart = (product) => (dispatch, getState) => {
 // freely so when the type is plus it will increament minus for decrement and "type" when the value of quantity is indicated
 // and dispatch the new cartItems value to the reducer to be pass on the component to render new value
 export const changeCartValue =
-	(changeType, product_id, product_current_value) => (dispatch, getState) => {
+	(changeType, product_id, product_current_value, item) =>
+	(dispatch, getState) => {
 		const cartItems = getState().cartReducer.cartItems.slice();
+		let quan = 1;
 		cartItems.forEach((x) => {
 			if (x.product_id === product_id) {
 				if (changeType === 'plus') x.quantity++;
-				else if (changeType === 'minus') x.quantity--;
-				else if (changeType === 'type') x.quantity = product_current_value;
+				else if (changeType === 'minus') {
+					x.quantity--;
+					if (x.quantity <= 0) {
+						quan = 0;
+					}
+				} else if (changeType === 'type') x.quantity = product_current_value;
 			}
 		});
-
-		dispatch({
-			type: CHANGE_QUANTITY,
-			payload: { cartItems },
-		});
-		localStorage.setItem('cartItem', JSON.stringify(cartItems));
+		if (quan <= 0) {
+			const cartItems = getState()
+				.cartReducer.cartItems.slice()
+				.filter((x) => x.product_id !== product_id);
+			dispatch({ type: REMOVE_FROM_CART, payload: { cartItems } });
+			localStorage.setItem('cartItem', JSON.stringify(cartItems));
+		} else {
+			dispatch({
+				type: CHANGE_QUANTITY,
+				payload: { cartItems },
+			});
+			localStorage.setItem('cartItem', JSON.stringify(cartItems));
+		}
 	};
 
 // remove an item in the cart setting the local storage without the product item that has been passed!

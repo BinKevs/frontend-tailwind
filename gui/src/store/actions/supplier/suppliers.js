@@ -7,8 +7,34 @@ import {
 	DELETE_SUPPLIER,
 	ADD_SUPPLIER,
 	UPDATE_SUPPLIER,
+	GET_SUPPLIER_LIST_WITH_PAGINATION,
 } from './actionTypes';
-const url = URL_IMPORT + '/api/suppliers/';
+let url = URL_IMPORT + '/api/suppliers/';
+let urlWithPagination = 'http://127.0.0.1:8000/api/suppliers/withPagination/';
+
+export const movePagination = (urlSent) => (dispatch, getState) => {
+	axios
+		.get(urlSent, tokenConfig(getState))
+		.then((res) => {
+			urlWithPagination = urlSent;
+			dispatch({
+				type: GET_SUPPLIER_LIST_WITH_PAGINATION,
+				payload: res.data,
+			});
+		})
+		.catch((err) => console.log(err));
+};
+export const getSupplierListWithPagination = () => (dispatch, getState) => {
+	axios
+		.get(urlWithPagination, tokenConfig(getState))
+		.then((res) => {
+			dispatch({
+				type: GET_SUPPLIER_LIST_WITH_PAGINATION,
+				payload: res.data,
+			});
+		})
+		.catch((err) => console.log(err));
+};
 export const getSupplierList = () => (dispatch, getState) => {
 	axios
 		.get(url, tokenConfig(getState))

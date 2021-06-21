@@ -31,10 +31,10 @@ class ProductListIndex extends React.Component {
 		}
 	}
 	onChange = (e) => this.setState({ [e.target.name]: e.target.value });
-	onSubmit(product_id, product_name, price) {
+	onSubmit(product_id, product_name, price, supplier) {
 		return (event) => {
 			event.preventDefault();
-			const product = { product_id, product_name, price };
+			const product = { product_id, product_name, price, supplier };
 			this.props.addToCart(product);
 		};
 	}
@@ -144,20 +144,25 @@ class ProductListIndex extends React.Component {
 											<span class="font-bold">
 												{this.trimmedString(product.name)}
 											</span>
-											<span class="block text-gray-500 text-sm">By Yamaha</span>
+											<span class="block text-gray-500 text-sm">
+												By {this.trimmedString(product.supplier)}
+											</span>
 										</div>
 
 										<div class="absolute top-0 ml-2 p-2 mt-2 bg-teal_custom text-white text-sm uppercase font-bold rounded-full ">
 											<i class="fad fa-tags fa-lg"></i>
 											<span>₱{this.numberWithCommas(product.price)}</span>
 										</div>
-
+										<div class="product-tooltip absolute bottom-0 py-6 px-4 p-2 text-gray-800 text-sm uppercase font-bold">
+											<span>{product.name}</span>
+										</div>
 										<div
 											class="middle"
 											onClick={this.onSubmit(
 												product.id,
 												product.name,
-												product.price
+												product.price,
+												product.supplier
 											)}
 										>
 											<i class="fad fa-plus fa-3x"></i>

@@ -10,8 +10,8 @@ import {
 } from '../../store/actions/inventory/inventories';
 import { getSupplierList } from '../../store/actions/supplier/suppliers';
 import { getProductList } from '../../store/actions/product/products';
+import InventoryModal from './InventoryModal';
 let EditButtonIsClicked = false;
-let isEditButtonClicked = false;
 let inventories = [];
 class InventorySettingIndex extends React.Component {
 	static propTypes = {
@@ -30,13 +30,9 @@ class InventorySettingIndex extends React.Component {
 		supplier: 0,
 		search: '',
 		inventoryID: 0,
+		modal: false,
 	};
-	setSeeMore(inventory_id) {
-		return (e) => {
-			e.preventDefault();
-			document.getElementById(inventory_id).classList.toggle('hidden');
-		};
-	}
+
 	onChange = (e) => {
 		this.setState({ [e.target.name]: e.target.value });
 	};
@@ -67,7 +63,7 @@ class InventorySettingIndex extends React.Component {
 			inventoryID: 0,
 		});
 		EditButtonIsClicked = false;
-		isEditButtonClicked = false;
+		this.onModalToggleEditClose();
 	};
 	componentDidMount() {
 		this.props.getInventoryList();
@@ -76,33 +72,59 @@ class InventorySettingIndex extends React.Component {
 		this.setState({
 			search: '',
 		});
+		const { new_stock, product, supplier, id } = this.props.inventory;
+		this.setState({
+			new_stock,
+			product,
+			supplier,
+			inventoryID: id,
+		});
 	}
 
-	componentDidUpdate(prevProps, prevState) {
-		if (isEditButtonClicked) {
-			EditButtonIsClicked = true;
-			const { new_stock, product, supplier, id } = this.props.inventory;
-			this.setState({
-				new_stock,
-				product,
-				supplier,
-				inventoryID: id,
-			});
+	// componentDidUpdate(prevProps, prevState) {
+	// 	if (isEditButtonClicked) {
+	// 		EditButtonIsClicked = true;
+	// 		const { new_stock, product, supplier, id } = this.props.inventory;
+	// 		this.setState({
+	// 			new_stock,
+	// 			product,
+	// 			supplier,
+	// 			inventoryID: id,
+	// 		});
 
-			isEditButtonClicked = false;
-		}
-		if (this.props.inventories !== prevProps.inventories) {
-			this.props.getInventoryList();
-		}
+	// 		isEditButtonClicked = false;
+	// 	}
+	// 	if (this.props.inventories !== prevProps.inventories) {
+	// 		this.props.getInventoryList();
+	// 	}
+	// }
+	onModalToggleEdit() {
+		this.setState({ modal: !this.state.modal });
+		document.body.scrollTop = 0;
+		document.documentElement.scrollTop = 0;
+		document.getElementById('Body').classList.toggle('overflow-hidden');
+		EditButtonIsClicked = true;
 	}
+	onModalToggleEditClose() {
+		this.setState({ modal: !this.state.modal });
+		document.body.scrollTop = 0;
+		document.documentElement.scrollTop = 0;
+		document.getElementById('Body').classList.toggle('overflow-hidden');
+	}
+	onModalToggleAdd = (e) => {
+		e.preventDefault();
+		this.setState({ modal: !this.state.modal });
+		document.body.scrollTop = 0;
+		document.documentElement.scrollTop = 0;
+		document.getElementById('Body').classList.toggle('overflow-hidden');
+	};
 	onEditButtonClick(InventoryID) {
 		return (event) => {
 			event.preventDefault();
 			this.props.getInventory(InventoryID);
-			isEditButtonClicked = true;
+			this.onModalToggleEdit();
 		};
 	}
-
 	// When Updating this will sent the new stock, product and supplier together with id
 	// to the updateInventory in the action and reset the state.
 	onUpdateSubmit = (InventoryID) => {
@@ -140,6 +162,7 @@ class InventorySettingIndex extends React.Component {
 				item[key].toString().toLowerCase().includes(lowercasedFilter)
 			);
 		});
+		console.log(this.props.suppliers);
 		return (
 			<>
 				<div class="bg-gray-100 flex-1 mt-20 md:mt-14 pb-24 md:pb-5">
@@ -166,7 +189,10 @@ class InventorySettingIndex extends React.Component {
 										<div className="text-white cursor-pointer focus:outline-none border border-transparent focus:border-gray-800 focus:shadow-outline-gray bg-teal_custom transition duration-150 ease-in-out hover:bg-gray-600 w-12 h-12 rounded flex items-center justify-center">
 											<i class="fal fa-print fa-lg"></i>
 										</div>
-										<div className="text-white ml-4 cursor-pointer focus:outline-none border border-transparent focus:border-gray-800 focus:shadow-outline-gray bg-teal_custom transition duration-150 ease-in-out hover:bg-gray-600 w-12 h-12 rounded flex items-center justify-center">
+										<div
+											onClick={this.onModalToggleAdd}
+											className="text-white ml-4 cursor-pointer focus:outline-none border border-transparent focus:border-gray-800 focus:shadow-outline-gray bg-teal_custom transition duration-150 ease-in-out hover:bg-gray-600 w-12 h-12 rounded flex items-center justify-center"
+										>
 											<i class="fal fa-plus fa-lg"></i>
 										</div>
 									</div>
@@ -297,26 +323,23 @@ class InventorySettingIndex extends React.Component {
 													{inventory.description}
 												</td>
 												<td className="pr-8 relative">
-													<div
-														id={inventory.id}
-														className="mt-8 absolute left-0 -ml-12 shadow-md z-10 hidden w-32"
-													>
-														<ul className="bg-white dark:bg-gray-800 shadow rounded py-1">
-															<li
-																// onClick={this.onModalToggle}
-																className="cursor-pointer text-gray-600 dark:text-gray-400 text-sm leading-3 tracking-normal py-3 hover:bg-indigo-700 hover:text-white px-3 font-normal"
-															>
-																Edit
-															</li>
-															<li className="cursor-pointer text-gray-600 dark:text-gray-400 text-sm leading-3 tracking-normal py-3 hover:bg-indigo-700 hover:text-white px-3 font-normal">
-																Delete
-															</li>
-														</ul>
-													</div>
-													<button className="text-gray-500 rounded cursor-pointer border border-transparent focus:outline-none">
+													<button className="button-see-more text-gray-500 rounded cursor-pointer border border-transparent focus:outline-none">
+														<div className="seeMore absolute left-0 top-0 mt-2 -ml-20 shadow-md z-10 w-32">
+															<ul className="bg-white dark:bg-gray-800 shadow rounded p-2">
+																<li
+																	// onClick={this.onModalToggle}
+																	onClick={this.onEditButtonClick(inventory.id)}
+																	className="cursor-pointer text-gray-600 dark:text-gray-400 text-sm leading-3 tracking-normal py-3 hover:bg-teal_custom hover:text-white px-3 font-normal"
+																>
+																	Edit
+																</li>
+																<li className="cursor-pointer text-gray-600 dark:text-gray-400 text-sm leading-3 tracking-normal py-3 hover:bg-teal_custom hover:text-white px-3 font-normal">
+																	Delete
+																</li>
+															</ul>
+														</div>
 														<svg
 															xmlns="http://www.w3.org/2000/svg"
-															onClick={this.setSeeMore(inventory.id)}
 															className="icon icon-tabler icon-tabler-dots-vertical dropbtn"
 															width={28}
 															height={28}
@@ -342,6 +365,18 @@ class InventorySettingIndex extends React.Component {
 						</div>
 					</div>
 				</div>
+				<InventoryModal
+					modal={this.state.modal}
+					onModalToggleAdd={this.onModalToggleAdd}
+					state={!EditButtonIsClicked ? this.state : this.props.inventory}
+					onChange={this.onChange}
+					suppliers={this.props.suppliers}
+					products={this.props.products}
+					onAddSubmit={this.onAddSubmit}
+					onUpdateSubmit={this.onUpdateSubmit}
+					EditButtonIsClicked={EditButtonIsClicked}
+					onEditCloseButton={this.onEditCloseButton}
+				/>
 			</>
 		);
 	}

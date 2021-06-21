@@ -45,8 +45,7 @@ class TransactionItemsSettingIndex extends React.Component {
 				<div class="bg-gray-100 flex-1 mt-20 md:mt-14 pb-24 md:pb-5">
 					<div class="bg-gray-800 pt-3">
 						<div
-							class="
-    rounded-tl-3xl
+							class="rounded-tl-3xl
     bg-gradient-to-r
     from-teal_custom
     to-gray-800
@@ -141,10 +140,10 @@ class TransactionItemsSettingIndex extends React.Component {
 												Quantity
 											</th>
 											{/* <th className="space-x-2 text-gray-600 dark:text-gray-400 font-normal pr-6 text-left text-sm tracking-normal leading-4">
-                        <span>Date</span>
-                        <i class="fal fa-arrow-up fa-lg"></i>
-                        <i class="fal fa-arrow-down"></i>
-                    </th> */}
+                        						<span>Date</span>
+                        						<i class="fal fa-arrow-up fa-lg"></i>
+                        						<i class="fal fa-arrow-down"></i>
+                    						</th> */}
 										</tr>
 									</thead>
 									<tbody>
@@ -170,19 +169,19 @@ class TransactionItemsSettingIndex extends React.Component {
 													{item.productPrice}
 												</td>
 												{/* <td className="pr-6 whitespace-no-wrap">
-                        <div className="flex items-center">
-                            <div className="h-8 w-8">
-                                <img
-                                    src="https://tuk-cdn.s3.amazonaws.com/assets/components/advance_tables/at_1.png"
-                                    alt
-                                    className="h-full w-full rounded-full overflow-hidden shadow"
-                                />
-                            </div>
-                            <p className="ml-2 text-gray-800 dark:text-gray-100 tracking-normal leading-4 text-sm">
-                                Carrie Anthony
-                            </p>
-                        </div>
-                    </td> */}
+                        							<div className="flex items-center">
+                            						<div className="h-8 w-8">
+                               						 <img
+                                    					src="https://tuk-cdn.s3.amazonaws.com/assets/components/advance_tables/at_1.png"
+                                    					alt
+                                    					className="h-full w-full rounded-full overflow-hidden shadow"
+                                					/>
+                            						</div>
+                            						<p className="ml-2 text-gray-800 dark:text-gray-100 tracking-normal leading-4 text-sm">
+                                					Carrie Anthony
+                            							</p>
+                       								 </div>
+                    							</td> */}
 												<td className="text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal leading-4">
 													{item.transactionDate}
 												</td>

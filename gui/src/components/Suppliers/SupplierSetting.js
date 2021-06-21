@@ -2,13 +2,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
-	getSupplierList,
 	deleteSupplier,
 	addSupplier,
 	getSupplier,
 	updateSupplier,
+	movePagination,
+	getSupplierListWithPagination,
 } from '../../store/actions/supplier/suppliers';
-let isEditButtonClicked = false;
+import SupplierModal from './SupplierModal';
 let EditButtonIsClicked = false;
 class SupplierSettingIndex extends React.Component {
 	state = {
@@ -17,6 +18,9 @@ class SupplierSettingIndex extends React.Component {
 		phone_number: '',
 		supplierID: 0,
 		search: '',
+		modal: false,
+		start: 1,
+		end: 15,
 	};
 	static propTypes = {
 		suppliers: PropTypes.array.isRequired,
@@ -26,34 +30,28 @@ class SupplierSettingIndex extends React.Component {
 		addSupplier: PropTypes.func.isRequired,
 		updateSupplier: PropTypes.func.isRequired,
 	};
-	setSeeMore(supplier_id) {
-		return (e) => {
-			e.preventDefault();
-			document.getElementById(supplier_id).classList.toggle('hidden');
-		};
-	}
 	componentDidMount() {
-		this.props.getSupplierList();
+		this.props.getSupplierListWithPagination();
 	}
 	// when the isEditButtonClicked status is change this.props.supplier
 	// *the supplier that will be edited* is being fetch because we trigger it in the bottom
 	// then we will set it to the state and being passed on the formupdate component
-	componentDidUpdate(prevProps, prevState) {
-		if (isEditButtonClicked) {
-			EditButtonIsClicked = true;
-			const { id, name, address, phone_number } = this.props.supplier;
-			this.setState({
-				name,
-				address,
-				phone_number,
-				supplierID: id,
-			});
-			isEditButtonClicked = false;
-		}
-		if (this.props.supplier !== prevProps.supplier) {
-			this.props.getSupplierList();
-		}
-	}
+	// componentDidUpdate(prevProps, prevState) {
+	// 	if (isEditButtonClicked) {
+	// 		EditButtonIsClicked = true;
+	// 		const { id, name, address, phone_number } = this.props.supplier;
+	// 		this.setState({
+	// 			name,
+	// 			address,
+	// 			phone_number,
+	// 			supplierID: id,
+	// 		});
+	// 		isEditButtonClicked = false;
+	// 	}
+	// 	if (this.props.supplier !== prevProps.supplier) {
+	// 		this.props.getSupplierList();
+	// 	}
+	// }
 	onChange = (e) => this.setState({ [e.target.name]: e.target.value });
 	// sending the product that will be added to this.props.addSupplier in the actions also reset the state
 	onAddSubmit = (e) => {
@@ -87,13 +85,6 @@ class SupplierSettingIndex extends React.Component {
 		};
 	};
 	// when edit button click this will fetch the supplier that will be edited and change the isEditButtonClicked status to true
-	onEditButtonClick(supplierID) {
-		return (event) => {
-			event.preventDefault();
-			this.props.getSupplier(supplierID);
-			isEditButtonClicked = true;
-		};
-	}
 	onEditCloseButton = (event) => {
 		event.preventDefault();
 		this.setState({
@@ -103,12 +94,40 @@ class SupplierSettingIndex extends React.Component {
 			supplierID: 0,
 		});
 		EditButtonIsClicked = false;
-		isEditButtonClicked = false;
+
+		this.onModalToggleEditClose();
 	};
+	onModalToggleEdit() {
+		this.setState({ modal: !this.state.modal });
+		document.body.scrollTop = 0;
+		document.documentElement.scrollTop = 0;
+		document.getElementById('Body').classList.toggle('overflow-hidden');
+		EditButtonIsClicked = true;
+	}
+	onModalToggleEditClose() {
+		this.setState({ modal: !this.state.modal });
+		document.body.scrollTop = 0;
+		document.documentElement.scrollTop = 0;
+		document.getElementById('Body').classList.toggle('overflow-hidden');
+	}
+	onModalToggleAdd = (e) => {
+		e.preventDefault();
+		this.setState({ modal: !this.state.modal });
+		document.body.scrollTop = 0;
+		document.documentElement.scrollTop = 0;
+		document.getElementById('Body').classList.toggle('overflow-hidden');
+	};
+	onEditButtonClick(supplierID) {
+		return (event) => {
+			event.preventDefault();
+			this.props.getSupplier(supplierID);
+			this.onModalToggleEdit();
+		};
+	}
 	render() {
 		// This will filter the data from supplier
 		const lowercasedFilter = this.state.search.toLowerCase();
-		const filteredData = this.props.suppliers.filter((item) => {
+		const filteredData = this.props.suppliersWithPagination.filter((item) => {
 			return Object.keys(item).some((key) =>
 				item[key].toString().toLowerCase().includes(lowercasedFilter)
 			);
@@ -139,7 +158,10 @@ class SupplierSettingIndex extends React.Component {
 										<div className="text-white cursor-pointer focus:outline-none border border-transparent focus:border-gray-800 focus:shadow-outline-gray bg-teal_custom transition duration-150 ease-in-out hover:bg-gray-600 w-12 h-12 rounded flex items-center justify-center">
 											<i class="fal fa-print fa-lg"></i>
 										</div>
-										<div className="text-white ml-4 cursor-pointer focus:outline-none border border-transparent focus:border-gray-800 focus:shadow-outline-gray bg-teal_custom transition duration-150 ease-in-out hover:bg-gray-600 w-12 h-12 rounded flex items-center justify-center">
+										<div
+											onClick={this.onModalToggleAdd}
+											className="text-white ml-4 cursor-pointer focus:outline-none border border-transparent focus:border-gray-800 focus:shadow-outline-gray bg-teal_custom transition duration-150 ease-in-out hover:bg-gray-600 w-12 h-12 rounded flex items-center justify-center"
+										>
 											<i class="fal fa-plus fa-lg"></i>
 										</div>
 									</div>
@@ -150,17 +172,40 @@ class SupplierSettingIndex extends React.Component {
 											className="text-base text-gray-600 dark:text-gray-400"
 											id="page-view"
 										>
-											Viewing 1 - 20 of 60
+											Viewing {this.state.start} - {this.state.end} of{' '}
+											{this.props.total}
 										</p>
 										<a
 											className="text-gray-600 dark:text-gray-400 ml-2 border-transparent border cursor-pointer rounded mr-4"
-											onclick="pageView(false)"
+											onClick={() => {
+												this.props.movePagination(this.props.previous);
+												if (this.state.start != 1) {
+													this.setState({
+														start: (this.state.start -= 15),
+														end: (this.state.end -= 15),
+													});
+												}
+											}}
 										>
 											<i class="fad fa-angle-left fa-2x"></i>
 										</a>
 										<a
 											className="text-gray-600 dark:text-gray-400 border-transparent border rounded focus:outline-none cursor-pointer"
-											onclick="pageView(true)"
+											onClick={() => {
+												this.props.movePagination(this.props.next);
+
+												if (this.state.end < this.props.total) {
+													this.setState({
+														start: (this.state.start += 15),
+														end: (this.state.end += 15),
+													});
+												}
+												if (this.state.end + 15 >= this.props.total) {
+													this.setState({
+														end: (this.state.end = this.props.total),
+													});
+												}
+											}}
 										>
 											<i class="fad fa-angle-right fa-2x"></i>
 										</a>
@@ -257,26 +302,23 @@ class SupplierSettingIndex extends React.Component {
 													{supplier.phone_number}
 												</td>
 												<td className="pr-8 relative">
-													<div
-														id={supplier.id}
-														className="mt-8 absolute left-0 -ml-12 shadow-md z-10 hidden w-32"
-													>
-														<ul className="bg-white dark:bg-gray-800 shadow rounded py-1">
-															<li
-																// onClick={this.onModalToggle}
-																className="cursor-pointer text-gray-600 dark:text-gray-400 text-sm leading-3 tracking-normal py-3 hover:bg-indigo-700 hover:text-white px-3 font-normal"
-															>
-																Edit
-															</li>
-															<li className="cursor-pointer text-gray-600 dark:text-gray-400 text-sm leading-3 tracking-normal py-3 hover:bg-indigo-700 hover:text-white px-3 font-normal">
-																Delete
-															</li>
-														</ul>
-													</div>
-													<button className="text-gray-500 rounded cursor-pointer border border-transparent focus:outline-none">
+													<button className="button-see-more text-gray-500 rounded cursor-pointer border border-transparent focus:outline-none">
+														<div className="seeMore absolute left-0 top-0 mt-2 -ml-20 shadow-md z-10 w-32">
+															<ul className="bg-white dark:bg-gray-800 shadow rounded p-2">
+																<li
+																	// onClick={this.onModalToggle}
+																	onClick={this.onEditButtonClick(supplier.id)}
+																	className="cursor-pointer text-gray-600 dark:text-gray-400 text-sm leading-3 tracking-normal py-3 hover:bg-teal_custom hover:text-white px-3 font-normal"
+																>
+																	Edit
+																</li>
+																<li className="cursor-pointer text-gray-600 dark:text-gray-400 text-sm leading-3 tracking-normal py-3 hover:bg-teal_custom hover:text-white px-3 font-normal">
+																	Delete
+																</li>
+															</ul>
+														</div>
 														<svg
 															xmlns="http://www.w3.org/2000/svg"
-															onClick={this.setSeeMore(supplier.id)}
 															className="icon icon-tabler icon-tabler-dots-vertical dropbtn"
 															width={28}
 															height={28}
@@ -302,18 +344,31 @@ class SupplierSettingIndex extends React.Component {
 						</div>
 					</div>
 				</div>
+				<SupplierModal
+					modal={this.state.modal}
+					onModalToggleAdd={this.onModalToggleAdd}
+					state={!EditButtonIsClicked ? this.state : this.props.supplier}
+					onChange={this.onChange}
+					onAddSubmit={this.onAddSubmit}
+					onUpdateSubmit={this.onUpdateSubmit}
+					EditButtonIsClicked={EditButtonIsClicked}
+					onEditCloseButton={this.onEditCloseButton}
+				/>
 			</>
 		);
 	}
 }
 const mapStateToProps = (state) => ({
-	suppliers: state.suppliers.suppliers,
+	suppliersWithPagination: state.suppliers.suppliersWithPagination,
 	supplier: state.suppliers.supplier,
+	total: state.suppliers.total,
+	next: state.suppliers.next,
+	previous: state.suppliers.previous,
 });
 
 export default connect(mapStateToProps, {
-	getSupplierList,
-
+	getSupplierListWithPagination,
+	movePagination,
 	getSupplier,
 	updateSupplier,
 	addSupplier,

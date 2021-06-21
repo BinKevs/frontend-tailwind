@@ -27,6 +27,38 @@
 		<!-- jQuery Custom Scroller CDN -->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 		<title>React App</title>
+		<script src="https://www.paypal.com/sdk/js?client-id=test&currency=USD"></script>
+		<script>
+			// Render the PayPal button into #paypal-button-container
+			paypal
+				.Buttons({
+					// Set up the transaction
+					createOrder: function (data, actions) {
+						return actions.order.create({
+							purchase_units: [
+								{
+									amount: {
+										value: '88.44',
+									},
+								},
+							],
+						});
+					},
+
+					// Finalize the transaction
+					onApprove: function (data, actions) {
+						return actions.order.capture().then(function (details) {
+							// Show a success message to the buyer
+							alert(
+								'Transaction completed by ' +
+									details.payer.name.given_name +
+									'!'
+							);
+						});
+					},
+				})
+				.render('#paypal-button-container');
+		</script>
 	</head>
 	<body id="Body" class="antialiased">
 		<noscript>You need to enable JavaScript to run this app.</noscript>
@@ -66,50 +98,19 @@
 		// }
 
 		// Close the dropdown menu if the user clicks outside of it
-		window.onclick = function (event) {
-			if (
-				!event.target.matches('.drop-button') &&
-				!event.target.matches('.drop-search')
-			) {
-				var dropdowns = document.getElementsByClassName('dropdownlist');
-				for (var i = 0; i < dropdowns.length; i++) {
-					var openDropdown = dropdowns[i];
-					if (!openDropdown.classList.contains('invisible')) {
-						openDropdown.classList.add('invisible');
-					}
-				}
-			}
-		};
-	</script>
-
-	<script src="https://www.paypal.com/sdk/js?client-id=test&currency=USD"></script>
-	<script>
-		// Render the PayPal button into #paypal-button-container
-		paypal
-			.Buttons({
-				// Set up the transaction
-				createOrder: function (data, actions) {
-					return actions.order.create({
-						purchase_units: [
-							{
-								amount: {
-									value: '88.44',
-								},
-							},
-						],
-					});
-				},
-
-				// Finalize the transaction
-				onApprove: function (data, actions) {
-					return actions.order.capture().then(function (details) {
-						// Show a success message to the buyer
-						alert(
-							'Transaction completed by ' + details.payer.name.given_name + '!'
-						);
-					});
-				},
-			})
-			.render('#paypal-button-container');
+		// window.onclick = function (event) {
+		// 	if (
+		// 		!event.target.matches('.drop-button') &&
+		// 		!event.target.matches('.drop-search')
+		// 	) {
+		// 		var dropdowns = document.getElementsByClassName('dropdownlist');
+		// 		for (var i = 0; i < dropdowns.length; i++) {
+		// 			var openDropdown = dropdowns[i];
+		// 			if (!openDropdown.classList.contains('invisible')) {
+		// 				openDropdown.classList.add('invisible');
+		// 			}
+		// 		}
+		// 	}
+		// };
 	</script>
 </html>

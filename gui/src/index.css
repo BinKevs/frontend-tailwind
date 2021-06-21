@@ -18,6 +18,9 @@ select:focus ~ label {
 	@apply text-black;
 	@apply left-0;
 }
+.swal-text {
+	@apply text-gray-800 text-2xl font-bold;
+}
 
 /* image hover css */
 .middle {
@@ -35,7 +38,7 @@ select:focus ~ label {
 	opacity: 0.2;
 }
 .img-hover:hover .bodi {
-	opacity: 0.2;
+	opacity: 0;
 }
 .img-hover:active .middle {
 	font-size: 5px;
@@ -43,6 +46,27 @@ select:focus ~ label {
 .img-hover:hover .middle {
 	opacity: 1;
 }
+
+.product-tooltip {
+	visibility: hidden;
+}
+.img-hover:hover .product-tooltip {
+	visibility: visible;
+}
+.seeMore {
+	visibility: hidden;
+}
+.button-see-more:hover .seeMore {
+	visibility: visible;
+}
+.CartProductName {
+	visibility: hidden;
+}
+
+.HoverCartProductName:hover .CartProductName {
+	visibility: visible;
+}
+
 ::-webkit-scrollbar {
 	width: 6px;
 	height: 6px;
@@ -58,7 +82,8 @@ select:focus ~ label {
 	background-color: #5bc0de;
 	-webkit-box-shadow: inset 0 0 6px rgba(90, 90, 90, 0.7);
 }
-.active, .btn:hover {
-  background-color: #666;
-  color: white;
+.active,
+.btn:hover {
+	background-color: #666;
+	color: white;
 }

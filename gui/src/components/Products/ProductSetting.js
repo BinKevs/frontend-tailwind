@@ -13,7 +13,7 @@ import {
 import { getSupplierList } from '../../store/actions/supplier/suppliers';
 import ProductModal from './ProductModal';
 let products = [];
-let isEditButtonClicked = false;
+
 let EditButtonIsClicked = false;
 let isImageChanged = false;
 class ProductSetting extends React.Component {
@@ -46,19 +46,45 @@ class ProductSetting extends React.Component {
 		this.props.getSupplierList();
 		this.props.getCategoryList();
 	}
-	setSeeMore(product_id) {
-		return (e) => {
-			e.preventDefault();
-			document.getElementById(product_id).classList.toggle('hidden');
-		};
+	onModalToggleEdit() {
+		this.setState({ modal: !this.state.modal });
+		document.body.scrollTop = 0;
+		document.documentElement.scrollTop = 0;
+		document.getElementById('Body').classList.toggle('overflow-hidden');
+		EditButtonIsClicked = true;
 	}
-	onModalToggle = (event) => {
-		event.preventDefault();
+	onModalToggleEditClose() {
+		this.setState({ modal: !this.state.modal });
+		document.body.scrollTop = 0;
+		document.documentElement.scrollTop = 0;
+		document.getElementById('Body').classList.toggle('overflow-hidden');
+	}
+	onModalToggleAdd = (e) => {
+		e.preventDefault();
 		this.setState({ modal: !this.state.modal });
 		document.body.scrollTop = 0;
 		document.documentElement.scrollTop = 0;
 		document.getElementById('Body').classList.toggle('overflow-hidden');
 	};
+	onEditCloseButton = (event) => {
+		event.preventDefault();
+		this.setState({
+			name: '',
+			description: '',
+			price: 0,
+			supplier: 0,
+			category: 0,
+			new_stock: 0,
+			stock: 0,
+			image: null,
+			productID: 0,
+		});
+		EditButtonIsClicked = false;
+
+		isImageChanged = false;
+		this.onModalToggleEditClose();
+	};
+
 	// when the image field changes it will save the image and also change the state of
 	// isImageChanged to true for the update Form component to know that we didnt change the image
 	// because we sent all data whenever we make a post or update so when the isImageChanged's status is false we will not include the field
@@ -88,28 +114,28 @@ class ProductSetting extends React.Component {
 	// when the isEditButtonClicked status is change this.props.product
 	// *the product that will be edited* is being fetch because we trigger it in the bottom
 	// then we will set it to the state and being passed on the formupdate component
-	componentDidUpdate(prevProps, prevState) {
-		if (isEditButtonClicked) {
-			EditButtonIsClicked = true;
-			const { id, name, description, price, supplier, category, stock, image } =
-				this.props.product;
-			this.setState({
-				name,
-				description,
-				price,
-				supplier,
-				category,
-				stock,
-				image,
-				productID: id,
-			});
+	// componentDidUpdate(prevProps, prevState) {
+	// 	if (isEditButtonClicked) {
+	// 		EditButtonIsClicked = true;
+	// 		const { id, name, description, price, supplier, category, stock, image } =
+	// 			this.props.product;
+	// 		this.setState({
+	// 			name,
+	// 			description,
+	// 			price,
+	// 			supplier,
+	// 			category,
+	// 			stock,
+	// 			image,
+	// 			productID: id,
+	// 		});
 
-			isEditButtonClicked = false;
-		}
-		if (this.props.product !== prevProps.product) {
-			this.props.getProductList();
-		}
-	}
+	// 		isEditButtonClicked = false;
+	// 	}
+	// 	if (this.props.product !== prevProps.product) {
+	// 		this.props.getProductList();
+	// 	}
+	// }
 	//this will sent the updated product in the this.props.updateProduct to the action and will reset the state
 	onUpdateSubmit = (productID) => {
 		return (e) => {
@@ -142,6 +168,7 @@ class ProductSetting extends React.Component {
 			});
 			EditButtonIsClicked = false;
 			isImageChanged = false;
+			this.onModalToggleEdit();
 		};
 	};
 	// when edit button click this will fetch the product that will be edited and change the isEditButtonClicked status to true
@@ -149,28 +176,11 @@ class ProductSetting extends React.Component {
 		return (event) => {
 			event.preventDefault();
 			this.props.getProduct(ProductID);
-			isEditButtonClicked = true;
+			this.onModalToggleEdit();
 		};
 	}
 	// when edit button is close this will reset the state and EditButtonIsClicked, isImageChanged and isEditButtonClicked states
 
-	onEditCloseButton = (event) => {
-		event.preventDefault();
-		this.setState({
-			name: '',
-			description: '',
-			price: 0,
-			supplier: 0,
-			category: 0,
-			new_stock: 0,
-			stock: 0,
-			image: null,
-			productID: 0,
-		});
-		EditButtonIsClicked = false;
-		isEditButtonClicked = false;
-		isImageChanged = false;
-	};
 	// sending the product that will be added to this.props.addProduct in the actions also reset the state
 	onAddSubmit = (e) => {
 		e.preventDefault();
@@ -199,6 +209,7 @@ class ProductSetting extends React.Component {
 			image: null,
 		});
 		isImageChanged = false;
+		this.onModalToggleEdit();
 	};
 	render() {
 		// destructure the products that came from the reducer so it will be easier to filter and show
@@ -247,7 +258,10 @@ class ProductSetting extends React.Component {
 										<div className="text-white cursor-pointer focus:outline-none border border-transparent focus:border-gray-800 focus:shadow-outline-gray bg-teal_custom transition duration-150 ease-in-out hover:bg-gray-600 w-12 h-12 rounded flex items-center justify-center">
 											<i class="fal fa-print fa-lg"></i>
 										</div>
-										<div className="text-white ml-4 cursor-pointer focus:outline-none border border-transparent focus:border-gray-800 focus:shadow-outline-gray bg-teal_custom transition duration-150 ease-in-out hover:bg-gray-600 w-12 h-12 rounded flex items-center justify-center">
+										<div
+											onClick={this.onModalToggleAdd}
+											className="text-white ml-4 cursor-pointer focus:outline-none border border-transparent focus:border-gray-800 focus:shadow-outline-gray bg-teal_custom transition duration-150 ease-in-out hover:bg-gray-600 w-12 h-12 rounded flex items-center justify-center"
+										>
 											<i class="fal fa-plus fa-lg"></i>
 										</div>
 									</div>
@@ -398,26 +412,23 @@ class ProductSetting extends React.Component {
 													{product.description}
 												</td>
 												<td className="pr-8 relative">
-													<div
-														id={product.id}
-														className="mt-8 absolute left-0 -ml-12 shadow-md z-10 hidden w-32"
-													>
-														<ul className="bg-white dark:bg-gray-800 shadow rounded py-1">
-															<li
-																onClick={this.onModalToggle}
-																className="cursor-pointer text-gray-600 dark:text-gray-400 text-sm leading-3 tracking-normal py-3 hover:bg-indigo-700 hover:text-white px-3 font-normal"
-															>
-																Edit
-															</li>
-															<li className="cursor-pointer text-gray-600 dark:text-gray-400 text-sm leading-3 tracking-normal py-3 hover:bg-indigo-700 hover:text-white px-3 font-normal">
-																Delete
-															</li>
-														</ul>
-													</div>
-													<button className="text-gray-500 rounded cursor-pointer border border-transparent focus:outline-none">
+													<button className="button-see-more text-gray-500 rounded cursor-pointer border border-transparent focus:outline-none">
+														<div className="seeMore absolute left-0 top-0 mt-2 -ml-20 shadow-md z-10 w-32">
+															<ul className="bg-white dark:bg-gray-800 shadow rounded p-2">
+																<li
+																	// onClick={this.onModalToggle}
+																	onClick={this.onEditButtonClick(product.id)}
+																	className="cursor-pointer text-gray-600 dark:text-gray-400 text-sm leading-3 tracking-normal py-3 hover:bg-teal_custom hover:text-white px-3 font-normal"
+																>
+																	Edit
+																</li>
+																<li className="cursor-pointer text-gray-600 dark:text-gray-400 text-sm leading-3 tracking-normal py-3 hover:bg-teal_custom hover:text-white px-3 font-normal">
+																	Delete
+																</li>
+															</ul>
+														</div>
 														<svg
 															xmlns="http://www.w3.org/2000/svg"
-															onClick={this.setSeeMore(product.id)}
 															className="icon icon-tabler icon-tabler-dots-vertical dropbtn"
 															width={28}
 															height={28}
@@ -445,7 +456,16 @@ class ProductSetting extends React.Component {
 				</div>
 				<ProductModal
 					modal={this.state.modal}
-					onModalToggle={this.onModalToggle}
+					onModalToggleAdd={this.onModalToggleAdd}
+					state={!EditButtonIsClicked ? this.state : this.props.product}
+					onChange={this.onChange}
+					suppliers={this.props.suppliers}
+					categories={this.props.categories}
+					onAddSubmit={this.onAddSubmit}
+					onUpdateSubmit={this.onUpdateSubmit}
+					EditButtonIsClicked={EditButtonIsClicked}
+					isImageChanged={isImageChanged}
+					onEditCloseButton={this.onEditCloseButton}
 				/>
 			</>
 		);

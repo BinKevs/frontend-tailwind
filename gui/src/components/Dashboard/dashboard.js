@@ -4,10 +4,11 @@ import PropTypes from 'prop-types';
 import { getProductList } from '../../store/actions/product/products';
 import { getTransactionList } from '../../store/actions/transaction/transactions';
 import { getTransactionItemList } from '../../store/actions/transaction/transactions.js';
+import { Bar, Line, Pie, Doughnut } from 'react-chartjs-2';
 let transactionItemsFiltered = [];
-var transactionItemsFilteredResult = [];
+let transactionItemsFilteredResult = [];
 let transactionsFilteredDateSeparated = [];
-
+let transactionsDailyFiltered = [];
 let monthlySalesTransaction = 0;
 let dailySalesTransaction = 0;
 let weeklySalesTransaction = 0;
@@ -15,7 +16,7 @@ let totalSalesTransaction = 0;
 let ReorderProduct = 0;
 let ZeroProduct = 0;
 let ProductCount = 0;
-
+let DateNow = Date().toLocaleString().split(' ');
 class DashboardIndex extends React.Component {
 	static propTypes = {
 		products: PropTypes.array.isRequired,
@@ -53,17 +54,6 @@ class DashboardIndex extends React.Component {
 
 	render() {
 		// console.log(Date(start.toLocaleString()), end.toLocaleString());
-		transactionsFilteredDateSeparated = [];
-
-		this.props.transactions.map((filteredTransactionObject) =>
-			transactionsFilteredDateSeparated.push({
-				id: filteredTransactionObject.id,
-				totalAmount: filteredTransactionObject.totalAmount,
-				month: filteredTransactionObject.created_at.split(' ')[0],
-				day: filteredTransactionObject.created_at.split(' ')[1],
-				year: filteredTransactionObject.created_at.split(' ')[2],
-			})
-		);
 		monthlySalesTransaction = 0;
 		dailySalesTransaction = 0;
 		weeklySalesTransaction = 0;
@@ -71,7 +61,18 @@ class DashboardIndex extends React.Component {
 		ReorderProduct = 0;
 		ZeroProduct = 0;
 		ProductCount = 0;
-		const DateNow = Date().toLocaleString().split(' ');
+		transactionsFilteredDateSeparated = [];
+		transactionsDailyFiltered = [];
+		this.props.transactions.map((filteredTransactionObject) =>
+			transactionsFilteredDateSeparated.push({
+				id: filteredTransactionObject.id,
+				totalAmount: filteredTransactionObject.totalAmount,
+				month: filteredTransactionObject.created_at.split(' ')[0],
+				day: filteredTransactionObject.created_at.split(' ')[1],
+				year: filteredTransactionObject.created_at.split(' ')[2],
+				time: filteredTransactionObject.created_at.split(' ')[3],
+			})
+		);
 
 		let [start, end] = this.GetWeekDates();
 		var StartDayOfTheWeek = new Date(start.toLocaleString().split(',')[0])
@@ -80,7 +81,7 @@ class DashboardIndex extends React.Component {
 		var EndDayOfTheWeek = new Date(end.toLocaleString().split(',')[0])
 			.toString()
 			.split(' ');
-		console.log(StartDayOfTheWeek);
+
 		for (var i = 0; i < transactionsFilteredDateSeparated.length; i++) {
 			var month = transactionsFilteredDateSeparated[i].month;
 			var day = transactionsFilteredDateSeparated[i].day;
@@ -101,6 +102,10 @@ class DashboardIndex extends React.Component {
 						dailySalesTransaction += parseInt(
 							transactionsFilteredDateSeparated[i].totalAmount
 						);
+						transactionsDailyFiltered.push({
+							totalAmount: transactionsFilteredDateSeparated[i].totalAmount,
+							date: transactionsFilteredDateSeparated[i].time,
+						});
 					}
 				}
 			}
@@ -145,7 +150,6 @@ class DashboardIndex extends React.Component {
 		this.props.products.map((product) => (ProductCount += 1));
 		//Fetch Combine product quantity sales
 		transactionItemsFiltered = [];
-		transactionItemsFilteredResult = [];
 
 		this.props.transaction_items.map((filteredTransactionItemObject) =>
 			transactionItemsFiltered.push({
@@ -154,7 +158,7 @@ class DashboardIndex extends React.Component {
 				quantity: filteredTransactionItemObject.quantity,
 			})
 		);
-
+		transactionItemsFilteredResult = [];
 		transactionItemsFiltered.forEach(function (obj) {
 			var productNameX = obj.productName;
 			if (!this[productNameX])
@@ -184,10 +188,8 @@ class DashboardIndex extends React.Component {
 						<div class="w-full md:w-1/2 xl:w-1/3 p-6">
 							<div
 								class="
-								bg-gradient-to-b
-								from-green-200
-								to-green-100
-								border-b-4 border-green-600
+								bg-white
+								border-b-4 border-teal_custom
 								rounded-lg
 								shadow-xl
 								p-5
@@ -216,10 +218,8 @@ class DashboardIndex extends React.Component {
 						<div class="w-full md:w-1/2 xl:w-1/3 p-6">
 							<div
 								class="
-								bg-gradient-to-b
-								from-green-200
-								to-green-100
-								border-b-4 border-green-600
+								bg-white
+								border-b-4 border-teal_custom
 								rounded-lg
 								shadow-xl
 								p-5
@@ -248,10 +248,8 @@ class DashboardIndex extends React.Component {
 						<div class="w-full md:w-1/2 xl:w-1/3 p-6">
 							<div
 								class="
-								bg-gradient-to-b
-								from-red-200
-								to-red-100
-								border-b-4 border-red-600
+								bg-white
+								border-b-4 border-teal_custom
 								rounded-lg
 								shadow-xl
 								p-5
@@ -280,10 +278,8 @@ class DashboardIndex extends React.Component {
 						<div class="w-full md:w-1/2 xl:w-1/3 p-6">
 							<div
 								class="
-								bg-gradient-to-b
-								from-red-200
-								to-red-100
-								border-b-4 border-red-600
+								bg-white
+								border-b-4 border-teal_custom
 								rounded-lg
 								shadow-xl
 								p-5
@@ -312,10 +308,8 @@ class DashboardIndex extends React.Component {
 						<div class="w-full md:w-1/2 xl:w-1/3 p-6">
 							<div
 								class="
-								bg-gradient-to-b
-								from-red-200
-								to-red-100
-								border-b-4 border-red-600
+								bg-white
+								border-b-4 border-teal_custom
 								rounded-lg
 								shadow-xl
 								p-5
@@ -341,10 +335,8 @@ class DashboardIndex extends React.Component {
 						<div class="w-full md:w-1/2 xl:w-1/3 p-6">
 							<div
 								class="
-								bg-gradient-to-b
-								from-green-200
-								to-green-100
-								border-b-4 border-green-600
+								bg-white
+								border-b-4 border-teal_custom
 								rounded-lg
 								shadow-xl
 								p-5
@@ -367,337 +359,136 @@ class DashboardIndex extends React.Component {
 								</div>
 							</div>
 						</div>
-					</div>
-					{/* <div class="flex flex-row flex-wrap flex-grow mt-2">
-					<div class="w-full md:w-1/2 xl:w-1/3 p-6">
-					
-						<div class="bg-white border-transparent rounded-lg shadow-xl">
-							<div
-								class="
-									bg-gradient-to-b
-									from-gray-300
-									to-gray-100
-									uppercase
-									text-gray-800
-									border-b-2 border-gray-300
-									rounded-tl-lg rounded-tr-lg
-									p-2
-								"
-							>
-								<h5 class="font-bold uppercase text-gray-600">Graph</h5>
+
+						{/* <div className="w-1/2 mx-auto p-6 bg-white shadow-lg">
+							<div className="relative w-full max-w-full flex-grow">
+								<h6 className="uppercase text-gray-800 mb-1 text-xs font-semibold">
+									Sales
+								</h6>
+								<h2 className="text-gray-800 text-xl font-semibold">Daily</h2>
 							</div>
-							<div class="p-5">
-								<canvas
-									id="chartjs-7"
-									class="chartjs"
-									width="undefined"
-									height="undefined"
-								></canvas>
-								<script>
-									new Chart(document.getElementById('chartjs-7'), {
-										type: 'bar',
-										data: {
-											labels: ['January', 'February', 'March', 'April'],
-											datasets: [
-												{
-													label: 'Page Impressions',
-													data: [10, 20, 30, 40],
-													borderColor: 'rgb(255, 99, 132)',
-													backgroundColor: 'rgba(255, 99, 132, 0.2)',
-												},
-												{
-													label: 'Adsense Clicks',
-													data: [5, 15, 10, 30],
-													type: 'line',
-													fill: false,
-													borderColor: 'rgb(54, 162, 235)',
-												},
-											],
-										},
-										options: {
-											scales: {
-												yAxes: [
-													{
-														ticks: {
-															beginAtZero: true,
-														},
+							<div className="chart">
+								<Line
+									data={{
+										labels: transactionsDailyFiltered.map((x) => x.date),
+										datasets: [
+											{
+												label:
+													DateNow[0] +
+													' ' +
+													DateNow[1] +
+													' ' +
+													DateNow[2] +
+													' ' +
+													DateNow[3] +
+													' Sales',
+												fill: false,
+												data: transactionsDailyFiltered.map(
+													(x) => x.totalAmount
+												),
+												backgroundColor: '#5bc0de',
+											},
+										],
+									}}
+									options={{
+										plugins: {
+											legend: {
+												labels: {
+													// This more specific font property overrides the global property
+													font: {
+														size: 15,
 													},
-												],
+												},
+												position: 'bottom',
+												align: 'end',
 											},
 										},
-									});
-								</script>
-							</div>
-						</div>
-					
-					</div>
-
-					<div class="w-full md:w-1/2 xl:w-1/3 p-6">
-					
-						<div class="bg-white border-transparent rounded-lg shadow-xl">
-							<div
-								class="
-									bg-gradient-to-b
-									from-gray-300
-									to-gray-100
-									uppercase
-									text-gray-800
-									border-b-2 border-gray-300
-									rounded-tl-lg rounded-tr-lg
-									p-2
-								"
-							>
-								<h5 class="font-bold uppercase text-gray-600">Graph</h5>
-							</div>
-							<div class="p-5">
-								<canvas
-									id="chartjs-0"
-									class="chartjs"
-									width="undefined"
-									height="undefined"
-								></canvas>
-								<script>
-									new Chart(document.getElementById('chartjs-0'), {
-										type: 'line',
-										data: {
-											labels: [
-												'January',
-												'February',
-												'March',
-												'April',
-												'May',
-												'June',
-												'July',
-											],
-											datasets: [
+										scales: {
+											xAxes: [{}],
+											yAxes: [
 												{
-													label: 'Views',
-													data: [65, 59, 80, 81, 56, 55, 40],
-													fill: false,
-													borderColor: 'rgb(75, 192, 192)',
-													lineTension: 0.1,
-												},
-											],
-										},
-										options: {},
-									});
-								</script>
-							</div>
-						</div>
-			
-					</div>
-
-					<div class="w-full md:w-1/2 xl:w-1/3 p-6">
-						
-						<div class="bg-white border-transparent rounded-lg shadow-xl">
-							<div
-								class="
-									bg-gradient-to-b
-									from-gray-300
-									to-gray-100
-									uppercase
-									text-gray-800
-									border-b-2 border-gray-300
-									rounded-tl-lg rounded-tr-lg
-									p-2
-								"
-							>
-								<h5 class="font-bold uppercase text-gray-600">Graph</h5>
-							</div>
-							<div class="p-5">
-								<canvas
-									id="chartjs-1"
-									class="chartjs"
-									width="undefined"
-									height="undefined"
-								></canvas>
-								<script>
-									new Chart(document.getElementById('chartjs-1'), {
-										type: 'bar',
-										data: {
-											labels: [
-												'January',
-												'February',
-												'March',
-												'April',
-												'May',
-												'June',
-												'July',
-											],
-											datasets: [
-												{
-													label: 'Likes',
-													data: [65, 59, 80, 81, 56, 55, 40],
-													fill: false,
-													backgroundColor: [
-														'rgba(255, 99, 132, 0.2)',
-														'rgba(255, 159, 64, 0.2)',
-														'rgba(255, 205, 86, 0.2)',
-														'rgba(75, 192, 192, 0.2)',
-														'rgba(54, 162, 235, 0.2)',
-														'rgba(153, 102, 255, 0.2)',
-														'rgba(201, 203, 207, 0.2)',
-													],
-													borderColor: [
-														'rgb(255, 99, 132)',
-														'rgb(255, 159, 64)',
-														'rgb(255, 205, 86)',
-														'rgb(75, 192, 192)',
-														'rgb(54, 162, 235)',
-														'rgb(153, 102, 255)',
-														'rgb(201, 203, 207)',
-													],
-													borderWidth: 1,
-												},
-											],
-										},
-										options: {
-											scales: {
-												yAxes: [
-													{
-														ticks: {
-															beginAtZero: true,
-														},
+													ticks: {
+														min: 0,
 													},
-												],
-											},
-										},
-									});
-								</script>
-							</div>
-						</div>
-				
-					</div>
-
-					<div class="w-full md:w-1/2 xl:w-1/3 p-6">
-					
-						<div class="bg-white border-transparent rounded-lg shadow-xl">
-							<div
-								class="
-									bg-gradient-to-b
-									from-gray-300
-									to-gray-100
-									uppercase
-									text-gray-800
-									border-b-2 border-gray-300
-									rounded-tl-lg rounded-tr-lg
-									p-2
-								"
-							>
-								<h5 class="font-bold uppercase text-gray-600">Graph</h5>
-							</div>
-							<div class="p-5">
-								<canvas
-									id="chartjs-4"
-									class="chartjs"
-									width="undefined"
-									height="undefined"
-								></canvas>
-								<script>
-									new Chart(document.getElementById('chartjs-4'), {
-										type: 'doughnut',
-										data: {
-											labels: ['P1', 'P2', 'P3'],
-											datasets: [
-												{
-													label: 'Issues',
-													data: [300, 50, 100],
-													backgroundColor: [
-														'rgb(255, 99, 132)',
-														'rgb(54, 162, 235)',
-														'rgb(255, 205, 86)',
-													],
 												},
 											],
 										},
-									});
-								</script>
+									}}
+								/>
 							</div>
-						</div>
-			
-					</div>
-
-					<div class="w-full md:w-1/2 xl:w-1/3 p-6">
-						
-						<div class="bg-white border-transparent rounded-lg shadow-xl">
-							<div
-								class="
-									bg-gradient-to-b
-									from-gray-300
-									to-gray-100
-									uppercase
-									text-gray-800
-									border-b-2 border-gray-300
-									rounded-tl-lg rounded-tr-lg
-									p-2
-								"
-							>
-								<h5 class="font-bold uppercase text-gray-600">Graph</h5>
-							</div>
-							<div class="p-5">
-								<table class="w-full p-5 text-gray-700">
+						</div> */}
+						<div className="w-6/12 overflow-x-auto p-5">
+							<div className="bg-white border-b-4 border-red-600 rounded-lg shadow-xl p-5">
+								<h2 className="text-red-600 text-2xl">
+									We're running out of stock in the following items
+								</h2>
+								<table className="min-w-full ">
 									<thead>
-										<tr>
-											<th class="text-left text-blue-900">Name</th>
-											<th class="text-left text-blue-900">Side</th>
-											<th class="text-left text-blue-900">Role</th>
+										<tr className="w-full h-16 border-gray-300 dark:border-gray-200 border-b py-8">
+											<th className="text-gray-600 dark:text-gray-400 font-normal pr-6 text-left text-sm tracking-normal leading-4">
+												Product Name
+											</th>
+											<th className="text-gray-600 dark:text-gray-400 font-normal pr-6 text-left text-sm tracking-normal leading-4">
+												Stock
+											</th>
 										</tr>
 									</thead>
-
 									<tbody>
-										<tr>
-											<td>Obi Wan Kenobi</td>
-											<td>Light</td>
-											<td>Jedi</td>
-										</tr>
-										<tr>
-											<td>Greedo</td>
-											<td>South</td>
-											<td>Scumbag</td>
-										</tr>
-										<tr>
-											<td>Darth Vader</td>
-											<td>Dark</td>
-											<td>Sith</td>
-										</tr>
+										{this.props.products
+											.filter((prod) => prod.stock < 10)
+											.map((product) => (
+												<tr
+													key={product.id}
+													className="h-24 border-gray-300 dark:border-gray-200 border-b"
+												>
+													<td className="text-sm whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal">
+														{product.name}
+													</td>
+													<td className="text-sm whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal">
+														{product.stock}
+													</td>
+												</tr>
+											))}
 									</tbody>
 								</table>
-
-								<p class="py-2"><a href="#">See More issues...</a></p>
 							</div>
 						</div>
-				
-					</div>
-
-					<div class="w-full md:w-1/2 xl:w-1/3 p-6">
-					
-						<div class="bg-white border-transparent rounded-lg shadow-xl">
-							<div
-								class="
-									bg-gradient-to-b
-									from-gray-300
-									to-gray-100
-									uppercase
-									text-gray-800
-									border-b-2 border-gray-300
-									rounded-tl-lg rounded-tr-lg
-									p-2
-								"
-							>
-								<h5 class="font-bold uppercase text-gray-600">Advert</h5>
-							</div>
-							<div class="p-5 text-center">
-								<script
-									async
-									type="text/javascript"
-									src="//cdn.carbonads.com/carbon.js?serve=CK7D52JJ&placement=wwwtailwindtoolboxcom"
-									id="_carbonads_js"
-								></script>
+						<div className="w-6/12 overflow-x-auto p-5">
+							<div className="bg-white border-b-4 border-teal_custom rounded-lg shadow-xl p-5">
+								<h2 className="text-gray-700 text-2xl">Top Selling Products</h2>
+								<table className="min-w-full ">
+									<thead>
+										<tr className="w-full h-16 border-gray-300 dark:border-gray-200 border-b py-8">
+											<th className="text-gray-600 dark:text-gray-400 font-normal pr-6 text-left text-sm tracking-normal leading-4">
+												Product name
+											</th>
+											<th className="text-gray-600 dark:text-gray-400 font-normal pr-6 text-left text-sm tracking-normal leading-4">
+												Number of sold items
+											</th>
+										</tr>
+									</thead>
+									<tbody>
+										{transactionItemsFilteredResult
+											.sort((a, b) => (a.quantity < b.quantity ? 1 : -1))
+											.slice(0, 4)
+											.map((item) => (
+												<tr
+													key={item.id}
+													className="h-24 border-gray-300 dark:border-gray-200 border-b"
+												>
+													<td className="text-sm whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal">
+														{item.productName}
+													</td>
+													<td className="text-sm whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal">
+														{item.quantity}
+													</td>
+												</tr>
+											))}
+									</tbody>
+								</table>
 							</div>
 						</div>
-						
 					</div>
-				</div> */}
 				</div>
 			</>
 		);
