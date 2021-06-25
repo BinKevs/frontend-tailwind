@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';

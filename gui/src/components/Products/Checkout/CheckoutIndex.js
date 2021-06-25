@@ -41,8 +41,16 @@ class CheckoutIndex extends React.Component {
 		let quantity = 0;
 		this.props.cartItems.map((item) => (quantity += item.quantity));
 		const { totalAmount, amount_tendered, change } = this.state;
+		const action_done = 'Transaction';
 		const items = this.props.cartItems;
-		const data = { totalAmount, amount_tendered, change, quantity, items };
+		const data = {
+			totalAmount,
+			amount_tendered,
+			change,
+			quantity,
+			items,
+			action_done,
+		};
 		this.props.addTransactionItems(data);
 		this.onModalToggleFunction();
 		swal({
@@ -105,7 +113,7 @@ class CheckoutIndex extends React.Component {
 		this.onModalToggleFunction();
 	};
 	render() {
-		const { cartItems, changeCartValue, removeFromCart } = this.props;
+		const { cartItems, removeFromCart } = this.props;
 		const { Subtotal, tax, totalAmount } = this.state;
 		return (
 			<>
@@ -157,13 +165,13 @@ class CheckoutIndex extends React.Component {
 													<span class="text-red-500 text-xs">
 														{item.supplier}
 													</span>
-													<a
+													<div
 														href="#"
 														class="font-semibold hover:text-red-500 text-gray-500 text-xs"
 														onClick={() => removeFromCart(item)}
 													>
 														Remove
-													</a>
+													</div>
 												</div>
 											</div>
 											<span class="text-center w-full font-semibold text-sm pr-2 break-words">

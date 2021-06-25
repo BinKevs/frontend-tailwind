@@ -8,6 +8,8 @@ import {
 	REGISTER_SUCCESS,
 	REGISTER_FAIL,
 	GET_ACCOUNT_LIST,
+	GET_ACTIVITY_LOG_LIST,
+	GET_ATTENDANCE_LOG_LIST,
 } from '../../actions/account/types';
 const initialState = {
 	token: localStorage.getItem('token'),
@@ -18,6 +20,8 @@ const initialState = {
 	logout: false,
 	accounts: [],
 	account: {},
+	activity_log: [],
+	attendance_log: [],
 };
 
 const AuthReducer = (state = initialState, action) => {
@@ -67,6 +71,16 @@ const AuthReducer = (state = initialState, action) => {
 			return {
 				...state,
 				accounts: action.payload,
+			};
+		case GET_ACTIVITY_LOG_LIST:
+			return {
+				...state,
+				activity_log: action.payload,
+			};
+		case GET_ATTENDANCE_LOG_LIST:
+			return {
+				...state,
+				attendance_log: action.payload,
 			};
 		default:
 			return {

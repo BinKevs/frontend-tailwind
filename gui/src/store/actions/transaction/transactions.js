@@ -12,12 +12,14 @@ import {
 } from './actionTypes';
 const url = URL_IMPORT + '/api/transactions/';
 export const getTransactionList = () => (dispatch, getState) => {
-	axios.get(url, tokenConfig(getState)).then((res) => {
-		dispatch({
-			type: GET_TRANSACTION_LIST,
-			payload: res.data,
+	axios
+		.get(url + '?ordering=-created_at', tokenConfig(getState))
+		.then((res) => {
+			dispatch({
+				type: GET_TRANSACTION_LIST,
+				payload: res.data,
+			});
 		});
-	});
 };
 
 export const getTransaction = (TransactionID) => (dispatch, getState) => {
@@ -61,7 +63,10 @@ export const updateTransaction =
 // Transaction Items part
 export const getTransactionItemList = () => (dispatch, getState) => {
 	axios
-		.get(URL_IMPORT + '/api/transactions/items/', tokenConfig(getState))
+		.get(
+			URL_IMPORT + '/api/transactions/items/?ordering=-id',
+			tokenConfig(getState)
+		)
 		.then((res) => {
 			dispatch({
 				type: GET_TRANSACTION_ITEM_LIST,

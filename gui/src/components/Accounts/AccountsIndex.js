@@ -1,13 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { getTransactionItemList } from '../../store/actions/transaction/transactions.js';
-let TransactionItems = [];
-class TransactionItemsSettingIndex extends React.Component {
-	static propTypes = {
-		transaction_items: PropTypes.array.isRequired,
-		getTransactionItemList: PropTypes.func.isRequired,
-	};
+import { getAccountList } from '../../store/actions/account/auth';
+let AccountsItems = [];
+class AccountsIndex extends React.Component {
 	state = {
 		search: '',
 	};
@@ -18,24 +13,25 @@ class TransactionItemsSettingIndex extends React.Component {
 		};
 	}
 	componentDidMount() {
-		this.props.getTransactionItemList();
+		this.props.getAccountList();
 	}
 	onChange = (e) => this.setState({ [e.target.name]: e.target.value });
 	render() {
 		//destructuring the dictionary for searching/ fetching purposes
-		TransactionItems = [];
-		this.props.transaction_items.map((trans) =>
-			TransactionItems.push({
-				id: trans.id,
-				productName: trans.product_info.name,
-				productPrice: trans.product_info.price,
-				transactionDate: trans.transaction_date.created_at,
-				quantity: trans.quantity,
+		AccountsItems = [];
+		this.props.accounts.map((accounts) =>
+			AccountsItems.push({
+				id: accounts.id,
+				username: accounts.username,
+				email: accounts.email,
+				is_active: accounts.is_active,
+				is_superuser: accounts.is_superuser,
+				name: accounts.last_name + ' ' + accounts.first_name,
 			})
 		);
 		//returning the filtered data from search
 		const lowercasedFilter = this.state.search.toLowerCase();
-		const filteredData = TransactionItems.filter((item) => {
+		const filteredData = AccountsItems.filter((item) => {
 			return Object.keys(item).some((key) =>
 				item[key].toString().toLowerCase().includes(lowercasedFilter)
 			);
@@ -45,16 +41,12 @@ class TransactionItemsSettingIndex extends React.Component {
 				<div class="bg-gray-100 flex-1 mt-20 md:mt-14 pb-24 md:pb-5">
 					<div class="bg-gray-800 pt-3">
 						<div
-							class="rounded-tl-3xl
-    bg-gradient-to-r
-    from-teal_custom
-    to-gray-800
-    p-4
-    shadow
-    text-2xl text-white
+							class="rounded-tl-3xl bg-gradient-to-r
+							from-teal_custom
+							to-gray-800 p-4 shadow text-2xl text-white
 "
 						>
-							<h3 class="font-bold pl-2">Transaction Items</h3>
+							<h3 class="font-bold pl-2">Attendance Log</h3>
 						</div>
 					</div>
 					<div className="py-5 w-full">
@@ -128,16 +120,16 @@ class TransactionItemsSettingIndex extends React.Component {
 												Identification
 											</th>
 											<th className="text-gray-600 dark:text-gray-400 font-normal pr-6 text-left text-sm tracking-normal leading-4">
-												Product Name
+												Username
 											</th>
 											<th className="text-gray-600 dark:text-gray-400 font-normal pr-6 text-left text-sm tracking-normal leading-4">
-												Price
+												Name
 											</th>
 											<th className="text-gray-600 dark:text-gray-400 font-normal pr-6 text-left text-sm tracking-normal leading-4">
-												Date
+												Email
 											</th>
 											<th className="text-gray-600 dark:text-gray-400 font-normal pr-6 text-left text-sm tracking-normal leading-4">
-												Quantity
+												Status
 											</th>
 											{/* <th className="space-x-2 text-gray-600 dark:text-gray-400 font-normal pr-6 text-left text-sm tracking-normal leading-4">
                         						<span>Date</span>
@@ -163,10 +155,17 @@ class TransactionItemsSettingIndex extends React.Component {
 													{item.id}
 												</td>
 												<td className="text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal leading-4">
-													{item.productName}
+													{item.username}
 												</td>
 												<td className="text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal leading-4">
-													{item.productPrice}
+													{item.name}
+												</td>
+												<td className="text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal leading-4">
+													{item.email}
+												</td>
+												<td className="text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal leading-4">
+													{item.is_active ? 'Active' : 'Inactive'}{' '}
+													<strong>{item.is_superuser ? '(Admin)' : ''}</strong>
 												</td>
 												{/* <td className="pr-6 whitespace-no-wrap">
                         							<div className="flex items-center">
@@ -182,12 +181,7 @@ class TransactionItemsSettingIndex extends React.Component {
                             							</p>
                        								 </div>
                     							</td> */}
-												<td className="text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal leading-4">
-													{item.transactionDate}
-												</td>
-												<td className="text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal leading-4">
-													{item.quantity}
-												</td>
+
 												<td className="pr-8 relative">
 													<div
 														id={item.id}
@@ -239,9 +233,9 @@ class TransactionItemsSettingIndex extends React.Component {
 	}
 }
 const mapStateToProps = (state) => ({
-	transaction_items: state.transactions.transaction_item_list,
+	accounts: state.AuthReducer.accounts,
 });
 
 export default connect(mapStateToProps, {
-	getTransactionItemList,
-})(TransactionItemsSettingIndex);
+	getAccountList,
+})(AccountsIndex);

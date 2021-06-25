@@ -54,17 +54,6 @@ class InventorySettingIndex extends React.Component {
 		});
 	};
 
-	onEditCloseButton = (event) => {
-		event.preventDefault();
-		this.setState({
-			new_stock: 0,
-			product: 0,
-			supplier: 0,
-			inventoryID: 0,
-		});
-		EditButtonIsClicked = false;
-		this.onModalToggleEditClose();
-	};
 	componentDidMount() {
 		this.props.getInventoryList();
 		this.props.getSupplierList();
@@ -98,33 +87,7 @@ class InventorySettingIndex extends React.Component {
 	// 		this.props.getInventoryList();
 	// 	}
 	// }
-	onModalToggleEdit() {
-		this.setState({ modal: !this.state.modal });
-		document.body.scrollTop = 0;
-		document.documentElement.scrollTop = 0;
-		document.getElementById('Body').classList.toggle('overflow-hidden');
-		EditButtonIsClicked = true;
-	}
-	onModalToggleEditClose() {
-		this.setState({ modal: !this.state.modal });
-		document.body.scrollTop = 0;
-		document.documentElement.scrollTop = 0;
-		document.getElementById('Body').classList.toggle('overflow-hidden');
-	}
-	onModalToggleAdd = (e) => {
-		e.preventDefault();
-		this.setState({ modal: !this.state.modal });
-		document.body.scrollTop = 0;
-		document.documentElement.scrollTop = 0;
-		document.getElementById('Body').classList.toggle('overflow-hidden');
-	};
-	onEditButtonClick(InventoryID) {
-		return (event) => {
-			event.preventDefault();
-			this.props.getInventory(InventoryID);
-			this.onModalToggleEdit();
-		};
-	}
+
 	// When Updating this will sent the new stock, product and supplier together with id
 	// to the updateInventory in the action and reset the state.
 	onUpdateSubmit = (InventoryID) => {
@@ -143,6 +106,40 @@ class InventorySettingIndex extends React.Component {
 			});
 		};
 	};
+
+	// when edit button click this will fetch the supplier that will be edited and change the isEditButtonClicked status to true
+	onEditCloseButton = (event) => {
+		event.preventDefault();
+		this.setState({
+			new_stock: 0,
+			product: 0,
+			supplier: 0,
+			inventoryID: 0,
+		});
+		EditButtonIsClicked = false;
+		this.ModalFunction();
+	};
+	//this will toggle the add modal form
+	onModalToggleAdd = (e) => {
+		e.preventDefault();
+		this.ModalFunction();
+	};
+	//this will toggle the edit modal form
+	onModalToggleEdit(InventoryID) {
+		return (event) => {
+			event.preventDefault();
+			this.props.getInventory(InventoryID);
+			this.ModalFunction();
+			EditButtonIsClicked = true;
+		};
+	}
+	// function that called to open or close modal
+	ModalFunction() {
+		this.setState({ modal: !this.state.modal });
+		document.body.scrollTop = 0;
+		document.documentElement.scrollTop = 0;
+		document.getElementById('Body').classList.toggle('overflow-hidden');
+	}
 	render() {
 		// destructure the inventories that came from the reducer so it will be easier to filter and show
 		inventories = [];
@@ -205,18 +202,18 @@ class InventorySettingIndex extends React.Component {
 										>
 											Viewing 1 - 20 of 60
 										</p>
-										<a
+										<div
 											className="text-gray-600 dark:text-gray-400 ml-2 border-transparent border cursor-pointer rounded mr-4"
 											onclick="pageView(false)"
 										>
 											<i class="fad fa-angle-left fa-2x"></i>
-										</a>
-										<a
+										</div>
+										<div
 											className="text-gray-600 dark:text-gray-400 border-transparent border rounded focus:outline-none cursor-pointer"
 											onclick="pageView(true)"
 										>
 											<i class="fad fa-angle-right fa-2x"></i>
-										</a>
+										</div>
 									</div>
 									<div className="lg:ml-6 flex items-center">
 										<div class="relative w-full">
@@ -328,7 +325,7 @@ class InventorySettingIndex extends React.Component {
 															<ul className="bg-white dark:bg-gray-800 shadow rounded p-2">
 																<li
 																	// onClick={this.onModalToggle}
-																	onClick={this.onEditButtonClick(inventory.id)}
+																	onClick={this.onModalToggleEdit(inventory.id)}
 																	className="cursor-pointer text-gray-600 dark:text-gray-400 text-sm leading-3 tracking-normal py-3 hover:bg-teal_custom hover:text-white px-3 font-normal"
 																>
 																	Edit

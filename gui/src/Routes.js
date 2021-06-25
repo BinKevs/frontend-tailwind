@@ -8,6 +8,9 @@ import TransactionSetting from './components/Transactions/TransactionSetting';
 import TransactionItemsSetting from './components/Transactions/TransactionItemsSetting';
 import ReportIndex from './components/Reports/ReportIndex';
 import CheckoutIndex from './components/Products/Checkout/CheckoutIndex';
+import ActivityLog from './components/Accounts/ActivityLog';
+import AttendanceLog from './components/Accounts/AttendanceLog';
+import AccountsIndex from './components/Accounts/AccountsIndex';
 const BaseRouter = () => (
 	<>
 		<Switch>
@@ -24,6 +27,9 @@ const BaseRouter = () => (
 			/>
 			<Route exact path="/reports" component={ReportIndex} />
 			<Route exact path="/checkout" component={CheckoutIndex} />
+			<Route exact path="/activity_log" component={ActivityLog} />
+			<Route exact path="/attendance_log" component={AttendanceLog} />
+			<Route exact path="/accounts" component={AccountsIndex} />
 		</Switch>
 	</>
 );

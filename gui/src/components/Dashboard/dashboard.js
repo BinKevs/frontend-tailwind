@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { getProductList } from '../../store/actions/product/products';
 import { getTransactionList } from '../../store/actions/transaction/transactions';
 import { getTransactionItemList } from '../../store/actions/transaction/transactions.js';
-import { Bar, Line, Pie, Doughnut } from 'react-chartjs-2';
 let transactionItemsFiltered = [];
 let transactionItemsFilteredResult = [];
 let transactionsFilteredDateSeparated = [];
@@ -92,13 +91,13 @@ class DashboardIndex extends React.Component {
 				transactionsFilteredDateSeparated[i].totalAmount
 			);
 			//Fetch montly sales
-			if (year == DateNow[3]) {
-				if (month == DateNow[1]) {
+			if (year === DateNow[3]) {
+				if (month === DateNow[1]) {
 					monthlySalesTransaction += parseInt(
 						transactionsFilteredDateSeparated[i].totalAmount
 					);
 					//Fetch daily sales
-					if (day == DateNow[2]) {
+					if (day === DateNow[2]) {
 						dailySalesTransaction += parseInt(
 							transactionsFilteredDateSeparated[i].totalAmount
 						);
@@ -118,10 +117,10 @@ class DashboardIndex extends React.Component {
 					month.includes(StartDayOfTheWeek[1]) &&
 					month.includes(EndDayOfTheWeek[1])
 				) {
-					if (StartDayOfTheWeek[1] != EndDayOfTheWeek[1]) {
+					if (StartDayOfTheWeek[1] !== EndDayOfTheWeek[1]) {
 						if (
-							(month == StartDayOfTheWeek[1] && day >= StartDayOfTheWeek[2]) ||
-							(month == EndDayOfTheWeek[1] && day <= EndDayOfTheWeek[2])
+							(month === StartDayOfTheWeek[1] && day >= StartDayOfTheWeek[2]) ||
+							(month === EndDayOfTheWeek[1] && day <= EndDayOfTheWeek[2])
 						) {
 							weeklySalesTransaction += parseInt(
 								transactionsFilteredDateSeparated[i].totalAmount

@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 const SupplierModal = (props) => {
 	const { name, address, phone_number, id } = props.state;
 	const {

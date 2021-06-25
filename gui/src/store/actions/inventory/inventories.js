@@ -8,7 +8,7 @@ import {
 	ADD_INVENTORY,
 	UPDATE_INVENTORY,
 } from './actionTypes';
-const url = URL_IMPORT + '/api/inventories';
+const url = URL_IMPORT + '/api/inventories/';
 export const getInventoryList = () => (dispatch, getState) => {
 	axios
 		.get(url + '?ordering=-created_at', tokenConfig(getState))

@@ -127,13 +127,13 @@ class CartIndex extends React.Component {
 												<span class="text-red-500 text-xs">
 													{this.trimmedString(item.supplier)}
 												</span>
-												<a
+												<div
 													href="#"
 													class="font-semibold hover:text-red-500 text-gray-500 text-xs"
 													onClick={() => removeFromCart(item)}
 												>
 													Remove
-												</a>
+												</div>
 											</div>
 										</div>
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 const ProductModal = (props) => {
@@ -96,6 +96,7 @@ const ProductModal = (props) => {
 												<></>
 											) : (
 												<img
+													alt="product image"
 													class={
 														EditButtonIsClicked
 															? 'object-cover'

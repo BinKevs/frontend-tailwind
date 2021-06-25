@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { login } from '../../store/actions/account/auth';
@@ -22,12 +22,12 @@ class Login extends React.Component {
 		e.preventDefault();
 		console.log('Submitted!!');
 		this.props.login(this.state.username, this.state.password);
+		this.props.history.push('/products');
 	};
 	render() {
-		if (this.props.isAuthenticated) {
-			return <Redirect to={'/Products'} />;
-		}
-		const { username, password } = this.state;
+		// if (this.props.isAuthenticated) {
+		// 	return <Redirect to={'/Products'} />;
+		// }
 		return (
 			<>
 				<div class="flex min-h-screen bg-white">
@@ -61,7 +61,6 @@ class Login extends React.Component {
 									required
 									class="pt-3 pb-2 block w-full px-0 mt-0 bg-transparent border-0 border-b-2 focus:ring-0 focus:border-cyan-700 border-gray-200"
 									onChange={this.onChange}
-									value={username}
 								/>
 								<label
 									for="name"

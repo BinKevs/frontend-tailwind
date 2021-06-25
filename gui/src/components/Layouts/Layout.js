@@ -1,4 +1,7 @@
 import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { logout } from '../../store/actions/account/auth';
 import React from 'react';
 class Layout extends React.Component {
 	state = {
@@ -13,7 +16,7 @@ class Layout extends React.Component {
 	setActiveNav(NavBtn) {
 		return (e) => {
 			e.preventDefault();
-			if (NavBtn == 'DashboardNavBtn') {
+			if (NavBtn === 'DashboardNavBtn') {
 				this.setState({
 					DashboardNavBtn: true,
 					ProductsNavBtn: false,
@@ -23,7 +26,7 @@ class Layout extends React.Component {
 					SupplierNavBtn: false,
 					TransactionsNavBtn: false,
 				});
-			} else if (NavBtn == 'ProductsNavBtn') {
+			} else if (NavBtn === 'ProductsNavBtn') {
 				this.setState({
 					DashboardNavBtn: false,
 					ProductsNavBtn: true,
@@ -33,7 +36,7 @@ class Layout extends React.Component {
 					SupplierNavBtn: false,
 					TransactionsNavBtn: false,
 				});
-			} else if (NavBtn == 'ReportsNavBtn') {
+			} else if (NavBtn === 'ReportsNavBtn') {
 				this.setState({
 					DashboardNavBtn: false,
 					ProductsNavBtn: false,
@@ -43,7 +46,7 @@ class Layout extends React.Component {
 					SupplierNavBtn: false,
 					TransactionsNavBtn: false,
 				});
-			} else if (NavBtn == 'ProductSettingNavBtn') {
+			} else if (NavBtn === 'ProductSettingNavBtn') {
 				this.setState({
 					DashboardNavBtn: false,
 					ProductsNavBtn: false,
@@ -53,7 +56,7 @@ class Layout extends React.Component {
 					SupplierNavBtn: false,
 					TransactionsNavBtn: false,
 				});
-			} else if (NavBtn == 'InventoryNavBtn') {
+			} else if (NavBtn === 'InventoryNavBtn') {
 				this.setState({
 					DashboardNavBtn: false,
 					ProductsNavBtn: false,
@@ -63,7 +66,7 @@ class Layout extends React.Component {
 					SupplierNavBtn: false,
 					TransactionsNavBtn: false,
 				});
-			} else if (NavBtn == 'SupplierNavBtn') {
+			} else if (NavBtn === 'SupplierNavBtn') {
 				this.setState({
 					DashboardNavBtn: false,
 					ProductsNavBtn: false,
@@ -73,7 +76,7 @@ class Layout extends React.Component {
 					SupplierNavBtn: true,
 					TransactionsNavBtn: false,
 				});
-			} else if (NavBtn == 'TransactionsNavBtn') {
+			} else if (NavBtn === 'TransactionsNavBtn') {
 				this.setState({
 					DashboardNavBtn: false,
 					ProductsNavBtn: false,
@@ -86,6 +89,11 @@ class Layout extends React.Component {
 			}
 		};
 	}
+	handleLogout = (e) => {
+		e.preventDefault();
+		this.props.history.push('/login');
+		this.props.logout();
+	};
 	setDropDown(e) {
 		e.preventDefault();
 		document.getElementById('myDropdown').classList.toggle('invisible');
@@ -101,6 +109,7 @@ class Layout extends React.Component {
 			SupplierNavBtn,
 			TransactionsNavBtn,
 		} = this.state;
+
 		return (
 			<>
 				<nav
@@ -158,13 +167,22 @@ class Layout extends React.Component {
 											>
 												<i class="fa fa-cog fa-fw"></i> Settings
 											</Link>
-											<div class="border border-gray-800"></div>
-											<Link
-												to="Login"
-												class="p-2 hover:bg-gray-800 text-white text-sm hover:no-underline inline-block"
-											>
-												<i class="fas fa-sign-out-alt fa-fw"></i> Login
-											</Link>
+											{/* <div class="border border-gray-800"></div> */}
+											{this.props.AuthReducer.isAuthenticated ? (
+												<Link
+													to="Login"
+													class="p-2 hover:bg-gray-800 text-white text-sm hover:no-underline inline-block"
+												>
+													<i class="fas fa-sign-in-alt fa-fw"></i> Login
+												</Link>
+											) : (
+												<div
+													onClick={this.handleLogout}
+													class="p-2 hover:bg-gray-800 text-white text-sm hover:no-underline inline-block cursor-pointer"
+												>
+													<i class="fas fa-sign-out-alt fa-fw"></i> Logout
+												</div>
+											)}
 										</div>
 									</div>
 								</div>
@@ -368,4 +386,9 @@ class Layout extends React.Component {
 		);
 	}
 }
-export default Layout;
+const mapStateToProps = (state) => {
+	return {
+		AuthReducer: state.AuthReducer,
+	};
+};
+export default withRouter(connect(mapStateToProps, { logout })(Layout));

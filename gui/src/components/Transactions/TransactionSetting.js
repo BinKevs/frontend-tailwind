@@ -72,18 +72,18 @@ class TransactionSettingIndex extends React.Component {
 										>
 											Viewing 1 - 20 of 60
 										</p>
-										<a
+										<div
 											className="text-gray-600 dark:text-gray-400 ml-2 border-transparent border cursor-pointer rounded mr-4"
 											onclick="pageView(false)"
 										>
 											<i class="fad fa-angle-left fa-2x"></i>
-										</a>
-										<a
+										</div>
+										<div
 											className="text-gray-600 dark:text-gray-400 border-transparent border rounded focus:outline-none cursor-pointer"
 											onclick="pageView(true)"
 										>
 											<i class="fad fa-angle-right fa-2x"></i>
-										</a>
+										</div>
 									</div>
 									<div className="lg:ml-6 flex items-center">
 										<div class="relative w-full">
@@ -122,6 +122,9 @@ class TransactionSettingIndex extends React.Component {
 												Identification
 											</th>
 											<th className="text-gray-600 dark:text-gray-400 font-normal pr-6 text-left text-sm tracking-normal leading-4">
+												Creator
+											</th>
+											<th className="text-gray-600 dark:text-gray-400 font-normal pr-6 text-left text-sm tracking-normal leading-4">
 												Date
 											</th>
 											<th className="text-gray-600 dark:text-gray-400 font-normal pr-6 text-left text-sm tracking-normal leading-4">
@@ -158,6 +161,11 @@ class TransactionSettingIndex extends React.Component {
 												</td>
 												<td className="text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal leading-4">
 													{transaction.id}
+												</td>
+												<td className="text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal leading-4">
+													{transaction.creator == null
+														? null
+														: transaction.creator_info.name.split(' ')[0]}
 												</td>
 												<td className="text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal leading-4">
 													{transaction.created_at}

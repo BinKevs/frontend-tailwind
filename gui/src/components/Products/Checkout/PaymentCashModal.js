@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import { numberWithCommas } from '../../../Helpers/functions';
 const PaymentCashModal = (props) => {
 	const { onChange, handleSetAmountTendered, handleClick, onModalToggle } =
 		props;
-	const { totalAmount, amount_tendered, change, id, modal } = props.state;
+	const { totalAmount, amount_tendered, change, modal } = props.state;
 	return (
 		<>
 			<div class={modal ? 'h-screen ' : 'h-screen hidden'}>

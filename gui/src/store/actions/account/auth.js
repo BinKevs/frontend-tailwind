@@ -10,6 +10,8 @@ import {
 	REGISTER_SUCCESS,
 	REGISTER_FAIL,
 	GET_ACCOUNT_LIST,
+	GET_ACTIVITY_LOG_LIST,
+	GET_ATTENDANCE_LOG_LIST,
 } from './types';
 
 export const loadUser = () => (dispatch, getState) => {
@@ -52,14 +54,20 @@ export const login = (username, password) => (dispatch) => {
 		});
 };
 export const register =
-	({ username, password, email }) =>
+	({ username, password, email, first_name, last_name }) =>
 	(dispatch) => {
 		const config = {
 			headers: {
 				'Content-Type': 'application/json',
 			},
 		};
-		const body = JSON.stringify({ username, password, email });
+		const body = JSON.stringify({
+			username,
+			password,
+			email,
+			first_name,
+			last_name,
+		});
 		axios
 			.post(URL_IMPORT + '/api/auth/register', body, config)
 			.then((res) => {
@@ -113,6 +121,30 @@ export const getAccountList = () => (dispatch, getState) => {
 		.then((res) => {
 			dispatch({
 				type: GET_ACCOUNT_LIST,
+				payload: res.data,
+			});
+		});
+};
+
+// Fetching activity log
+export const getActivityLogList = () => (dispatch, getState) => {
+	axios
+		.get(URL_IMPORT + '/api/activity_log/', tokenConfig(getState))
+		.then((res) => {
+			dispatch({
+				type: GET_ACTIVITY_LOG_LIST,
+				payload: res.data,
+			});
+		});
+};
+
+// Fetching attendance log
+export const getAttendanceLogList = () => (dispatch, getState) => {
+	axios
+		.get(URL_IMPORT + '/api/attendance_log/', tokenConfig(getState))
+		.then((res) => {
+			dispatch({
+				type: GET_ATTENDANCE_LOG_LIST,
 				payload: res.data,
 			});
 		});

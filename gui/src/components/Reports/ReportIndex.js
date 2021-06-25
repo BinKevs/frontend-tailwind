@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Bar, Line, Pie, Doughnut } from 'react-chartjs-2';
+import { Bar, Line } from 'react-chartjs-2';
 import { getProductList } from '../../store/actions/product/products';
 import { getInventoryList } from '../../store/actions/inventory/inventories.js';
 import { getTransactionList } from '../../store/actions/transaction/transactions';
@@ -78,8 +78,8 @@ class ReportIndex extends React.Component {
 			var day = transactionsFilteredDateSeparated[i].day;
 			var year = transactionsFilteredDateSeparated[i].year;
 			//Fetch montly sales
-			if (year == DateNow[3]) {
-				if (month == DateNow[1]) {
+			if (year === DateNow[3]) {
+				if (month === DateNow[1]) {
 					// DateNow[1]
 					transactionsForMonthlyFiltered.push({
 						totalAmount: transactionsFilteredDateSeparated[i].totalAmount,
@@ -89,7 +89,7 @@ class ReportIndex extends React.Component {
 							transactionsFilteredDateSeparated[i].day,
 					});
 					//Fetch daily sales
-					if (day == DateNow[2]) {
+					if (day === DateNow[2]) {
 						// DateNow[2]
 						if (
 							parseInt(
@@ -125,10 +125,10 @@ class ReportIndex extends React.Component {
 					month.includes(StartDayOfTheWeek[1]) &&
 					month.includes(EndDayOfTheWeek[1])
 				) {
-					if (StartDayOfTheWeek[1] != EndDayOfTheWeek[1]) {
+					if (StartDayOfTheWeek[1] !== EndDayOfTheWeek[1]) {
 						if (
-							(month == StartDayOfTheWeek[1] && day >= StartDayOfTheWeek[2]) ||
-							(month == EndDayOfTheWeek[1] && day <= EndDayOfTheWeek[2])
+							(month === StartDayOfTheWeek[1] && day >= StartDayOfTheWeek[2]) ||
+							(month === EndDayOfTheWeek[1] && day <= EndDayOfTheWeek[2])
 						) {
 							transactionsForWeeklyFiltered.push({
 								totalAmount: transactionsFilteredDateSeparated[i].totalAmount,

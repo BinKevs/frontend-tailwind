@@ -93,18 +93,18 @@ class ProductListIndex extends React.Component {
 										>
 											Viewing 1 - 20 of 60
 										</p>
-										<a
+										<div
 											className="text-gray-600 dark:text-gray-400 ml-2 border-transparent border cursor-pointer rounded mr-4"
 											onclick="pageView(false)"
 										>
 											<i class="fad fa-angle-left fa-2x"></i>
-										</a>
-										<a
+										</div>
+										<div
 											className="text-gray-600 dark:text-gray-400 border-transparent border rounded focus:outline-none cursor-pointer"
 											onclick="pageView(true)"
 										>
 											<i class="fad fa-angle-right fa-2x"></i>
-										</a>
+										</div>
 									</div>
 
 									<div className="xl:ml-6 flex items-center">
