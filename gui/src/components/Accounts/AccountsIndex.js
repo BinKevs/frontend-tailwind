@@ -46,7 +46,7 @@ class AccountsIndex extends React.Component {
 							to-gray-800 p-4 shadow text-2xl text-white
 "
 						>
-							<h3 class="font-bold pl-2">Attendance Log</h3>
+							<h3 class="font-bold pl-2">Accounts</h3>
 						</div>
 					</div>
 					<div className="py-5 w-full">

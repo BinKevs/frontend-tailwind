@@ -22,7 +22,9 @@ class Login extends React.Component {
 		e.preventDefault();
 		console.log('Submitted!!');
 		this.props.login(this.state.username, this.state.password);
-		this.props.history.push('/products');
+		if (this.props.isAuthenticated) {
+			this.props.history.push('/products');
+		}
 	};
 	render() {
 		// if (this.props.isAuthenticated) {
@@ -59,7 +61,7 @@ class Login extends React.Component {
 									name="username"
 									placeholder=" "
 									required
-									class="pt-3 pb-2 block w-full px-0 mt-0 bg-transparent border-0 border-b-2 focus:ring-0 focus:border-cyan-700 border-gray-200"
+									class="pt-3 pb-2 block w-full px-0 mt-0 bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 focus:border-cyan-700 border-gray-200"
 									onChange={this.onChange}
 								/>
 								<label
@@ -100,14 +102,13 @@ class Login extends React.Component {
 								</button>
 							</div>
 						</form>
-						<a class="" href="/SignUp" data-test="Link">
-							<span class="block p-5 text-center text-gray-800 text-xs">
-								Don't have an account?
-								<Link className="text-primary" to="/register">
-									Create here.
-								</Link>
-							</span>
-						</a>
+
+						<span class="block p-5 text-center text-xl text-gray-800 text-xs">
+							Don't have an account?{' '}
+							<Link className="text-blue-500" to="/register">
+								Create here.
+							</Link>
+						</span>
 					</div>
 				</div>
 			</>

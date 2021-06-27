@@ -1,15 +1,11 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import CartIndex from './Cart/CartIndex';
 import { connect } from 'react-redux';
-import {
-	getProductList,
-	deleteProduct,
-} from '../../store/actions/product/products';
-import { addToCart } from '../../store/actions/cart/cartActions';
+import { getProductList } from '../../store/actions/product/products';
+import { Link } from 'react-router-dom';
 let products = [];
 
-class ProductListIndex extends React.Component {
+class ProductList extends React.Component {
 	static propTypes = {
 		products: PropTypes.array.isRequired,
 		getProductList: PropTypes.func.isRequired,
@@ -30,17 +26,11 @@ class ProductListIndex extends React.Component {
 			return stringX.substring(0, 24) + '...';
 		}
 	}
-	onChange = (e) => this.setState({ [e.target.name]: e.target.value });
-	onSubmit(product_id, product_name, price, supplier) {
-		return (event) => {
-			event.preventDefault();
-			const product = { product_id, product_name, price, supplier };
-			this.props.addToCart(product);
-		};
-	}
 	componentDidMount() {
 		this.props.getProductList();
 	}
+	onChange = (e) => this.setState({ [e.target.name]: e.target.value });
+
 	render() {
 		products = [];
 		this.props.products.map((product) =>
@@ -63,25 +53,43 @@ class ProductListIndex extends React.Component {
 		});
 		return (
 			<>
-				<div class="flex-1 bg-gray-100 mt-20 md:mt-14 pb-24 md:pb-5">
-					<div class="bg-gray-800 pt-3">
-						<div
-							class="
-							rounded-tl-3xl
-							bg-gradient-to-r
-							from-teal_custom
-							to-gray-800
-							p-4
-							shadow
-							text-2xl text-white
-						"
-						>
-							<h3 class="font-bold pl-2">Products</h3>
+				<nav
+					class="bg-gray-800 pt-2 pb-1 px-1 mt-0 h-auto fixed w-full
+			z-20 top-0"
+				>
+					<div class="flex flex-wrap justify-between items-center">
+						<div class="flex pt-2 w-1/3 justify-start text-white">
+							<i class="far fa-motorcycle fa-2x px-3"></i>
+							<h1 class="font-Montserrat text-base">ABC Motor Parts</h1>
+						</div>
+						<div class="flex pt-2 w-1/3 justify-center text-white">
+							<h1 class="font-Montserrat text-base">Products</h1>
+						</div>
+						<div class="flex pt-2 content-center w-1/3 justify-end">
+							<div class="flex justify-around flex-none items-center">
+								<div class="relative inline-block md:mr-2 py-2">
+									<button class=" text-white focus:outline-none">
+										{' '}
+										<span class="pr-2">
+											<i class="fad fa-user-friends"></i>
+										</span>{' '}
+										Hi, User{' '}
+										<svg
+											class="h-3 fill-current inline"
+											xmlns="http://www.w3.org/2000/svg"
+											viewBox="0 0 20 20"
+										>
+											<path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+										</svg>
+									</button>
+								</div>
+							</div>
 						</div>
 					</div>
-
+				</nav>
+				<div class="flex-1 bg-gray-100 pb-24 md:pb-5">
 					<div class="flex flex-col lg:flex-row">
-						<div class="w-full mt-4 xl:w-3/5 p-8">
+						<div class="w-full mt-4 p-8">
 							<div className="flex flex-col xl:flex-row p-4 lg:p-8 justify-end items-start xl:items-stretch w-full">
 								<div className="w-full xl:w-2/3 flex flex-col xl:flex-row items-start xl:items-center justify-end">
 									<div className="flex items-center xl:border-l xl:border-r border-gray-300 dark:border-gray-200 py-3 xl:py-0 xl:px-6">
@@ -130,13 +138,13 @@ class ProductListIndex extends React.Component {
 							<div class="mt-8 grid 2xl:grid-cols-5 xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-4 gap-5">
 								{filteredData.map((product) => (
 									<div
-										class="rounded bg-white border-gray-200 shadow-md overflow-hidden relative hover:shadow-lg img-hover"
+										class="rounded bg-white border-gray-200 shadow-md overflow-hidden relative hover:shadow-lg"
 										key={product.id}
 									>
 										<img
 											src={product.image}
 											alt="stew"
-											class="h-32 sm:h-48 w-full object-cover imgg"
+											class="h-32 sm:h-48 w-full object-cover"
 										/>
 										<div class="m-4 bodi">
 											<span class="font-bold">
@@ -154,22 +162,10 @@ class ProductListIndex extends React.Component {
 										<div class="product-tooltip absolute bottom-0 py-6 px-4 p-2 text-gray-800 text-sm uppercase font-bold">
 											<span>{product.name}</span>
 										</div>
-										<div
-											class="middle"
-											onClick={this.onSubmit(
-												product.id,
-												product.name,
-												product.price,
-												product.supplier
-											)}
-										>
-											<i class="fad fa-plus fa-3x"></i>
-										</div>
 									</div>
 								))}
 							</div>
 						</div>
-						<CartIndex />
 					</div>
 				</div>
 			</>
@@ -184,6 +180,4 @@ const mapToStateToProps = (state) => ({
 });
 export default connect(mapToStateToProps, {
 	getProductList,
-	deleteProduct,
-	addToCart,
-})(ProductListIndex);
+})(ProductList);

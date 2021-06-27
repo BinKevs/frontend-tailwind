@@ -11,6 +11,7 @@ import CheckoutIndex from './components/Products/Checkout/CheckoutIndex';
 import ActivityLog from './components/Accounts/ActivityLog';
 import AttendanceLog from './components/Accounts/AttendanceLog';
 import AccountsIndex from './components/Accounts/AccountsIndex';
+import AccountSettingsMenu from './components/Layouts/AccountSettingsMenu';
 const BaseRouter = () => (
 	<>
 		<Switch>
@@ -30,6 +31,11 @@ const BaseRouter = () => (
 			<Route exact path="/activity_log" component={ActivityLog} />
 			<Route exact path="/attendance_log" component={AttendanceLog} />
 			<Route exact path="/accounts" component={AccountsIndex} />
+			<Route
+				exact
+				path="/accounts/settings/menu"
+				component={AccountSettingsMenu}
+			/>
 		</Switch>
 	</>
 );

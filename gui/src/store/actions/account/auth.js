@@ -13,7 +13,7 @@ import {
 	GET_ACTIVITY_LOG_LIST,
 	GET_ATTENDANCE_LOG_LIST,
 } from './types';
-
+import swal from 'sweetalert';
 export const loadUser = () => (dispatch, getState) => {
 	dispatch({ type: USER_LOADING });
 	axios
@@ -48,6 +48,11 @@ export const login = (username, password) => (dispatch) => {
 		})
 		.catch((err) => {
 			console.log(err);
+			swal({
+				title: 'Authentication failed',
+				text: 'Sorry, we could not find an account with that username and email. Please try again. :)',
+				icon: 'error',
+			});
 			dispatch({
 				type: LOGIN_FAIL,
 			});

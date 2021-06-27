@@ -289,7 +289,7 @@ class SupplierSettingIndex extends React.Component {
 													/>
 												</td>
 												<td className="text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal leading-4">
-													{supplier.id}
+													{supplier.supplier_id}
 												</td>
 												<td className="text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal leading-4">
 													{supplier.name}

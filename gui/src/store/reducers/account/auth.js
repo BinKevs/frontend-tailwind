@@ -54,19 +54,6 @@ const AuthReducer = (state = initialState, action) => {
 				isAuthenticated: true,
 				isLoading: false,
 			};
-		case LOGIN_FAIL:
-		case AUTH_ERROR:
-		case LOGOUT_SUCCESS:
-		case REGISTER_FAIL:
-			localStorage.removeItem('token');
-			return {
-				...state,
-				token: null,
-				user: null,
-				isAuthenticated: false,
-				isLoading: false,
-				logout: true,
-			};
 		case GET_ACCOUNT_LIST:
 			return {
 				...state,
@@ -82,6 +69,20 @@ const AuthReducer = (state = initialState, action) => {
 				...state,
 				attendance_log: action.payload,
 			};
+		case LOGIN_FAIL:
+		case AUTH_ERROR:
+		case LOGOUT_SUCCESS:
+		case REGISTER_FAIL:
+			localStorage.removeItem('token');
+			return {
+				...state,
+				token: null,
+				user: null,
+				isAuthenticated: false,
+				isLoading: false,
+				logout: true,
+			};
+
 		default:
 			return {
 				...state,

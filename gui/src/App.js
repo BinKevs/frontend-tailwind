@@ -6,14 +6,23 @@ import BaseRouter from './Routes';
 import store from './store/store';
 import Login from './components/Accounts/Login';
 import Registration from './components/Accounts/Registration';
+import ProductList from './components/Reviews/ProductList';
+import ProductDetail from './components/Reviews/ProductDetail';
+
 function App() {
 	return (
 		<>
 			<Provider store={store}>
 				<BrowserRouter>
 					<Switch>
-						<Route exact path="/Login" component={Login} />
-						<Route exact path="/Register" component={Registration} />
+						<Route exact path="/login" component={Login} />
+						<Route exact path="/register" component={Registration} />
+						<Route exact path="/review/product-list" component={ProductList} />
+						<Route
+							exact
+							path="/review/product/:productID/"
+							component={ProductDetail}
+						/>
 						<Layout>
 							<BaseRouter />
 						</Layout>

@@ -113,29 +113,26 @@ class Layout extends React.Component {
 		return (
 			<>
 				<nav
-					class="bg-gray-800 pt-2 md:pt-1 pb-1 px-1 mt-0 h-auto fixed w-full
+					class="bg-gray-800 pt-2 pb-1 px-1 mt-0 h-auto fixed w-full
 			z-20 top-0"
 				>
 					<div class="flex flex-wrap justify-between items-center">
-						<div class="flex flex-shrink w-full md:w-1/3 justify-center items-center md:justify-start text-white">
+						<div class="flex pt-2 w-1/3 justify-start text-white">
 							<i class="far fa-motorcycle fa-2x px-3"></i>
 							<h1 class="font-Montserrat text-base">ABC Motor Parts</h1>
 						</div>
 
 						<div
 							class="flex
-						w-full
 						pt-2
 						content-center
-						justify-between
-						md:w-1/3
-						md:justify-end"
+						w-1/3
+						justify-end"
 						>
 							<div
 								class="flex
 							justify-around
-							flex-1
-							md:flex-none
+							flex-none
 							items-center"
 							>
 								<div class="relative inline-block md:mr-2 py-2">
@@ -162,7 +159,7 @@ class Layout extends React.Component {
 									>
 										<div className="">
 											<Link
-												to="Register"
+												to="/accounts/settings/menu"
 												class="p-2 hover:bg-gray-800 text-white text-sm hover:no-underline inline-block"
 											>
 												<i class="fa fa-cog fa-fw"></i> Settings
