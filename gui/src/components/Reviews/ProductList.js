@@ -53,40 +53,6 @@ class ProductList extends React.Component {
 		});
 		return (
 			<>
-				<nav
-					class="bg-gray-800 pt-2 pb-1 px-1 mt-0 h-auto fixed w-full
-			z-20 top-0"
-				>
-					<div class="flex flex-wrap justify-between items-center">
-						<div class="flex pt-2 w-1/3 justify-start text-white">
-							<i class="far fa-motorcycle fa-2x px-3"></i>
-							<h1 class="font-Montserrat text-base">ABC Motor Parts</h1>
-						</div>
-						<div class="flex pt-2 w-1/3 justify-center text-white">
-							<h1 class="font-Montserrat text-base">Products</h1>
-						</div>
-						<div class="flex pt-2 content-center w-1/3 justify-end">
-							<div class="flex justify-around flex-none items-center">
-								<div class="relative inline-block md:mr-2 py-2">
-									<button class=" text-white focus:outline-none">
-										{' '}
-										<span class="pr-2">
-											<i class="fad fa-user-friends"></i>
-										</span>{' '}
-										Hi, User{' '}
-										<svg
-											class="h-3 fill-current inline"
-											xmlns="http://www.w3.org/2000/svg"
-											viewBox="0 0 20 20"
-										>
-											<path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-										</svg>
-									</button>
-								</div>
-							</div>
-						</div>
-					</div>
-				</nav>
 				<div class="flex-1 bg-gray-100 pb-24 md:pb-5">
 					<div class="flex flex-col lg:flex-row">
 						<div class="w-full mt-4 p-8">
@@ -135,7 +101,7 @@ class ProductList extends React.Component {
 									</div>
 								</div>
 							</div>
-							<div class="mt-8 grid 2xl:grid-cols-5 xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-4 gap-5">
+							<div class="mt-8 grid 2xl:grid-cols-5 xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 gap-5">
 								{filteredData.map((product) => (
 									<div
 										class="rounded bg-white border-gray-200 shadow-md overflow-hidden relative hover:shadow-lg"
@@ -147,9 +113,14 @@ class ProductList extends React.Component {
 											class="h-32 sm:h-48 w-full object-cover"
 										/>
 										<div class="m-4 bodi">
-											<span class="font-bold">
-												{this.trimmedString(product.name)}
-											</span>
+											<Link
+												className="cursor-pointer"
+												to={'/review/product/'.concat(product.id)}
+											>
+												<span class="font-bold">
+													{this.trimmedString(product.name)}
+												</span>
+											</Link>
 											<span class="block text-gray-500 text-sm">
 												By {this.trimmedString(product.supplier)}
 											</span>

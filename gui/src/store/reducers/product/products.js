@@ -13,6 +13,7 @@ import {
 const initialState = {
 	products: [],
 	product: {},
+	supplier_name: '',
 	categories: [],
 	isLoading: false,
 };
@@ -34,6 +35,7 @@ export default function (state = initialState, action) {
 			return {
 				...state,
 				product: action.payload,
+				supplier_name: action.payload.supplier_info.name,
 			};
 		case DELETE_PRODUCT:
 			return {

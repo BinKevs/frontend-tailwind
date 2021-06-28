@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logout } from '../../store/actions/account/auth';
 import React from 'react';
-class Layout extends React.Component {
+class MainLayout extends React.Component {
 	state = {
 		DashboardNavBtn: false,
 		ProductsNavBtn: false,
@@ -388,4 +388,4 @@ const mapStateToProps = (state) => {
 		AuthReducer: state.AuthReducer,
 	};
 };
-export default withRouter(connect(mapStateToProps, { logout })(Layout));
+export default withRouter(connect(mapStateToProps, { logout })(MainLayout));

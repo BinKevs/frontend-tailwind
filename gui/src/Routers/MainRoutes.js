@@ -1,18 +1,18 @@
 import { Route, Switch } from 'react-router-dom';
-import ProductListIndex from './components/Products/ProductListIndex';
-import ProductSetting from './components/Products/ProductSetting';
-import DashboardIndex from './components/Dashboard/dashboard';
-import InventorySetting from './components/Inventories/InventorySetting';
-import SupplierSetting from './components/Suppliers/SupplierSetting';
-import TransactionSetting from './components/Transactions/TransactionSetting';
-import TransactionItemsSetting from './components/Transactions/TransactionItemsSetting';
-import ReportIndex from './components/Reports/ReportIndex';
-import CheckoutIndex from './components/Products/Checkout/CheckoutIndex';
-import ActivityLog from './components/Accounts/ActivityLog';
-import AttendanceLog from './components/Accounts/AttendanceLog';
-import AccountsIndex from './components/Accounts/AccountsIndex';
-import AccountSettingsMenu from './components/Layouts/AccountSettingsMenu';
-const BaseRouter = () => (
+import ProductListIndex from '../components/Products/ProductListIndex';
+import ProductSetting from '../components/Products/ProductSetting';
+import DashboardIndex from '../components/Dashboard/dashboard';
+import InventorySetting from '../components/Inventories/InventorySetting';
+import SupplierSetting from '../components/Suppliers/SupplierSetting';
+import TransactionSetting from '../components/Transactions/TransactionSetting';
+import TransactionItemsSetting from '../components/Transactions/TransactionItemsSetting';
+import ReportIndex from '../components/Reports/ReportIndex';
+import CheckoutIndex from '../components/Products/Checkout/CheckoutIndex';
+import ActivityLog from '../components/Accounts/ActivityLog';
+import AttendanceLog from '../components/Accounts/AttendanceLog';
+import AccountsIndex from '../components/Accounts/AccountsIndex';
+import AccountSettingsMenu from '../components/Accounts/AccountSettingsMenu';
+const MainBaseRouter = () => (
 	<>
 		<Switch>
 			<Route exact path="/products" component={ProductListIndex} />
@@ -40,4 +40,4 @@ const BaseRouter = () => (
 	</>
 );
 
-export default BaseRouter;
+export default MainBaseRouter;

@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// import Paypal from './Paypal';
+import { PayPalButton } from 'react-paypal-button-v2';
+
 import {
 	removeFromCart,
 	changeCartValue,
@@ -62,6 +63,34 @@ class CheckoutIndex extends React.Component {
 		this.props.clearCart();
 		this.props.history.push('/products');
 	};
+	handleClickPayPal(AmountTendered) {
+		this.setState({
+			amount_tendered: AmountTendered,
+		});
+		let quantity = 0;
+		this.props.cartItems.map((item) => (quantity += item.quantity));
+		const { totalAmount, amount_tendered, change } = this.state;
+		const action_done = 'Transaction';
+		const items = this.props.cartItems;
+		const data = {
+			totalAmount,
+			amount_tendered,
+			change,
+			quantity,
+			items,
+			action_done,
+		};
+		this.props.addTransactionItems(data);
+		this.onModalToggleFunction();
+		swal({
+			title: 'Transaction Success',
+			text: 'Change : ' + change,
+			icon: 'success',
+		});
+
+		this.props.clearCart();
+		this.props.history.push('/products');
+	}
 	// This will set the amount tendered field to the user payment
 	handleSetAmountTendered = (AmountTendered) => {
 		return (event) => {
@@ -71,6 +100,7 @@ class CheckoutIndex extends React.Component {
 			});
 		};
 	};
+
 	// This will load the cart items to be rendered and also to compute for the total amount, sub total and the tax;
 	componentDidMount() {
 		let VariableTotalAmount = 0;
@@ -223,7 +253,45 @@ class CheckoutIndex extends React.Component {
 											<span className="block pb-3 font-semibold">Cash</span>
 										</button>
 										<div className="flex items-center justify-center bg-gray-100 shadow-lg rounded-xl p-4 m-3 w-full">
-											<div id="paypal-button-container"></div>
+											<PayPalButton
+												createOrder={(data, actions) => {
+													return actions.order.create({
+														purchase_units: [
+															{
+																amount: {
+																	currency_code: 'PHP',
+																	value: totalAmount.toString(),
+																},
+															},
+														],
+														// application_context: {
+														//   shipping_preference: "NO_SHIPPING" // default is "GET_FROM_FILE"
+														// }
+													});
+												}}
+												onApprove={(data, actions) => {
+													// Capture the funds from the transaction
+													this.handleClickPayPal(totalAmount);
+													this.onModalToggleFunction();
+													return actions.order
+														.capture()
+														.then(function (details) {
+															// Show a success message to your buyer
+															alert(
+																'Transaction completed by ' +
+																	details.payer.name.given_name
+															);
+
+															// OPTIONAL: Call your server to save the transaction
+															return fetch('/paypal-transaction-complete', {
+																method: 'post',
+																body: JSON.stringify({
+																	orderID: data.orderID,
+																}),
+															});
+														});
+												}}
+											/>
 										</div>
 
 										<button class="space-x-1 w-full text-lg text-gray-700 transition-colors duration-150 border border-gray-500 rounded-lg focus:shadow-outline hover:bg-gray-500 hover:text-white">
