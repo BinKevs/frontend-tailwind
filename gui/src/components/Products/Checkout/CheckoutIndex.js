@@ -14,7 +14,7 @@ import {
 	numberWithCommas,
 } from '../../../Helpers/functions';
 import PaymentCashModal from './PaymentCashModal';
-import swal from 'sweetalert';
+
 class CheckoutIndex extends React.Component {
 	static propTypes = {
 		removeFromCart: PropTypes.func.isRequired,
@@ -43,6 +43,7 @@ class CheckoutIndex extends React.Component {
 		this.props.cartItems.map((item) => (quantity += item.quantity));
 		const { totalAmount, amount_tendered, change } = this.state;
 		const action_done = 'Transaction';
+		const mode_of_payment = 'Cash';
 		const items = this.props.cartItems;
 		const data = {
 			totalAmount,
@@ -51,14 +52,10 @@ class CheckoutIndex extends React.Component {
 			quantity,
 			items,
 			action_done,
+			mode_of_payment,
 		};
 		this.props.addTransactionItems(data);
 		this.onModalToggleFunction();
-		swal({
-			title: 'Transaction Success',
-			text: 'Change : ' + change,
-			icon: 'success',
-		});
 
 		this.props.clearCart();
 		this.props.history.push('/products');
@@ -71,6 +68,7 @@ class CheckoutIndex extends React.Component {
 		this.props.cartItems.map((item) => (quantity += item.quantity));
 		const { totalAmount, amount_tendered, change } = this.state;
 		const action_done = 'Transaction';
+		const mode_of_payment = 'Paypal';
 		const items = this.props.cartItems;
 		const data = {
 			totalAmount,
@@ -79,14 +77,10 @@ class CheckoutIndex extends React.Component {
 			quantity,
 			items,
 			action_done,
+			mode_of_payment,
 		};
 		this.props.addTransactionItems(data);
 		this.onModalToggleFunction();
-		swal({
-			title: 'Transaction Success',
-			text: 'Change : ' + change,
-			icon: 'success',
-		});
 
 		this.props.clearCart();
 		this.props.history.push('/products');
@@ -252,7 +246,7 @@ class CheckoutIndex extends React.Component {
 											<i class="block pt-3 far fa-money-bill-wave fa-lg"></i>
 											<span className="block pb-3 font-semibold">Cash</span>
 										</button>
-										<div className="flex items-center justify-center bg-gray-100 shadow-lg rounded-xl p-4 m-3 w-full">
+										<div className="flex items-center justify-center bg-gray-100 shadow-lg z-10 rounded-xl p-4 m-3 w-full">
 											<PayPalButton
 												createOrder={(data, actions) => {
 													return actions.order.create({

@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logout } from '../../store/actions/account/auth';
 import React from 'react';
+import { loadUser } from '../../store/actions/account/auth';
 class MainLayout extends React.Component {
 	state = {
 		DashboardNavBtn: false,
@@ -13,6 +14,9 @@ class MainLayout extends React.Component {
 		SupplierNavBtn: false,
 		TransactionsNavBtn: false,
 	};
+	componentDidMount() {
+		this.props.loadUser();
+	}
 	setActiveNav(NavBtn) {
 		return (e) => {
 			e.preventDefault();
@@ -89,6 +93,7 @@ class MainLayout extends React.Component {
 			}
 		};
 	}
+
 	handleLogout = (e) => {
 		e.preventDefault();
 		this.props.history.push('/login');
@@ -109,7 +114,7 @@ class MainLayout extends React.Component {
 			SupplierNavBtn,
 			TransactionsNavBtn,
 		} = this.state;
-
+		console.log(this.props.AuthReducer.is_superuser);
 		return (
 			<>
 				<nav
@@ -159,27 +164,38 @@ class MainLayout extends React.Component {
 									>
 										<div className="">
 											<Link
-												to="/accounts/settings/menu"
+												// to="/accounts/settings/menu"
+												to="/products"
 												class="p-2 hover:bg-gray-800 text-white text-sm hover:no-underline inline-block"
 											>
 												<i class="fa fa-cog fa-fw"></i> Settings
 											</Link>
+											{this.props.AuthReducer.is_superuser ? (
+												<Link
+													to="/registerAccount"
+													class="p-2 hover:bg-gray-800 text-white text-sm hover:no-underline inline-block"
+												>
+													<i class="fa fa-user-plus fa-fw"></i> Create User
+												</Link>
+											) : (
+												''
+											)}
 											{/* <div class="border border-gray-800"></div> */}
-											{this.props.AuthReducer.isAuthenticated ? (
+											{/* {!this.props.AuthReducer.isAuthenticated ? (
 												<Link
 													to="Login"
 													class="p-2 hover:bg-gray-800 text-white text-sm hover:no-underline inline-block"
 												>
 													<i class="fas fa-sign-in-alt fa-fw"></i> Login
 												</Link>
-											) : (
-												<div
-													onClick={this.handleLogout}
-													class="p-2 hover:bg-gray-800 text-white text-sm hover:no-underline inline-block cursor-pointer"
-												>
-													<i class="fas fa-sign-out-alt fa-fw"></i> Logout
-												</div>
-											)}
+											) : ( */}
+											<div
+												onClick={this.handleLogout}
+												class="p-2 hover:bg-gray-800 text-white text-sm hover:no-underline inline-block cursor-pointer"
+											>
+												<i class="fas fa-sign-out-alt fa-fw"></i> Logout
+											</div>
+											{/* )} */}
 										</div>
 									</div>
 								</div>
@@ -187,183 +203,185 @@ class MainLayout extends React.Component {
 						</div>
 					</div>
 				</nav>
+
 				<div class="flex flex-col lg:flex-row bg-gray-800">
-					<div class=" shadow-xl h-16 fixed bottom-0 lg:relative lg:h-screen z-10 w-full lg:w-48 bg-gray-800">
-						<div class="lg:mt-20 lg:w-48 lg:fixed md:left-0 md:top-0 text-left">
-							<ul
-								id="NavDiv"
-								class="flex flex-row lg:flex-col py-0 md:py-3 px-1 lg:px-2 text-center lg:text-left"
-							>
-								<li
-									class="mr-3 flex-1 NavBtn"
-									onClick={this.setActiveNav('DashboardNavBtn')}
+					{this.props.AuthReducer.is_superuser ? (
+						<div class="shadow-xl h-16 fixed bottom-0 lg:relative lg:h-screen z-10 w-full lg:w-48 bg-gray-800">
+							<div class="lg:mt-20 lg:w-48 lg:fixed lg:left-0 lg:top-0 text-left bg-gray-800">
+								<ul
+									id="NavDiv"
+									class="flex flex-row lg:flex-col py-0 lg:py-3 px-1 lg:px-2 text-center lg:text-left"
 								>
-									<Link
-										to="/dashboard"
-										class={
-											DashboardNavBtn
-												? 'block py-1 md:py-3 pl-1 align-middle text-teal_custom no-underline border-b-2 border-teal_custom'
-												: 'block py-1 md:py-3 pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-gray-800 hover:border-teal_custom'
-										}
+									<li
+										class="mr-3 flex-1 NavBtn"
+										onClick={this.setActiveNav('DashboardNavBtn')}
 									>
-										<i className="fas fa-chart-line pr-0 md:pr-3"></i>
-										<span
+										<Link
+											to="/dashboard"
 											class={
 												DashboardNavBtn
-													? 'pb-1 md:pb-0 text-xs md:text-base text-white  block md:inline-block'
-													: 'pb-1 md:pb-0 text-xs md:text-base text-gray-400 block md:inline-block'
+													? 'block py-1 md:py-3 pl-1 align-middle text-teal_custom no-underline border-b-2 border-teal_custom'
+													: 'block py-1 md:py-3 pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-gray-800 hover:border-teal_custom'
 											}
 										>
-											Dashboard
-										</span>
-									</Link>
-								</li>
-								<li
-									class="mr-3 flex-1 NavBtn"
-									onClick={this.setActiveNav('ProductsNavBtn')}
-								>
-									<Link
-										to="/products"
-										class={
-											ProductsNavBtn
-												? 'block py-1 md:py-3 pl-1 align-middle text-teal_custom no-underline border-b-2 border-teal_custom'
-												: 'block py-1 md:py-3 pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-gray-800 hover:border-teal_custom'
-										}
+											<i className="fas fa-chart-line pr-0 md:pr-3"></i>
+											<span
+												class={
+													DashboardNavBtn
+														? 'pb-1 md:pb-0 text-xs md:text-base text-white  block md:inline-block'
+														: 'pb-1 md:pb-0 text-xs md:text-base text-gray-400 block md:inline-block'
+												}
+											>
+												Dashboard
+											</span>
+										</Link>
+									</li>
+									<li
+										class="mr-3 flex-1 NavBtn"
+										onClick={this.setActiveNav('ProductsNavBtn')}
 									>
-										<i className="fas fa-cart-plus pr-0 md:pr-3"></i>
-										<span
+										<Link
+											to="/products"
 											class={
 												ProductsNavBtn
-													? 'pb-1 md:pb-0 text-xs md:text-base text-white  block md:inline-block'
-													: 'pb-1 md:pb-0 text-xs md:text-base text-gray-400 block md:inline-block'
+													? 'block py-1 md:py-3 pl-1 align-middle text-teal_custom no-underline border-b-2 border-teal_custom'
+													: 'block py-1 md:py-3 pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-gray-800 hover:border-teal_custom'
 											}
 										>
-											Products
-										</span>
-									</Link>
-								</li>
-								<li
-									class="mr-3 flex-1 NavBtn"
-									onClick={this.setActiveNav('ReportsNavBtn')}
-								>
-									<Link
-										to="/reports"
-										class={
-											ReportsNavBtn
-												? 'block py-1 md:py-3 pl-1 align-middle text-teal_custom no-underline border-b-2 border-teal_custom'
-												: 'block py-1 md:py-3 pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-gray-800 hover:border-teal_custom'
-										}
+											<i className="fas fa-cart-plus pr-0 md:pr-3"></i>
+											<span
+												class={
+													ProductsNavBtn
+														? 'pb-1 md:pb-0 text-xs md:text-base text-white  block md:inline-block'
+														: 'pb-1 md:pb-0 text-xs md:text-base text-gray-400 block md:inline-block'
+												}
+											>
+												Products
+											</span>
+										</Link>
+									</li>
+									<li
+										class="mr-3 flex-1 NavBtn"
+										onClick={this.setActiveNav('ReportsNavBtn')}
 									>
-										<i class="fas fa-file-alt  pr-0 md:pr-3 "></i>
-										<span
+										<Link
+											to="/reports"
 											class={
 												ReportsNavBtn
-													? 'pb-1 md:pb-0 text-xs md:text-base text-white  block md:inline-block'
-													: 'pb-1 md:pb-0 text-xs md:text-base text-gray-400 block md:inline-block'
+													? 'block py-1 md:py-3 pl-1 align-middle text-teal_custom no-underline border-b-2 border-teal_custom'
+													: 'block py-1 md:py-3 pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-gray-800 hover:border-teal_custom'
 											}
 										>
-											Reports
-										</span>
-									</Link>
-								</li>
-								<li
-									class="mr-3 flex-1 NavBtn"
-									onClick={this.setActiveNav('ProductSettingNavBtn')}
-								>
-									<Link
-										to="/products/settings"
-										class={
-											ProductSettingNavBtn
-												? 'block py-1 md:py-3 pl-1 align-middle text-teal_custom no-underline border-b-2 border-teal_custom'
-												: 'block py-1 md:py-3 pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-gray-800 hover:border-teal_custom'
-										}
+											<i class="fas fa-file-alt  pr-0 md:pr-3 "></i>
+											<span
+												class={
+													ReportsNavBtn
+														? 'pb-1 md:pb-0 text-xs md:text-base text-white  block md:inline-block'
+														: 'pb-1 md:pb-0 text-xs md:text-base text-gray-400 block md:inline-block'
+												}
+											>
+												Reports
+											</span>
+										</Link>
+									</li>
+									<li
+										class="mr-3 flex-1 NavBtn"
+										onClick={this.setActiveNav('ProductSettingNavBtn')}
 									>
-										<i className="fas fa-sliders-h pr-0 md:pr-3"></i>
-
-										<div
+										<Link
+											to="/products/settings"
 											class={
 												ProductSettingNavBtn
-													? 'pb-1 md:pb-0 text-xs md:text-base text-white block md:inline-block'
-													: 'pb-1 md:pb-0 text-xs md:text-base text-gray-400 block md:inline-block'
+													? 'block py-1 md:py-3 pl-1 align-middle text-teal_custom no-underline border-b-2 border-teal_custom'
+													: 'block py-1 md:py-3 pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-gray-800 hover:border-teal_custom'
 											}
 										>
-											Product Setting
-										</div>
-									</Link>
-								</li>
-								<li
-									class="mr-3 flex-1 NavBtn"
-									onClick={this.setActiveNav('InventoryNavBtn')}
-								>
-									<Link
-										to="/inventories"
-										class={
-											InventoryNavBtn
-												? 'block py-1 md:py-3 pl-1 align-middle text-teal_custom no-underline border-b-2 border-teal_custom'
-												: 'block py-1 md:py-3 pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-gray-800 hover:border-teal_custom'
-										}
+											<i className="fas fa-sliders-h pr-0 md:pr-3"></i>
+
+											<div
+												class={
+													ProductSettingNavBtn
+														? 'pb-1 md:pb-0 text-xs md:text-base text-white block md:inline-block'
+														: 'pb-1 md:pb-0 text-xs md:text-base text-gray-400 block md:inline-block'
+												}
+											>
+												Product Setting
+											</div>
+										</Link>
+									</li>
+									<li
+										class="mr-3 flex-1 NavBtn"
+										onClick={this.setActiveNav('InventoryNavBtn')}
 									>
-										<i className="fas fa-clipboard-list pr-0 md:pr-3"></i>
-										<span
+										<Link
+											to="/inventories"
 											class={
 												InventoryNavBtn
-													? 'pb-1 md:pb-0 text-xs md:text-base text-white  block md:inline-block'
-													: 'pb-1 md:pb-0 text-xs md:text-base text-gray-400 block md:inline-block'
+													? 'block py-1 md:py-3 pl-1 align-middle text-teal_custom no-underline border-b-2 border-teal_custom'
+													: 'block py-1 md:py-3 pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-gray-800 hover:border-teal_custom'
 											}
 										>
-											Inventory
-										</span>
-									</Link>
-								</li>
-								<li
-									class="mr-3 flex-1 NavBtn"
-									onClick={this.setActiveNav('SupplierNavBtn')}
-								>
-									<Link
-										to="/supplier"
-										class={
-											SupplierNavBtn
-												? 'block py-1 md:py-3 pl-1 align-middle text-teal_custom no-underline border-b-2 border-teal_custom'
-												: 'block py-1 md:py-3 pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-gray-800 hover:border-teal_custom'
-										}
+											<i className="fas fa-clipboard-list pr-0 md:pr-3"></i>
+											<span
+												class={
+													InventoryNavBtn
+														? 'pb-1 md:pb-0 text-xs md:text-base text-white  block md:inline-block'
+														: 'pb-1 md:pb-0 text-xs md:text-base text-gray-400 block md:inline-block'
+												}
+											>
+												Inventory
+											</span>
+										</Link>
+									</li>
+									<li
+										class="mr-3 flex-1 NavBtn"
+										onClick={this.setActiveNav('SupplierNavBtn')}
 									>
-										<i className="fas fa-clipboard-list pr-0 md:pr-3"></i>
-										<span
+										<Link
+											to="/supplier"
 											class={
 												SupplierNavBtn
-													? 'pb-1 md:pb-0 text-xs md:text-base text-white  block md:inline-block'
-													: 'pb-1 md:pb-0 text-xs md:text-base text-gray-400 block md:inline-block'
+													? 'block py-1 md:py-3 pl-1 align-middle text-teal_custom no-underline border-b-2 border-teal_custom'
+													: 'block py-1 md:py-3 pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-gray-800 hover:border-teal_custom'
 											}
 										>
-											Supplier
-										</span>
-									</Link>
-								</li>
-								<li
-									class="mr-3 flex-1 NavBtn"
-									onClick={this.setActiveNav('TransactionsNavBtn')}
-								>
-									<Link
-										to="/transactions"
-										class={
-											TransactionsNavBtn
-												? 'block py-1 md:py-3 pl-1 align-middle text-teal_custom no-underline border-b-2 border-teal_custom'
-												: 'block py-1 md:py-3 pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-gray-800 hover:border-teal_custom'
-										}
+											<i className="fas fa-clipboard-list pr-0 md:pr-3"></i>
+											<span
+												class={
+													SupplierNavBtn
+														? 'pb-1 md:pb-0 text-xs md:text-base text-white  block md:inline-block'
+														: 'pb-1 md:pb-0 text-xs md:text-base text-gray-400 block md:inline-block'
+												}
+											>
+												Supplier
+											</span>
+										</Link>
+									</li>
+									<li
+										class="mr-3 flex-1 NavBtn"
+										onClick={this.setActiveNav('TransactionsNavBtn')}
 									>
-										<i className="fas fa-coins pr-0 md:pr-3"></i>
-										<span
+										<Link
+											to="/transactions"
 											class={
 												TransactionsNavBtn
-													? 'pb-1 md:pb-0 text-xs md:text-base text-white  block md:inline-block'
-													: 'pb-1 md:pb-0 text-xs md:text-base text-gray-400 block md:inline-block'
+													? 'block py-1 md:py-3 pl-1 align-middle text-teal_custom no-underline border-b-2 border-teal_custom'
+													: 'block py-1 md:py-3 pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-gray-800 hover:border-teal_custom'
 											}
 										>
-											Transactions
-										</span>
-									</Link>
-								</li>
-								{/* <li class="mr-3 flex-1">
+											<i className="fas fa-coins pr-0 md:pr-3"></i>
+											<span
+												class={
+													TransactionsNavBtn
+														? 'pb-1 md:pb-0 text-xs md:text-base text-white  block md:inline-block'
+														: 'pb-1 md:pb-0 text-xs md:text-base text-gray-400 block md:inline-block'
+												}
+											>
+												Transactions
+											</span>
+										</Link>
+									</li>
+									{/* <li class="mr-3 flex-1">
 								<a
 									href="#"
 									class="block py-1 md:py-3 pl-0 md:pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-gray-800 hover:border-red-500"
@@ -374,9 +392,13 @@ class MainLayout extends React.Component {
 									</span>
 								</a>
 							</li> */}
-							</ul>
+								</ul>
+							</div>
 						</div>
-					</div>
+					) : (
+						''
+					)}
+
 					{this.props.children}
 				</div>
 			</>
@@ -388,4 +410,6 @@ const mapStateToProps = (state) => {
 		AuthReducer: state.AuthReducer,
 	};
 };
-export default withRouter(connect(mapStateToProps, { logout })(MainLayout));
+export default withRouter(
+	connect(mapStateToProps, { logout, loadUser })(MainLayout)
+);

@@ -44,16 +44,7 @@ class TransactionItemsSettingIndex extends React.Component {
 			<>
 				<div class="bg-gray-100 flex-1 mt-20 md:mt-14 pb-24 md:pb-5">
 					<div class="bg-gray-800 pt-3">
-						<div
-							class="rounded-tl-3xl
-    bg-gradient-to-r
-    from-teal_custom
-    to-gray-800
-    p-4
-    shadow
-    text-2xl text-white
-"
-						>
+						<div class="rounded-tl-3xl bg-gradient-to-r from-teal_custom to-gray-800 p-4 shadow text-2xl text-white">
 							<h3 class="font-bold pl-2">Transaction Items</h3>
 						</div>
 					</div>

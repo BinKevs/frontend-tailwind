@@ -9,6 +9,7 @@ import {
 	UPDATE_SUPPLIER,
 	GET_SUPPLIER_LIST_WITH_PAGINATION,
 } from './actionTypes';
+import { HandleSuccessMessages } from '../../../Helpers/functions';
 let url = URL_IMPORT + '/api/suppliers/';
 let urlWithPagination = 'http://127.0.0.1:8000/api/suppliers/withPagination/';
 
@@ -73,7 +74,7 @@ export const addSupplier = (data) => (dispatch, getState) => {
 	axios
 		.post(url, data, tokenConfig(getState))
 		.then((res) => {
-			console.log('Supplier Added');
+			HandleSuccessMessages('Supplier Added', 'success');
 			dispatch({
 				type: ADD_SUPPLIER,
 				payload: res.data,
@@ -85,7 +86,7 @@ export const updateSupplier = (SupplierID, data) => (dispatch, getState) => {
 	axios
 		.put(url + SupplierID + '/', data, tokenConfig(getState))
 		.then((res) => {
-			console.log('Supplier Updated');
+			HandleSuccessMessages('Supplier Updated', 'success');
 			dispatch({
 				type: UPDATE_SUPPLIER,
 				payload: res.data,

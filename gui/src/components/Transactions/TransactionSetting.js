@@ -137,7 +137,10 @@ class TransactionSettingIndex extends React.Component {
 												Change
 											</th>
 											<th className="text-gray-600 dark:text-gray-400 font-normal pr-6 text-left text-sm tracking-normal leading-4">
-												Total Number of items
+												Total Number of Items
+											</th>
+											<th className="text-gray-600 dark:text-gray-400 font-normal pr-6 text-left text-sm tracking-normal leading-4">
+												Mode of Payment
 											</th>
 											{/* <th className="space-x-2 text-gray-600 dark:text-gray-400 font-normal pr-6 text-left text-sm tracking-normal leading-4">
                         <span>Date</span>
@@ -196,6 +199,10 @@ class TransactionSettingIndex extends React.Component {
 												<td className="text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal leading-4">
 													{transaction.quantity}
 												</td>
+												<td className="text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal leading-4">
+													{transaction.mode_of_payment}
+												</td>
+
 												<td className="pr-8 relative">
 													<div
 														id={transaction.id}

@@ -3,9 +3,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Bar, Line } from 'react-chartjs-2';
 import { getProductList } from '../../store/actions/product/products';
-import { getInventoryList } from '../../store/actions/inventory/inventories.js';
-import { getTransactionList } from '../../store/actions/transaction/transactions';
-import { getTransactionItemList } from '../../store/actions/transaction/transactions.js';
+import { getInventoryListNotOrderByDate } from '../../store/actions/inventory/inventories.js';
+import {
+	getTransactionItemList,
+	getTransactionListNotOrderByDate,
+} from '../../store/actions/transaction/transactions.js';
+
 let transactionsForDailyFiltered = [];
 let transactionsForMonthlyFiltered = [];
 let transactionsForWeeklyFiltered = [];
@@ -25,9 +28,9 @@ class ReportIndex extends React.Component {
 	};
 	componentDidMount() {
 		this.props.getProductList();
-		this.props.getInventoryList();
+		this.props.getInventoryListNotOrderByDate();
 		this.props.getTransactionItemList();
-		this.props.getTransactionList();
+		this.props.getTransactionListNotOrderByDate();
 	}
 	GetWeekDates() {
 		let now = new Date();
@@ -117,45 +120,46 @@ class ReportIndex extends React.Component {
 				}
 			}
 			// Fetch Weekly
+
 			if (
 				year.includes(StartDayOfTheWeek[3]) &&
 				year.includes(EndDayOfTheWeek[3])
 			) {
-				if (
-					month.includes(StartDayOfTheWeek[1]) &&
-					month.includes(EndDayOfTheWeek[1])
-				) {
-					if (StartDayOfTheWeek[1] !== EndDayOfTheWeek[1]) {
-						if (
-							(month === StartDayOfTheWeek[1] && day >= StartDayOfTheWeek[2]) ||
-							(month === EndDayOfTheWeek[1] && day <= EndDayOfTheWeek[2])
-						) {
-							transactionsForWeeklyFiltered.push({
-								totalAmount: transactionsFilteredDateSeparated[i].totalAmount,
-								date: new Date(
-									transactionsFilteredDateSeparated[i].day +
-										' ' +
-										transactionsFilteredDateSeparated[i].month +
-										' ' +
-										transactionsFilteredDateSeparated[i].year
-								),
-							});
-						}
-					} else {
-						if (day >= StartDayOfTheWeek[2] && day <= EndDayOfTheWeek[2]) {
-							transactionsForWeeklyFiltered.push({
-								totalAmount: transactionsFilteredDateSeparated[i].totalAmount,
-								date: new Date(
-									transactionsFilteredDateSeparated[i].day +
-										' ' +
-										transactionsFilteredDateSeparated[i].month +
-										' ' +
-										transactionsFilteredDateSeparated[i].year
-								),
-							});
-						}
+				// if (
+				// 	month.includes(StartDayOfTheWeek[1]) &&
+				// 	month.includes(EndDayOfTheWeek[1])
+				// ) {
+				if (StartDayOfTheWeek[1] !== EndDayOfTheWeek[1]) {
+					if (
+						(month === StartDayOfTheWeek[1] && day >= StartDayOfTheWeek[2]) ||
+						(month === EndDayOfTheWeek[1] && day <= EndDayOfTheWeek[2])
+					) {
+						transactionsForWeeklyFiltered.push({
+							totalAmount: transactionsFilteredDateSeparated[i].totalAmount,
+							date: new Date(
+								transactionsFilteredDateSeparated[i].day +
+									' ' +
+									transactionsFilteredDateSeparated[i].month +
+									' ' +
+									transactionsFilteredDateSeparated[i].year
+							),
+						});
+					}
+				} else {
+					if (day >= StartDayOfTheWeek[2] && day <= EndDayOfTheWeek[2]) {
+						transactionsForWeeklyFiltered.push({
+							totalAmount: transactionsFilteredDateSeparated[i].totalAmount,
+							date: new Date(
+								transactionsFilteredDateSeparated[i].day +
+									' ' +
+									transactionsFilteredDateSeparated[i].month +
+									' ' +
+									transactionsFilteredDateSeparated[i].year
+							),
+						});
 					}
 				}
+				// }
 			}
 		}
 		//Sales per product
@@ -253,7 +257,7 @@ class ReportIndex extends React.Component {
 													' Sales',
 												fill: false,
 												data: TotalSaleDailyPerDay.map((x) => x.totalAmount),
-												backgroundColor: '#5bc0de',
+												backgroundColor: '#3AAFA9',
 											},
 										],
 									}}
@@ -296,7 +300,7 @@ class ReportIndex extends React.Component {
 												label: DateNow[1] + ' ' + DateNow[3] + ' Sales',
 												fill: false,
 												data: TotalSaleWeeklyPerDay.map((x) => x.totalAmount),
-												backgroundColor: '#5bc0de',
+												backgroundColor: '#3AAFA9',
 											},
 										],
 									}}
@@ -337,7 +341,7 @@ class ReportIndex extends React.Component {
 												label: DateNow[1] + ' ' + DateNow[3] + ' Sales',
 												fill: false,
 												data: TotalSaleMonthlyPerDay.map((x) => x.totalAmount),
-												backgroundColor: '#5bc0de',
+												backgroundColor: '#3AAFA9',
 											},
 										],
 									}}
@@ -378,7 +382,7 @@ class ReportIndex extends React.Component {
 												label: DateNow[1] + ' ' + DateNow[3] + ' Sales',
 												fill: false,
 												data: this.props.inventories.map((x) => x.new_stock),
-												backgroundColor: '#5bc0de',
+												backgroundColor: '#3AAFA9',
 											},
 										],
 									}}
@@ -419,7 +423,7 @@ class ReportIndex extends React.Component {
 												label: DateNow[1] + ' ' + DateNow[3] + ' Sales',
 												fill: false,
 												data: TotalItemsSoldPerItem.map((x) => x.quantity),
-												backgroundColor: '#5bc0de',
+												backgroundColor: '#3AAFA9',
 											},
 										],
 									}}
@@ -460,7 +464,7 @@ class ReportIndex extends React.Component {
 												label: DateNow[1] + ' ' + DateNow[3] + ' Sales',
 												fill: false,
 												data: this.props.products.map((x) => x.stock),
-												backgroundColor: '#5bc0de',
+												backgroundColor: '#3AAFA9',
 											},
 										],
 									}}
@@ -520,7 +524,7 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps, {
 	getProductList,
-	getInventoryList,
+	getInventoryListNotOrderByDate,
 	getTransactionItemList,
-	getTransactionList,
+	getTransactionListNotOrderByDate,
 })(ReportIndex);

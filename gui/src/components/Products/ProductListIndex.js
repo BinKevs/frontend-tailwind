@@ -41,6 +41,7 @@ class ProductListIndex extends React.Component {
 	componentDidMount() {
 		this.props.getProductList();
 	}
+
 	render() {
 		products = [];
 		this.props.products.map((product) =>
@@ -67,6 +68,7 @@ class ProductListIndex extends React.Component {
 					<div class="bg-gray-800 pt-3">
 						<div
 							class="
+							
 							rounded-tl-3xl
 							bg-gradient-to-r
 							from-teal_custom
@@ -76,6 +78,9 @@ class ProductListIndex extends React.Component {
 							text-2xl text-white
 						"
 						>
+							{/* flex
+							items-center
+							<i class="fad fa-bars fa-2x"></i> */}
 							<h3 class="font-bold pl-2">Products</h3>
 						</div>
 					</div>

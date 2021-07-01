@@ -16,7 +16,7 @@ const initialState = {
 	isAuthenticated: null,
 	isLoading: false,
 	user: null,
-	is_superuser: false,
+	is_superuser: null,
 	logout: false,
 	accounts: [],
 	account: {},
@@ -53,6 +53,7 @@ const AuthReducer = (state = initialState, action) => {
 				user: action.payload,
 				isAuthenticated: true,
 				isLoading: false,
+				is_superuser: action.payload.is_superuser,
 			};
 		case GET_ACCOUNT_LIST:
 			return {
@@ -81,6 +82,7 @@ const AuthReducer = (state = initialState, action) => {
 				isAuthenticated: false,
 				isLoading: false,
 				logout: true,
+				is_superuser: false,
 			};
 
 		default:

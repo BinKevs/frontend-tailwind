@@ -12,6 +12,7 @@ import {
 	DELETE_CATEGORY,
 	PRODUCT_LOADING,
 } from './actionTypes';
+import { HandleSuccessMessages } from '../../../Helpers/functions';
 const url = URL_IMPORT + '/api/products/';
 export const getProductList = () => (dispatch, getState) => {
 	dispatch({ type: PRODUCT_LOADING });
@@ -49,19 +50,26 @@ export const addProduct = (data) => (dispatch, getState) => {
 	axios
 		.post(url, data, tokenConfig(getState))
 		.then((res) => {
-			console.log('Product Added');
+			HandleSuccessMessages('Product Added', 'success');
 			dispatch({
 				type: ADD_PRODUCT,
 				payload: res.data,
 			});
 		})
-		.catch((err) => console.log(err));
+		.catch((err) =>
+			// swal({
+			// 	title: 'Product Added Failed',
+			// 	text: 'Error : ' + err,
+			// 	icon: 'error',
+			// })
+			console.log(err)
+		);
 };
 export const updateProduct = (ProductID, data) => (dispatch, getState) => {
 	axios
 		.put(url + ProductID + '/', data, tokenConfig(getState))
 		.then((res) => {
-			console.log('Product Updated');
+			HandleSuccessMessages('Product Updated', 'success');
 			dispatch({
 				type: UPDATE_PRODUCT,
 				payload: res.data,
@@ -86,7 +94,7 @@ export const addCategory = (data) => (dispatch, getState) => {
 	axios
 		.post(URL_IMPORT + '/api/categories/', data, tokenConfig(getState))
 		.then((res) => {
-			console.log('Category Added');
+			HandleSuccessMessages('Category Added', 'success');
 			dispatch({
 				type: ADD_CATEGORY,
 				payload: res.data,

@@ -8,6 +8,7 @@ import {
 	ADD_INVENTORY,
 	UPDATE_INVENTORY,
 } from './actionTypes';
+import { HandleSuccessMessages } from '../../../Helpers/functions';
 const url = URL_IMPORT + '/api/inventories/';
 export const getInventoryList = () => (dispatch, getState) => {
 	axios
@@ -18,6 +19,14 @@ export const getInventoryList = () => (dispatch, getState) => {
 				payload: res.data,
 			});
 		});
+};
+export const getInventoryListNotOrderByDate = () => (dispatch, getState) => {
+	axios.get(url, tokenConfig(getState)).then((res) => {
+		dispatch({
+			type: GET_INVENTORY_LIST,
+			payload: res.data,
+		});
+	});
 };
 export const getInventory = (InventoryID) => (dispatch, getState) => {
 	axios
@@ -46,7 +55,8 @@ export const addInventory = (data) => (dispatch, getState) => {
 	axios
 		.post(url, data, tokenConfig(getState))
 		.then((res) => {
-			console.log('Inventory Added');
+			console.log();
+			HandleSuccessMessages('Inventory Added', 'success');
 			dispatch({
 				type: ADD_INVENTORY,
 				payload: res.data,
@@ -58,7 +68,7 @@ export const updateInventory = (InventoryID, data) => (dispatch, getState) => {
 	axios
 		.put(url + InventoryID + '/', data, tokenConfig(getState))
 		.then((res) => {
-			console.log('Inventory Updated');
+			HandleSuccessMessages('Inventory Updated', 'success');
 			dispatch({
 				type: UPDATE_INVENTORY,
 				payload: res.data,

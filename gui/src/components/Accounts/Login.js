@@ -25,7 +25,7 @@ class Login extends React.Component {
 	};
 	render() {
 		if (this.props.isAuthenticated) {
-			return <Redirect to={'/Products'} />;
+			return <Redirect to={'/dashboard'} />;
 		}
 		return (
 			<>
@@ -100,12 +100,12 @@ class Login extends React.Component {
 							</div>
 						</form>
 
-						<span class="block p-5 text-center text-xl text-gray-800 text-xs">
+						{/* <span class="block p-5 text-center text-xl text-gray-800 text-xs">
 							Don't have an account?{' '}
 							<Link className="text-blue-500" to="/register">
 								Create here.
 							</Link>
-						</span>
+						</span> */}
 					</div>
 				</div>
 			</>

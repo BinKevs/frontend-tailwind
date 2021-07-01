@@ -113,27 +113,27 @@ class DashboardIndex extends React.Component {
 				year.includes(StartDayOfTheWeek[3]) &&
 				year.includes(EndDayOfTheWeek[3])
 			) {
-				if (
-					month.includes(StartDayOfTheWeek[1]) &&
-					month.includes(EndDayOfTheWeek[1])
-				) {
-					if (StartDayOfTheWeek[1] !== EndDayOfTheWeek[1]) {
-						if (
-							(month === StartDayOfTheWeek[1] && day >= StartDayOfTheWeek[2]) ||
-							(month === EndDayOfTheWeek[1] && day <= EndDayOfTheWeek[2])
-						) {
-							weeklySalesTransaction += parseInt(
-								transactionsFilteredDateSeparated[i].totalAmount
-							);
-						}
-					} else {
-						if (day >= StartDayOfTheWeek[2] && day <= EndDayOfTheWeek[2]) {
-							weeklySalesTransaction += parseInt(
-								transactionsFilteredDateSeparated[i].totalAmount
-							);
-						}
+				// if (
+				// 	month.includes(StartDayOfTheWeek[1]) &&
+				// 	month.includes(EndDayOfTheWeek[1])
+				// ) {
+				if (StartDayOfTheWeek[1] !== EndDayOfTheWeek[1]) {
+					if (
+						(month === StartDayOfTheWeek[1] && day >= StartDayOfTheWeek[2]) ||
+						(month === EndDayOfTheWeek[1] && day <= EndDayOfTheWeek[2])
+					) {
+						weeklySalesTransaction += parseInt(
+							transactionsFilteredDateSeparated[i].totalAmount
+						);
+					}
+				} else {
+					if (day >= StartDayOfTheWeek[2] && day <= EndDayOfTheWeek[2]) {
+						weeklySalesTransaction += parseInt(
+							transactionsFilteredDateSeparated[i].totalAmount
+						);
 					}
 				}
+				// }
 			}
 		}
 

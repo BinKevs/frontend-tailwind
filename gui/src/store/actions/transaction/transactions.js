@@ -10,6 +10,7 @@ import {
 	ADD_TRANSACTION_ITEMS,
 	GET_TRANSACTION_ITEM_LIST,
 } from './actionTypes';
+import swal from 'sweetalert';
 const url = URL_IMPORT + '/api/transactions/';
 export const getTransactionList = () => (dispatch, getState) => {
 	axios
@@ -20,6 +21,14 @@ export const getTransactionList = () => (dispatch, getState) => {
 				payload: res.data,
 			});
 		});
+};
+export const getTransactionListNotOrderByDate = () => (dispatch, getState) => {
+	axios.get(url, tokenConfig(getState)).then((res) => {
+		dispatch({
+			type: GET_TRANSACTION_LIST,
+			payload: res.data,
+		});
+	});
 };
 
 export const getTransaction = (TransactionID) => (dispatch, getState) => {
@@ -81,6 +90,11 @@ export const addTransactionItems = (data) => (dispatch, getState) => {
 	axios
 		.post(URL_IMPORT + '/api/transactions/items/', data, tokenConfig(getState))
 		.then((res) => {
+			swal({
+				title: 'Transaction Success',
+				text: 'Change : ' + data.change,
+				icon: 'success',
+			});
 			dispatch({
 				type: ADD_TRANSACTION_ITEMS,
 				payload: res.data,
