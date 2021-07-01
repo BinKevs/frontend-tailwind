@@ -1,10 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { getAccountList } from '../../store/actions/account/auth';
+import { register } from '../../store/actions/account/auth';
+import RegistrationModal from './RegistrationModal';
 let AccountsItems = [];
+let EditButtonIsClicked = false;
 class AccountsIndex extends React.Component {
 	state = {
 		search: '',
+		username: '',
+		email: '',
+		first_name: '',
+		last_name: '',
+		password: '',
+		password2: '',
+		modal: false,
 	};
 	setSeeMore(transaction_items_id) {
 		return (e) => {
@@ -16,7 +26,61 @@ class AccountsIndex extends React.Component {
 		this.props.getAccountList();
 	}
 	onChange = (e) => this.setState({ [e.target.name]: e.target.value });
+	// Submit the state value to the store actions-accounts-auth-register
+	onSubmit = (e) => {
+		e.preventDefault();
+		const { username, email, first_name, last_name, password, password2 } =
+			this.state;
+		if (password !== password2) {
+			console.log('Passwords do not match');
+		} else {
+			const newUser = {
+				username,
+				password,
+				email,
+				first_name,
+				last_name,
+			};
+			this.props.register(newUser);
+			console.log('Account created!');
+		}
+	};
+	// when edit button click this will fetch the supplier that will be edited and change the isEditButtonClicked status to true
+	onEditCloseButton = (event) => {
+		event.preventDefault();
+		this.setState({
+			name: '',
+			address: '',
+			phone_number: '',
+			supplierID: 0,
+		});
+		EditButtonIsClicked = false;
+		this.ModalFunction();
+	};
+	//this will toggle the add modal form
+	onModalToggleAdd = (e) => {
+		e.preventDefault();
+		this.ModalFunction();
+	};
+	//this will toggle the edit modal form
+	onModalToggleEdit(supplierID) {
+		return (event) => {
+			event.preventDefault();
+			this.props.getSupplier(supplierID);
+			this.ModalFunction();
+			EditButtonIsClicked = true;
+		};
+	}
+	// function that called to open or close modal
+	ModalFunction() {
+		this.setState({ modal: !this.state.modal });
+		document.body.scrollTop = 0;
+		document.documentElement.scrollTop = 0;
+		document.getElementById('Body').classList.toggle('overflow-hidden');
+	}
 	render() {
+		const { username, email, first_name, last_name, password, password2 } =
+			this.state;
 		//destructuring the dictionary for searching/ fetching purposes
 		AccountsItems = [];
 		this.props.accounts.map((accounts) =>
@@ -57,8 +121,11 @@ class AccountsIndex extends React.Component {
 										<div className="text-white cursor-pointer focus:outline-none border border-transparent focus:border-gray-800 focus:shadow-outline-gray bg-teal_custom transition duration-150 ease-in-out hover:bg-gray-600 w-12 h-12 rounded flex items-center justify-center">
 											<i class="fal fa-print fa-lg"></i>
 										</div>
-										<div className="text-white ml-4 cursor-pointer focus:outline-none border border-transparent focus:border-gray-800 focus:shadow-outline-gray bg-teal_custom transition duration-150 ease-in-out hover:bg-gray-600 w-12 h-12 rounded flex items-center justify-center">
-											<i class="fal fa-plus fa-lg"></i>
+										<div
+											onClick={this.onModalToggleAdd}
+											className="text-white ml-4 cursor-pointer focus:outline-none border border-transparent focus:border-gray-800 focus:shadow-outline-gray bg-teal_custom transition duration-150 ease-in-out hover:bg-gray-600 w-12 h-12 rounded flex items-center justify-center"
+										>
+											<i class="fa fa-user-plus fa-fw"></i>
 										</div>
 									</div>
 								</div>
@@ -228,14 +295,25 @@ class AccountsIndex extends React.Component {
 						</div>
 					</div>
 				</div>
+				<RegistrationModal
+					modal={this.state.modal}
+					onModalToggleAdd={this.onModalToggleAdd}
+					state={!EditButtonIsClicked ? this.state : this.props.supplier}
+					onChange={this.onChange}
+					EditButtonIsClicked={EditButtonIsClicked}
+					onEditCloseButton={this.onEditCloseButton}
+					onSubmit={this.onSubmit}
+				/>
 			</>
 		);
 	}
 }
 const mapStateToProps = (state) => ({
 	accounts: state.AuthReducer.accounts,
+	isAuthenticated: state.AuthReducer.isAuthenticated,
 });
 
 export default connect(mapStateToProps, {
 	getAccountList,
+	register,
 })(AccountsIndex);

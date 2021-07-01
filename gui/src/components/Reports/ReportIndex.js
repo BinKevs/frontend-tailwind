@@ -103,7 +103,7 @@ class ReportIndex extends React.Component {
 								totalAmount: transactionsFilteredDateSeparated[i].totalAmount,
 								date:
 									transactionsFilteredDateSeparated[i].time.split(':')[0] +
-									' PM',
+									' AM',
 							});
 						} else {
 							transactionsForDailyFiltered.push({
@@ -113,7 +113,7 @@ class ReportIndex extends React.Component {
 										transactionsFilteredDateSeparated[i].time.split(':')[0]
 									) -
 									12 +
-									' AM',
+									' PM',
 							});
 						}
 					}

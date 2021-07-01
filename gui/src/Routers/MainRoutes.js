@@ -13,7 +13,6 @@ import AttendanceLog from '../components/Accounts/AttendanceLog';
 import AccountsIndex from '../components/Accounts/AccountsIndex';
 import AccountSettingsMenu from '../components/Accounts/AccountSettingsMenu';
 import PrivateRoute from '../Helpers/PrivateRoute';
-import Registration from '../components/Accounts/RegistrationIndex';
 const MainBaseRouter = () => (
 	<>
 		<Switch>
@@ -42,7 +41,6 @@ const MainBaseRouter = () => (
 				path="/accounts/settings/menu"
 				component={AccountSettingsMenu}
 			/>
-			<PrivateRoute exact path="/registerAccount" component={Registration} />
 		</Switch>
 	</>
 );

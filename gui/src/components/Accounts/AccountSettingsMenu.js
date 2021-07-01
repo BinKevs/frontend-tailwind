@@ -9,7 +9,8 @@ const AccountSettingsMenu = (props) => {
 						<h3 class="font-bold pl-2">Account settings</h3>
 					</div>
 				</div>
-				<div class="flex flex-wrap h-5/6 items-center">
+
+				<div class="flex flex-col lg:flex-row h-5/6 items-center">
 					<Link to="/attendance_log" class="cursor-pointer w-full xl:w-1/3 p-6">
 						<div class="bg-white rounded-lg shadow-md hover:shadow-2xl active:bg-gray-700 p-5">
 							<div class="flex flex-col items-center">

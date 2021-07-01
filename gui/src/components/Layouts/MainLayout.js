@@ -140,7 +140,7 @@ class MainLayout extends React.Component {
 							flex-none
 							items-center"
 							>
-								<div class="relative inline-block md:mr-2 py-2">
+								<div class="relative inline-block lg:mr-2 py-2">
 									<button
 										onClick={this.setDropDown}
 										class=" text-white focus:outline-none"
@@ -164,13 +164,13 @@ class MainLayout extends React.Component {
 									>
 										<div className="">
 											<Link
-												// to="/accounts/settings/menu"
-												to="/products"
+												to="/accounts/settings/menu"
+												// to="/products"
 												class="p-2 hover:bg-gray-800 text-white text-sm hover:no-underline inline-block"
 											>
 												<i class="fa fa-cog fa-fw"></i> Settings
 											</Link>
-											{this.props.AuthReducer.is_superuser ? (
+											{/* {this.props.AuthReducer.is_superuser ? (
 												<Link
 													to="/registerAccount"
 													class="p-2 hover:bg-gray-800 text-white text-sm hover:no-underline inline-block"
@@ -179,7 +179,7 @@ class MainLayout extends React.Component {
 												</Link>
 											) : (
 												''
-											)}
+											)} */}
 											{/* <div class="border border-gray-800"></div> */}
 											{/* {!this.props.AuthReducer.isAuthenticated ? (
 												<Link
@@ -220,16 +220,16 @@ class MainLayout extends React.Component {
 											to="/dashboard"
 											class={
 												DashboardNavBtn
-													? 'block py-1 md:py-3 pl-1 align-middle text-teal_custom no-underline border-b-2 border-teal_custom'
-													: 'block py-1 md:py-3 pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-gray-800 hover:border-teal_custom'
+													? 'block py-1 lg:py-3 pl-1 align-middle text-teal_custom no-underline border-b-2 border-teal_custom'
+													: 'block py-1 lg:py-3 pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-gray-800 hover:border-teal_custom'
 											}
 										>
-											<i className="fas fa-chart-line pr-0 md:pr-3"></i>
+											<i className="fas fa-chart-line pr-0 lg:pr-3"></i>
 											<span
 												class={
 													DashboardNavBtn
-														? 'pb-1 md:pb-0 text-xs md:text-base text-white  block md:inline-block'
-														: 'pb-1 md:pb-0 text-xs md:text-base text-gray-400 block md:inline-block'
+														? 'pb-1 lg:pb-0 text-xs lg:text-base text-white  block lg:inline-block'
+														: 'pb-1 lg:pb-0 text-xs lg:text-base text-gray-400 block lg:inline-block'
 												}
 											>
 												Dashboard
@@ -244,16 +244,16 @@ class MainLayout extends React.Component {
 											to="/products"
 											class={
 												ProductsNavBtn
-													? 'block py-1 md:py-3 pl-1 align-middle text-teal_custom no-underline border-b-2 border-teal_custom'
-													: 'block py-1 md:py-3 pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-gray-800 hover:border-teal_custom'
+													? 'block py-1 lg:py-3 pl-1 align-middle text-teal_custom no-underline border-b-2 border-teal_custom'
+													: 'block py-1 lg:py-3 pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-gray-800 hover:border-teal_custom'
 											}
 										>
-											<i className="fas fa-cart-plus pr-0 md:pr-3"></i>
+											<i className="fas fa-cart-plus pr-0 lg:pr-3"></i>
 											<span
 												class={
 													ProductsNavBtn
-														? 'pb-1 md:pb-0 text-xs md:text-base text-white  block md:inline-block'
-														: 'pb-1 md:pb-0 text-xs md:text-base text-gray-400 block md:inline-block'
+														? 'pb-1 lg:pb-0 text-xs lg:text-base text-white  block lg:inline-block'
+														: 'pb-1 lg:pb-0 text-xs lg:text-base text-gray-400 block lg:inline-block'
 												}
 											>
 												Products
@@ -268,16 +268,16 @@ class MainLayout extends React.Component {
 											to="/reports"
 											class={
 												ReportsNavBtn
-													? 'block py-1 md:py-3 pl-1 align-middle text-teal_custom no-underline border-b-2 border-teal_custom'
-													: 'block py-1 md:py-3 pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-gray-800 hover:border-teal_custom'
+													? 'block py-1 lg:py-3 pl-1 align-middle text-teal_custom no-underline border-b-2 border-teal_custom'
+													: 'block py-1 lg:py-3 pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-gray-800 hover:border-teal_custom'
 											}
 										>
-											<i class="fas fa-file-alt  pr-0 md:pr-3 "></i>
+											<i class="fas fa-file-alt  pr-0 lg:pr-3 "></i>
 											<span
 												class={
 													ReportsNavBtn
-														? 'pb-1 md:pb-0 text-xs md:text-base text-white  block md:inline-block'
-														: 'pb-1 md:pb-0 text-xs md:text-base text-gray-400 block md:inline-block'
+														? 'pb-1 lg:pb-0 text-xs lg:text-base text-white  block lg:inline-block'
+														: 'pb-1 lg:pb-0 text-xs lg:text-base text-gray-400 block lg:inline-block'
 												}
 											>
 												Reports
@@ -292,17 +292,17 @@ class MainLayout extends React.Component {
 											to="/products/settings"
 											class={
 												ProductSettingNavBtn
-													? 'block py-1 md:py-3 pl-1 align-middle text-teal_custom no-underline border-b-2 border-teal_custom'
-													: 'block py-1 md:py-3 pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-gray-800 hover:border-teal_custom'
+													? 'block py-1 lg:py-3 pl-1 align-middle text-teal_custom no-underline border-b-2 border-teal_custom'
+													: 'block py-1 lg:py-3 pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-gray-800 hover:border-teal_custom'
 											}
 										>
-											<i className="fas fa-sliders-h pr-0 md:pr-3"></i>
+											<i className="fas fa-sliders-h pr-0 lg:pr-3"></i>
 
 											<div
 												class={
 													ProductSettingNavBtn
-														? 'pb-1 md:pb-0 text-xs md:text-base text-white block md:inline-block'
-														: 'pb-1 md:pb-0 text-xs md:text-base text-gray-400 block md:inline-block'
+														? 'pb-1 lg:pb-0 text-xs lg:text-base text-white block lg:inline-block'
+														: 'pb-1 lg:pb-0 text-xs lg:text-base text-gray-400 block lg:inline-block'
 												}
 											>
 												Product Setting
@@ -317,16 +317,16 @@ class MainLayout extends React.Component {
 											to="/inventories"
 											class={
 												InventoryNavBtn
-													? 'block py-1 md:py-3 pl-1 align-middle text-teal_custom no-underline border-b-2 border-teal_custom'
-													: 'block py-1 md:py-3 pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-gray-800 hover:border-teal_custom'
+													? 'block py-1 lg:py-3 pl-1 align-middle text-teal_custom no-underline border-b-2 border-teal_custom'
+													: 'block py-1 lg:py-3 pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-gray-800 hover:border-teal_custom'
 											}
 										>
-											<i className="fas fa-clipboard-list pr-0 md:pr-3"></i>
+											<i className="fas fa-clipboard-list pr-0 lg:pr-3"></i>
 											<span
 												class={
 													InventoryNavBtn
-														? 'pb-1 md:pb-0 text-xs md:text-base text-white  block md:inline-block'
-														: 'pb-1 md:pb-0 text-xs md:text-base text-gray-400 block md:inline-block'
+														? 'pb-1 lg:pb-0 text-xs lg:text-base text-white  block lg:inline-block'
+														: 'pb-1 lg:pb-0 text-xs lg:text-base text-gray-400 block lg:inline-block'
 												}
 											>
 												Inventory
@@ -341,16 +341,16 @@ class MainLayout extends React.Component {
 											to="/supplier"
 											class={
 												SupplierNavBtn
-													? 'block py-1 md:py-3 pl-1 align-middle text-teal_custom no-underline border-b-2 border-teal_custom'
-													: 'block py-1 md:py-3 pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-gray-800 hover:border-teal_custom'
+													? 'block py-1 lg:py-3 pl-1 align-middle text-teal_custom no-underline border-b-2 border-teal_custom'
+													: 'block py-1 lg:py-3 pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-gray-800 hover:border-teal_custom'
 											}
 										>
-											<i className="fas fa-clipboard-list pr-0 md:pr-3"></i>
+											<i className="fas fa-clipboard-list pr-0 lg:pr-3"></i>
 											<span
 												class={
 													SupplierNavBtn
-														? 'pb-1 md:pb-0 text-xs md:text-base text-white  block md:inline-block'
-														: 'pb-1 md:pb-0 text-xs md:text-base text-gray-400 block md:inline-block'
+														? 'pb-1 lg:pb-0 text-xs lg:text-base text-white  block lg:inline-block'
+														: 'pb-1 lg:pb-0 text-xs lg:text-base text-gray-400 block lg:inline-block'
 												}
 											>
 												Supplier
@@ -365,29 +365,53 @@ class MainLayout extends React.Component {
 											to="/transactions"
 											class={
 												TransactionsNavBtn
-													? 'block py-1 md:py-3 pl-1 align-middle text-teal_custom no-underline border-b-2 border-teal_custom'
-													: 'block py-1 md:py-3 pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-gray-800 hover:border-teal_custom'
+													? 'block py-1 lg:py-3 pl-1 align-middle text-teal_custom no-underline border-b-2 border-teal_custom'
+													: 'block py-1 lg:py-3 pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-gray-800 hover:border-teal_custom'
 											}
 										>
-											<i className="fas fa-coins pr-0 md:pr-3"></i>
+											<i className="fas fa-coins pr-0 lg:pr-3"></i>
 											<span
 												class={
 													TransactionsNavBtn
-														? 'pb-1 md:pb-0 text-xs md:text-base text-white  block md:inline-block'
-														: 'pb-1 md:pb-0 text-xs md:text-base text-gray-400 block md:inline-block'
+														? 'pb-1 lg:pb-0 text-xs lg:text-base text-white  block lg:inline-block'
+														: 'pb-1 lg:pb-0 text-xs lg:text-base text-gray-400 block lg:inline-block'
 												}
 											>
 												Transactions
 											</span>
 										</Link>
 									</li>
+									<li
+										class="mr-3 flex-1 NavBtn"
+										onClick={this.setActiveNav('TransactionsNavBtn')}
+									>
+										<Link
+											to="/transactions"
+											class={
+												TransactionsNavBtn
+													? 'block py-1 lg:py-3 pl-1 align-middle text-teal_custom no-underline border-b-2 border-teal_custom'
+													: 'block py-1 lg:py-3 pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-gray-800 hover:border-teal_custom'
+											}
+										>
+											<i className="fas fa-coins pr-0 lg:pr-3"></i>
+											<span
+												class={
+													TransactionsNavBtn
+														? 'pb-1 lg:pb-0 text-xs lg:text-base text-white  block lg:inline-block'
+														: 'pb-1 lg:pb-0 text-xs lg:text-base text-gray-400 block lg:inline-block'
+												}
+											>
+												Transaction Item's History
+											</span>
+										</Link>
+									</li>
 									{/* <li class="mr-3 flex-1">
 								<a
 									href="#"
-									class="block py-1 md:py-3 pl-0 md:pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-gray-800 hover:border-red-500"
+									class="block py-1 lg:py-3 pl-0 lg:pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-gray-800 hover:border-red-500"
 								>
-									<i className="fas fa-sitemap pr-0 md:pr-3"></i>
-									<span class="pb-1 md:pb-0 text-xs md:text-base text-gray-600 md:text-gray-400 block md:inline-block">
+									<i className="fas fa-sitemap pr-0 lg:pr-3"></i>
+									<span class="pb-1 lg:pb-0 text-xs lg:text-base text-gray-600 lg:text-gray-400 block lg:inline-block">
 										Transaction Item's History
 									</span>
 								</a>

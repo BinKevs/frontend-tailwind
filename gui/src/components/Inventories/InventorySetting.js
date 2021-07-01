@@ -11,6 +11,7 @@ import {
 import { getSupplierList } from '../../store/actions/supplier/suppliers';
 import { getProductList } from '../../store/actions/product/products';
 import InventoryModal from './InventoryModal';
+import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 let EditButtonIsClicked = false;
 let inventories = [];
 class InventorySettingIndex extends React.Component {
@@ -184,7 +185,12 @@ class InventorySettingIndex extends React.Component {
 								<div className="w-full lg:w-2/3 flex flex-col lg:flex-row items-start lg:items-center justify-end">
 									<div className="lg:ml-6 flex items-start w-full">
 										<div className="text-white cursor-pointer focus:outline-none border border-transparent focus:border-gray-800 focus:shadow-outline-gray bg-teal_custom transition duration-150 ease-in-out hover:bg-gray-600 w-12 h-12 rounded flex items-center justify-center">
-											<i class="fal fa-print fa-lg"></i>
+											<ReactHTMLTableToExcel
+												class="fal fa-print fa-lg"
+												table="inventory-table"
+												filename="inventory-table"
+												sheet="inventory-table"
+											/>
 										</div>
 										<div
 											onClick={this.onModalToggleAdd}
@@ -238,7 +244,10 @@ class InventorySettingIndex extends React.Component {
 								</div>
 							</div>
 							<div className="w-full overflow-x-auto">
-								<table className="min-w-full bg-white dark:bg-gray-800">
+								<table
+									id="inventory-table"
+									className="min-w-full bg-white dark:bg-gray-800"
+								>
 									<thead>
 										<tr className="w-full h-16 border-gray-300 dark:border-gray-200 border-b py-8">
 											<th className="pl-8 text-gray-600 dark:text-gray-400 font-normal pr-6 text-left text-sm tracking-normal leading-4">

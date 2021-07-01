@@ -29,12 +29,18 @@ const SupplierModal = (props) => {
 									class="mt-9"
 								>
 									<div className="relative p-4 md:p-8 bg-white dark:bg-gray-800 dark:border-gray-700 shadow-md rounded border border-gray-400 ">
-										<div className="flex items-center justify-center w-full">
-											<h1 className="text-center text-gray-800 dark:text-gray-100 text-2xl font-bold tracking-normal leading-tight mb-4">
+										<div class="text-left p-0 mb-8">
+											<div>
+												<i class="far fa-motorcycle fa-3x mb-3 inline-block"></i>{' '}
+												<h1 class="font-Montserrat text-gray-800 text-2xl inline-block">
+													ABC Motor Parts
+												</h1>
+											</div>
+
+											<h1 class="text-gray-800 text-3xl font-medium">
 												{!EditButtonIsClicked ? 'Add' : 'Update'} Supplier
 											</h1>
 										</div>
-
 										<div className="">
 											<div class="relative z-0 w-full mb-5">
 												<input
