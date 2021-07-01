@@ -81,7 +81,7 @@ class ProductListIndex extends React.Component {
 							{/* flex
 							items-center
 							<i class="fad fa-bars fa-2x"></i> */}
-							<h3 class="font-bold pl-2">Productsss</h3>
+							<h3 class="font-bold pl-2">Productsz</h3>
 						</div>
 					</div>
 
