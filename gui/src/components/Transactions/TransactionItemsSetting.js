@@ -27,6 +27,7 @@ class TransactionItemsSettingIndex extends React.Component {
 		this.props.transaction_items.map((trans) =>
 			TransactionItems.push({
 				id: trans.id,
+				transaction_item_id: trans.transaction_item_id,
 				productName: trans.product_info.name,
 				productPrice: trans.product_info.price,
 				transactionDate: trans.transaction_date.created_at,
@@ -151,7 +152,7 @@ class TransactionItemsSettingIndex extends React.Component {
 													/>
 												</td>
 												<td className="text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal leading-4">
-													{item.id}
+													{item.transaction_item_id}
 												</td>
 												<td className="text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal leading-4">
 													{item.productName}

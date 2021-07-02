@@ -3,6 +3,7 @@ import { Link, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { login } from '../../store/actions/account/auth';
+
 class Login extends React.Component {
 	state = {
 		username: '',
@@ -23,9 +24,10 @@ class Login extends React.Component {
 		console.log('Submitted!!');
 		this.props.login(this.state.username, this.state.password);
 	};
+
 	render() {
-		if (this.props.isAuthenticated) {
-			return <Redirect to={'/dashboard'} />;
+		if (this.props.AuthReducer.isAuthenticated) {
+			return <Redirect to={'/products'} />;
 		}
 		return (
 			<>
@@ -114,7 +116,7 @@ class Login extends React.Component {
 }
 const mapStateToProps = (state) => {
 	return {
-		isAuthenticated: state.AuthReducer.isAuthenticated,
+		AuthReducer: state.AuthReducer,
 	};
 };
 export default connect(mapStateToProps, { login })(Login);

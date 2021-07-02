@@ -38,7 +38,7 @@ export const getSupplierListWithPagination = () => (dispatch, getState) => {
 };
 export const getSupplierList = () => (dispatch, getState) => {
 	axios
-		.get(url, tokenConfig(getState))
+		.get(url + '?ordering=-id', tokenConfig(getState))
 		.then((res) => {
 			dispatch({
 				type: GET_SUPPLIER_LIST,

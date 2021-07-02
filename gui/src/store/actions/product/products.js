@@ -16,7 +16,7 @@ import { HandleSuccessMessages } from '../../../Helpers/functions';
 const url = URL_IMPORT + '/api/products/';
 export const getProductList = () => (dispatch, getState) => {
 	dispatch({ type: PRODUCT_LOADING });
-	axios.get(url, tokenConfig(getState)).then((res) => {
+	axios.get(url + '?ordering=-id', tokenConfig(getState)).then((res) => {
 		dispatch({
 			type: GET_PRODUCT_LIST,
 			payload: res.data,

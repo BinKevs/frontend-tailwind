@@ -11,7 +11,8 @@ import {
 import { getSupplierList } from '../../store/actions/supplier/suppliers';
 import { getProductList } from '../../store/actions/product/products';
 import InventoryModal from './InventoryModal';
-import ReactHTMLTableToExcel from 'react-html-table-to-excel';
+
+import ExportTable from '../Layouts/ExportTable';
 let EditButtonIsClicked = false;
 let inventories = [];
 class InventorySettingIndex extends React.Component {
@@ -32,6 +33,7 @@ class InventorySettingIndex extends React.Component {
 		search: '',
 		inventoryID: 0,
 		modal: false,
+		table_export_modal: false,
 	};
 
 	onChange = (e) => {
@@ -141,12 +143,21 @@ class InventorySettingIndex extends React.Component {
 		document.documentElement.scrollTop = 0;
 		document.getElementById('Body').classList.toggle('overflow-hidden');
 	}
+
+	OnToggleExportTable = (event) => {
+		event.preventDefault();
+		this.setState({ table_export_modal: !this.state.table_export_modal });
+		document.body.scrollTop = 0;
+		document.documentElement.scrollTop = 0;
+		document.getElementById('Body').classList.toggle('overflow-hidden');
+	};
 	render() {
 		// destructure the inventories that came from the reducer so it will be easier to filter and show
 		inventories = [];
 		this.props.inventories.map((inventory) =>
 			inventories.push({
 				id: inventory.id,
+				inventory_id: inventory.inventory_id,
 				supplier: inventory.supplier_info.name,
 				product: inventory.product_info.name,
 				new_stock: inventory.new_stock,
@@ -184,13 +195,11 @@ class InventorySettingIndex extends React.Component {
 							<div className="flex flex-col lg:flex-row p-4 lg:p-8 justify-end items-start lg:items-stretch w-full">
 								<div className="w-full lg:w-2/3 flex flex-col lg:flex-row items-start lg:items-center justify-end">
 									<div className="lg:ml-6 flex items-start w-full">
-										<div className="text-white cursor-pointer focus:outline-none border border-transparent focus:border-gray-800 focus:shadow-outline-gray bg-teal_custom transition duration-150 ease-in-out hover:bg-gray-600 w-12 h-12 rounded flex items-center justify-center">
-											<ReactHTMLTableToExcel
-												class="fal fa-print fa-lg"
-												table="inventory-table"
-												filename="inventory-table"
-												sheet="inventory-table"
-											/>
+										<div
+											onClick={this.OnToggleExportTable}
+											className="text-white cursor-pointer focus:outline-none border border-transparent focus:border-gray-800 focus:shadow-outline-gray bg-teal_custom transition duration-150 ease-in-out hover:bg-gray-600 w-12 h-12 rounded flex items-center justify-center"
+										>
+											<i class="fal fa-print fa-lg"></i>
 										</div>
 										<div
 											onClick={this.onModalToggleAdd}
@@ -297,7 +306,7 @@ class InventorySettingIndex extends React.Component {
 													/>
 												</td>
 												<td className="text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal leading-4">
-													{inventory.id}
+													{inventory.inventory_id}
 												</td>
 												<td className="text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal leading-4">
 													{inventory.product}
@@ -382,6 +391,10 @@ class InventorySettingIndex extends React.Component {
 					onUpdateSubmit={this.onUpdateSubmit}
 					EditButtonIsClicked={EditButtonIsClicked}
 					onEditCloseButton={this.onEditCloseButton}
+				/>
+				<ExportTable
+					table_export_modal={this.state.table_export_modal}
+					OnToggleExportTable={this.OnToggleExportTable}
 				/>
 			</>
 		);

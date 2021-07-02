@@ -213,6 +213,7 @@ class ProductSetting extends React.Component {
 		this.props.products.map((product) =>
 			products.push({
 				id: product.id,
+				product_id: product.product_id,
 				name: product.name,
 				price: product.price,
 				category: product.category_info.name,
@@ -361,7 +362,7 @@ class ProductSetting extends React.Component {
 													/>
 												</td>
 												<td className="text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal leading-4">
-													{product.id}
+													{product.product_id}
 												</td>
 												<td className="text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal leading-4">
 													{product.name}

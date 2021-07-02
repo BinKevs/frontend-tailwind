@@ -94,7 +94,6 @@ const ProductModal = (props) => {
 													class="pt-3 pb-2 block w-full px-2 mt-0 text-gray-700 border-2 rounded-l focus:ring-0 active:border-cyan-700 border-gray-200"
 													type="file"
 													name="image"
-													required
 													onChange={onChange}
 												/>
 

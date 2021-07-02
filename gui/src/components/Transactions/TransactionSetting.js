@@ -56,12 +56,12 @@ class TransactionSettingIndex extends React.Component {
 										<div className="text-white cursor-pointer focus:outline-none border border-transparent focus:border-gray-800 focus:shadow-outline-gray bg-teal_custom transition duration-150 ease-in-out hover:bg-gray-600 w-12 h-12 rounded flex items-center justify-center">
 											<i class="fal fa-print fa-lg"></i>
 										</div>
-										<Link to="/transactions/items">
+										{/* <Link to="/transactions/items">
 											<div className="text-white ml-4 p-3 cursor-pointer focus:outline-none border border-transparent focus:border-gray-800 focus:shadow-outline-gray bg-teal_custom transition duration-150 ease-in-out hover:bg-gray-600  rounded flex items-center justify-center">
 												<i class="fad fa-sitemap fa-lg mr-2"></i>Transaction
 												Items
 											</div>
-										</Link>
+										</Link> */}
 									</div>
 								</div>
 								<div className="w-full lg:w-2/3 flex flex-col lg:flex-row items-start lg:items-center justify-end">
@@ -163,7 +163,7 @@ class TransactionSettingIndex extends React.Component {
 													/>
 												</td>
 												<td className="text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal leading-4">
-													{transaction.id}
+													{transaction.transaction_id}
 												</td>
 												<td className="text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal leading-4">
 													{transaction.creator == null

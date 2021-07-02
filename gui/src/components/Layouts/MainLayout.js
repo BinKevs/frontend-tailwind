@@ -13,6 +13,7 @@ class MainLayout extends React.Component {
 		InventoryNavBtn: false,
 		SupplierNavBtn: false,
 		TransactionsNavBtn: false,
+		TransactionsItemsNavBtn: false,
 	};
 	componentDidMount() {
 		this.props.loadUser();
@@ -29,6 +30,7 @@ class MainLayout extends React.Component {
 					InventoryNavBtn: false,
 					SupplierNavBtn: false,
 					TransactionsNavBtn: false,
+					TransactionsItemsNavBtn: false,
 				});
 			} else if (NavBtn === 'ProductsNavBtn') {
 				this.setState({
@@ -39,6 +41,7 @@ class MainLayout extends React.Component {
 					InventoryNavBtn: false,
 					SupplierNavBtn: false,
 					TransactionsNavBtn: false,
+					TransactionsItemsNavBtn: false,
 				});
 			} else if (NavBtn === 'ReportsNavBtn') {
 				this.setState({
@@ -49,6 +52,7 @@ class MainLayout extends React.Component {
 					InventoryNavBtn: false,
 					SupplierNavBtn: false,
 					TransactionsNavBtn: false,
+					TransactionsItemsNavBtn: false,
 				});
 			} else if (NavBtn === 'ProductSettingNavBtn') {
 				this.setState({
@@ -59,6 +63,7 @@ class MainLayout extends React.Component {
 					InventoryNavBtn: false,
 					SupplierNavBtn: false,
 					TransactionsNavBtn: false,
+					TransactionsItemsNavBtn: false,
 				});
 			} else if (NavBtn === 'InventoryNavBtn') {
 				this.setState({
@@ -69,6 +74,7 @@ class MainLayout extends React.Component {
 					InventoryNavBtn: true,
 					SupplierNavBtn: false,
 					TransactionsNavBtn: false,
+					TransactionsItemsNavBtn: false,
 				});
 			} else if (NavBtn === 'SupplierNavBtn') {
 				this.setState({
@@ -79,6 +85,7 @@ class MainLayout extends React.Component {
 					InventoryNavBtn: false,
 					SupplierNavBtn: true,
 					TransactionsNavBtn: false,
+					TransactionsItemsNavBtn: false,
 				});
 			} else if (NavBtn === 'TransactionsNavBtn') {
 				this.setState({
@@ -89,6 +96,18 @@ class MainLayout extends React.Component {
 					InventoryNavBtn: false,
 					SupplierNavBtn: false,
 					TransactionsNavBtn: true,
+					TransactionsItemsNavBtn: false,
+				});
+			} else if (NavBtn === 'TransactionsItemsNavBtn') {
+				this.setState({
+					DashboardNavBtn: false,
+					ProductsNavBtn: false,
+					ReportsNavBtn: false,
+					ProductSettingNavBtn: false,
+					InventoryNavBtn: false,
+					SupplierNavBtn: false,
+					TransactionsNavBtn: false,
+					TransactionsItemsNavBtn: true,
 				});
 			}
 		};
@@ -113,6 +132,7 @@ class MainLayout extends React.Component {
 			InventoryNavBtn,
 			SupplierNavBtn,
 			TransactionsNavBtn,
+			TransactionsItemsNavBtn,
 		} = this.state;
 		console.log(this.props.AuthReducer.is_superuser);
 		return (
@@ -383,12 +403,12 @@ class MainLayout extends React.Component {
 									</li>
 									<li
 										class="mr-3 flex-1 NavBtn"
-										onClick={this.setActiveNav('TransactionsNavBtn')}
+										onClick={this.setActiveNav('TransactionsItemsNavBtn')}
 									>
 										<Link
-											to="/transactions"
+											to="/transactions/items"
 											class={
-												TransactionsNavBtn
+												TransactionsItemsNavBtn
 													? 'block py-1 lg:py-3 pl-1 align-middle text-teal_custom no-underline border-b-2 border-teal_custom'
 													: 'block py-1 lg:py-3 pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-gray-800 hover:border-teal_custom'
 											}
@@ -396,7 +416,7 @@ class MainLayout extends React.Component {
 											<i className="fas fa-coins pr-0 lg:pr-3"></i>
 											<span
 												class={
-													TransactionsNavBtn
+													TransactionsItemsNavBtn
 														? 'pb-1 lg:pb-0 text-xs lg:text-base text-white  block lg:inline-block'
 														: 'pb-1 lg:pb-0 text-xs lg:text-base text-gray-400 block lg:inline-block'
 												}
