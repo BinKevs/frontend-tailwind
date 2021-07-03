@@ -12,8 +12,8 @@ import {
 } from '../../store/actions/product/products';
 import { getSupplierList } from '../../store/actions/supplier/suppliers';
 import ProductModal from './ProductModal';
+import { Link } from 'react-router-dom';
 let products = [];
-
 let EditButtonIsClicked = false;
 let isImageChanged = false;
 class ProductSetting extends React.Component {
@@ -45,6 +45,7 @@ class ProductSetting extends React.Component {
 		this.props.getProductList();
 		this.props.getSupplierList();
 		this.props.getCategoryList();
+		this.props.getProduct(1);
 	}
 
 	// when the image field changes it will save the image and also change the state of
@@ -61,6 +62,7 @@ class ProductSetting extends React.Component {
 			isImageChanged = true;
 		} else {
 			this.setState({ [e.target.name]: e.target.value });
+			console.log(this.state);
 		}
 	};
 	// Submitting the name in the add category action
@@ -77,28 +79,25 @@ class ProductSetting extends React.Component {
 	// when the isEditButtonClicked status is change this.props.product
 	// *the product that will be edited* is being fetch because we trigger it in the bottom
 	// then we will set it to the state and being passed on the formupdate component
-	// componentDidUpdate(prevProps, prevState) {
-	// 	if (isEditButtonClicked) {
-	// 		EditButtonIsClicked = true;
-	// 		const { id, name, description, price, supplier, category, stock, image } =
-	// 			this.props.product;
-	// 		this.setState({
-	// 			name,
-	// 			description,
-	// 			price,
-	// 			supplier,
-	// 			category,
-	// 			stock,
-	// 			image,
-	// 			productID: id,
-	// 		});
-
-	// 		isEditButtonClicked = false;
-	// 	}
-	// 	if (this.props.product !== prevProps.product) {
-	// 		this.props.getProductList();
-	// 	}
-	// }
+	componentDidUpdate(prevProps, prevState) {
+		if (this.props.product != prevProps.product) {
+			const { id, name, description, price, supplier, category, stock, image } =
+				this.props.product;
+			this.setState({
+				name,
+				description,
+				price,
+				supplier,
+				category,
+				stock,
+				image,
+				productID: id,
+			});
+			console.log('this is the props : ' + this.props.product);
+			console.log('this is the state : ' + this.state);
+			this.props.getProductList();
+		}
+	}
 	//this will sent the updated product in the this.props.updateProduct to the action and will reset the state
 	onUpdateSubmit = (productID) => {
 		return (e) => {
@@ -116,7 +115,7 @@ class ProductSetting extends React.Component {
 			if (isImageChanged) {
 				formData.append('image', image);
 			}
-
+			console.log(productID, formData);
 			this.props.updateProduct(productID, formData);
 			this.setState({
 				name: '',
@@ -131,7 +130,7 @@ class ProductSetting extends React.Component {
 			});
 			EditButtonIsClicked = false;
 			isImageChanged = false;
-			this.onModalToggleEdit();
+			this.ModalFunction();
 		};
 	};
 	// when edit button is close this will reset the state and EditButtonIsClicked, isImageChanged and isEditButtonClicked states
@@ -139,7 +138,6 @@ class ProductSetting extends React.Component {
 	// sending the product that will be added to this.props.addProduct in the actions also reset the state
 	onAddSubmit = (e) => {
 		e.preventDefault();
-		console.log(this.state);
 		const { name, description, price, category, supplier, stock, image } =
 			this.state;
 		const formData = new FormData();
@@ -164,7 +162,7 @@ class ProductSetting extends React.Component {
 			image: null,
 		});
 		isImageChanged = false;
-		this.onModalToggleEdit();
+		this.ModalFunction();
 	};
 
 	// when edit button click this will fetch the supplier that will be edited and change the isEditButtonClicked status to true
@@ -182,7 +180,6 @@ class ProductSetting extends React.Component {
 			productID: 0,
 		});
 		EditButtonIsClicked = false;
-
 		isImageChanged = false;
 		this.ModalFunction();
 	};
@@ -198,6 +195,7 @@ class ProductSetting extends React.Component {
 			this.props.getProduct(productID);
 			this.ModalFunction();
 			EditButtonIsClicked = true;
+			console.log(this.props.product);
 		};
 	}
 	// function that called to open or close modal
@@ -247,6 +245,7 @@ class ProductSetting extends React.Component {
 							<h3 class="font-bold pl-2">Products</h3>
 						</div>
 					</div>
+
 					<div className="py-5 w-full">
 						<div className="mx-auto bg-white dark:bg-gray-800 shadow rounded">
 							<div className="flex flex-col lg:flex-row p-4 lg:p-8 justify-end items-start lg:items-stretch w-full">
@@ -412,13 +411,16 @@ class ProductSetting extends React.Component {
 													<button className="button-see-more text-gray-500 rounded cursor-pointer border border-transparent focus:outline-none">
 														<div className="seeMore absolute left-0 top-0 mt-2 -ml-20 shadow-md z-10 w-32">
 															<ul className="bg-white dark:bg-gray-800 shadow rounded p-2">
+																{/* <Link
+																	to={'/products/settings/'.concat(product.id)}
+																> */}
 																<li
-																	// onClick={this.onModalToggle}
 																	onClick={this.onModalToggleEdit(product.id)}
 																	className="cursor-pointer text-gray-600 dark:text-gray-400 text-sm leading-3 tracking-normal py-3 hover:bg-teal_custom hover:text-white px-3 font-normal"
 																>
 																	Edit
 																</li>
+																{/* </Link> */}
 																<li className="cursor-pointer text-gray-600 dark:text-gray-400 text-sm leading-3 tracking-normal py-3 hover:bg-teal_custom hover:text-white px-3 font-normal">
 																	Delete
 																</li>
@@ -454,7 +456,8 @@ class ProductSetting extends React.Component {
 				<ProductModal
 					modal={this.state.modal}
 					onModalToggleAdd={this.onModalToggleAdd}
-					state={!EditButtonIsClicked ? this.state : this.props.product}
+					// state={!EditButtonIsClicked ? this.state : this.props.product}
+					state={this.state}
 					onChange={this.onChange}
 					suppliers={this.props.suppliers}
 					categories={this.props.categories}

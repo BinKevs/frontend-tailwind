@@ -134,7 +134,7 @@ class MainLayout extends React.Component {
 			TransactionsNavBtn,
 			TransactionsItemsNavBtn,
 		} = this.state;
-		console.log(this.props.AuthReducer.is_superuser);
+
 		return (
 			<>
 				<nav

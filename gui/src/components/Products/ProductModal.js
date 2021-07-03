@@ -22,10 +22,10 @@ const ProductModal = (props) => {
 		supplier,
 		stock,
 		image,
-		id,
+		productID,
 		urlFile,
 	} = props.state;
-
+	console.log(props.state);
 	return (
 		<>
 			<div class={modal ? 'h-screen ' : 'h-screen hidden'}>
@@ -39,7 +39,9 @@ const ProductModal = (props) => {
 							<div className="m-2 md:m-12">
 								<form
 									onSubmit={
-										!EditButtonIsClicked ? onAddSubmit : onUpdateSubmit(id)
+										!EditButtonIsClicked
+											? onAddSubmit
+											: onUpdateSubmit(productID)
 									}
 								>
 									<div className="relative p-4 md:p-8 bg-white dark:bg-gray-800 dark:border-gray-700 shadow-md rounded border border-gray-400 ">
@@ -53,10 +55,9 @@ const ProductModal = (props) => {
 												<input
 													type="text"
 													name="name"
-													onChange={onChange}
 													value={name}
+													onChange={onChange}
 													placeholder=" "
-													required
 													class="pt-3 pb-2 block w-full px-0 mt-0 bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 focus:border-cyan-700 border-gray-200"
 												/>
 												<label

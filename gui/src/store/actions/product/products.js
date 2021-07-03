@@ -12,6 +12,7 @@ import {
 	DELETE_CATEGORY,
 	PRODUCT_LOADING,
 } from './actionTypes';
+import swal from 'sweetalert';
 import { HandleSuccessMessages } from '../../../Helpers/functions';
 const url = URL_IMPORT + '/api/products/';
 export const getProductList = () => (dispatch, getState) => {
@@ -56,13 +57,14 @@ export const addProduct = (data) => (dispatch, getState) => {
 				payload: res.data,
 			});
 		})
-		.catch((err) =>
-			// swal({
-			// 	title: 'Product Added Failed',
-			// 	text: 'Error : ' + err,
-			// 	icon: 'error',
-			// })
-			console.log(err)
+		.catch(
+			(err) =>
+				swal({
+					title: 'Product Added Failed',
+					text: 'Error : ' + err,
+					icon: 'error',
+				})
+			// console.log(err)
 		);
 };
 export const updateProduct = (ProductID, data) => (dispatch, getState) => {
@@ -75,7 +77,13 @@ export const updateProduct = (ProductID, data) => (dispatch, getState) => {
 				payload: res.data,
 			});
 		})
-		.catch((err) => console.log(err));
+		.catch((err) =>
+			swal({
+				title: 'Product Update Failed',
+				text: 'Error : ' + err,
+				icon: 'error',
+			})
+		);
 };
 
 // Category part

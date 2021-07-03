@@ -1,6 +1,7 @@
 import { Route, Switch } from 'react-router-dom';
 import ProductListIndex from '../components/Products/ProductListIndex';
 import ProductSetting from '../components/Products/ProductSetting';
+import ProductSettingUpdate from '../components/Products/ProductSettingUpdate';
 import DashboardIndex from '../components/Dashboard/dashboard';
 import InventorySetting from '../components/Inventories/InventorySetting';
 import SupplierSetting from '../components/Suppliers/SupplierSetting';
@@ -13,6 +14,7 @@ import AttendanceLog from '../components/Accounts/AttendanceLog';
 import AccountsIndex from '../components/Accounts/AccountsIndex';
 import AccountSettingsMenu from '../components/Accounts/AccountSettingsMenu';
 import PrivateRoute from '../Helpers/PrivateRoute';
+
 const MainBaseRouter = () => (
 	<>
 		<Switch>
@@ -22,6 +24,11 @@ const MainBaseRouter = () => (
 				path="/products/settings"
 				component={ProductSetting}
 			/>
+			{/* <PrivateRoute
+				exact
+				path="/products/settings/:productID/"
+				component={ProductSettingUpdate}
+			/> */}
 			<PrivateRoute exact path="/dashboard" component={DashboardIndex} />
 			<PrivateRoute exact path="/inventories" component={InventorySetting} />
 			<PrivateRoute exact path="/supplier" component={SupplierSetting} />
