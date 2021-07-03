@@ -14,6 +14,7 @@ import InventoryModal from './InventoryModal';
 
 import ExportTable from '../Layouts/ExportTable';
 let EditButtonIsClicked = false;
+let ItemAdded = false;
 let inventories = [];
 class InventorySettingIndex extends React.Component {
 	static propTypes = {
@@ -46,7 +47,8 @@ class InventorySettingIndex extends React.Component {
 	onAddSubmit = (event) => {
 		event.preventDefault();
 		const { new_stock, product, supplier } = this.state;
-		const inventory = { new_stock, product, supplier };
+		const action_done = 'Inventory Added';
+		const inventory = { new_stock, product, supplier, action_done };
 		this.props.addInventory(inventory);
 
 		this.setState({
@@ -55,41 +57,34 @@ class InventorySettingIndex extends React.Component {
 			supplier: 0,
 			inventoryID: 0,
 		});
+		this.ModalFunction();
+		ItemAdded = true;
+		this.props.getInventoryList();
 	};
 
 	componentDidMount() {
 		this.props.getInventoryList();
 		this.props.getSupplierList();
 		this.props.getProductList();
-		this.setState({
-			search: '',
-		});
-		const { new_stock, product, supplier, id } = this.props.inventory;
-		this.setState({
-			new_stock,
-			product,
-			supplier,
-			inventoryID: id,
-		});
+		// this.props.getInventory(1);
 	}
 
-	// componentDidUpdate(prevProps, prevState) {
-	// 	if (isEditButtonClicked) {
-	// 		EditButtonIsClicked = true;
-	// 		const { new_stock, product, supplier, id } = this.props.inventory;
-	// 		this.setState({
-	// 			new_stock,
-	// 			product,
-	// 			supplier,
-	// 			inventoryID: id,
-	// 		});
-
-	// 		isEditButtonClicked = false;
-	// 	}
-	// 	if (this.props.inventories !== prevProps.inventories) {
-	// 		this.props.getInventoryList();
-	// 	}
-	// }
+	componentDidUpdate(prevProps, prevState) {
+		if (this.props.inventory !== prevProps.inventory) {
+			const { new_stock, product, supplier, id } = this.props.inventory;
+			this.setState({
+				new_stock,
+				product,
+				supplier,
+				inventoryID: id,
+			});
+			this.props.getInventoryList();
+		}
+		if (ItemAdded === true) {
+			this.props.getInventoryList();
+			ItemAdded = false;
+		}
+	}
 
 	// When Updating this will sent the new stock, product and supplier together with id
 	// to the updateInventory in the action and reset the state.
@@ -107,6 +102,7 @@ class InventorySettingIndex extends React.Component {
 				supplier: 0,
 				inventoryID: 0,
 			});
+			this.ModalFunction();
 		};
 	};
 
@@ -190,7 +186,7 @@ class InventorySettingIndex extends React.Component {
 							<h3 class="font-bold pl-2">Inventories</h3>
 						</div>
 					</div>
-					<div className="py-5 w-full">
+					<div className="p-5 w-full">
 						<div className="mx-auto bg-white dark:bg-gray-800 shadow rounded">
 							<div className="flex flex-col lg:flex-row p-4 lg:p-8 justify-end items-start lg:items-stretch w-full">
 								<div className="w-full lg:w-2/3 flex flex-col lg:flex-row items-start lg:items-center justify-end">
@@ -259,14 +255,7 @@ class InventorySettingIndex extends React.Component {
 								>
 									<thead>
 										<tr className="w-full h-16 border-gray-300 dark:border-gray-200 border-b py-8">
-											<th className="pl-8 text-gray-600 dark:text-gray-400 font-normal pr-6 text-left text-sm tracking-normal leading-4">
-												<input
-													type="checkbox"
-													className="cursor-pointer relative w-5 h-5 border rounded border-gray-400 dark:border-gray-200 bg-white dark:bg-gray-800 outline-none"
-													onclick="checkAll(this)"
-												/>
-											</th>
-											<th className="text-gray-600 dark:text-gray-400 font-normal pr-6 text-left text-sm tracking-normal leading-4">
+											<th className="pl-14 text-gray-600 dark:text-gray-400 font-normal pr-6 text-left text-sm tracking-normal leading-4">
 												Identification
 											</th>
 											<th className="text-gray-600 dark:text-gray-400 font-normal pr-6 text-left text-sm tracking-normal leading-4">
@@ -298,14 +287,7 @@ class InventorySettingIndex extends React.Component {
 												key={inventory.id}
 												className="h-24 border-gray-300 dark:border-gray-200 border-b"
 											>
-												<td className="pl-8 pr-6 text-left whitespace-no-wrap text-sm text-gray-800 dark:text-gray-100 tracking-normal leading-4">
-													<input
-														type="checkbox"
-														className="cursor-pointer relative w-5 h-5 border rounded border-gray-400 dark:border-gray-200 bg-white dark:bg-gray-800 outline-none"
-														onclick="tableInteract(this)"
-													/>
-												</td>
-												<td className="text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal leading-4">
+												<td className="pl-14 text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal leading-4">
 													{inventory.inventory_id}
 												</td>
 												<td className="text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal leading-4">
@@ -383,7 +365,7 @@ class InventorySettingIndex extends React.Component {
 				<InventoryModal
 					modal={this.state.modal}
 					onModalToggleAdd={this.onModalToggleAdd}
-					state={!EditButtonIsClicked ? this.state : this.props.inventory}
+					state={this.state}
 					onChange={this.onChange}
 					suppliers={this.props.suppliers}
 					products={this.props.products}

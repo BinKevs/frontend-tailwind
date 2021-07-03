@@ -55,6 +55,7 @@ const ProductModal = (props) => {
 												<input
 													type="text"
 													name="name"
+													required
 													value={name}
 													onChange={onChange}
 													placeholder=" "

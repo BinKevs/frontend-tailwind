@@ -12,10 +12,10 @@ import {
 } from '../../store/actions/product/products';
 import { getSupplierList } from '../../store/actions/supplier/suppliers';
 import ProductModal from './ProductModal';
-import { Link } from 'react-router-dom';
 let products = [];
 let EditButtonIsClicked = false;
 let isImageChanged = false;
+let ItemAdded = false;
 class ProductSetting extends React.Component {
 	static propTypes = {
 		products: PropTypes.array.isRequired,
@@ -45,7 +45,7 @@ class ProductSetting extends React.Component {
 		this.props.getProductList();
 		this.props.getSupplierList();
 		this.props.getCategoryList();
-		this.props.getProduct(1);
+		// this.props.getProduct(1);
 	}
 
 	// when the image field changes it will save the image and also change the state of
@@ -93,9 +93,11 @@ class ProductSetting extends React.Component {
 				image,
 				productID: id,
 			});
-			console.log('this is the props : ' + this.props.product);
-			console.log('this is the state : ' + this.state);
 			this.props.getProductList();
+		}
+		if (ItemAdded === true) {
+			this.props.getProductList();
+			ItemAdded = false;
 		}
 	}
 	//this will sent the updated product in the this.props.updateProduct to the action and will reset the state
@@ -140,6 +142,7 @@ class ProductSetting extends React.Component {
 		e.preventDefault();
 		const { name, description, price, category, supplier, stock, image } =
 			this.state;
+		const action_done = 'Product Added';
 		const formData = new FormData();
 
 		formData.append('name', name);
@@ -149,7 +152,7 @@ class ProductSetting extends React.Component {
 		formData.append('supplier', supplier);
 		formData.append('stock', stock);
 		formData.append('image', image);
-
+		formData.append('action_done', action_done);
 		this.props.addProduct(formData);
 		this.setState({
 			name: '',
@@ -163,6 +166,8 @@ class ProductSetting extends React.Component {
 		});
 		isImageChanged = false;
 		this.ModalFunction();
+		ItemAdded = true;
+		this.props.getProductList();
 	};
 
 	// when edit button click this will fetch the supplier that will be edited and change the isEditButtonClicked status to true
@@ -246,7 +251,7 @@ class ProductSetting extends React.Component {
 						</div>
 					</div>
 
-					<div className="py-5 w-full">
+					<div className="p-5 w-full">
 						<div className="mx-auto bg-white dark:bg-gray-800 shadow rounded">
 							<div className="flex flex-col lg:flex-row p-4 lg:p-8 justify-end items-start lg:items-stretch w-full">
 								<div className="w-full lg:w-2/3 flex flex-col lg:flex-row items-start lg:items-center justify-end">
@@ -309,14 +314,7 @@ class ProductSetting extends React.Component {
 								<table className="min-w-full bg-white dark:bg-gray-800">
 									<thead>
 										<tr className="w-full h-16 border-gray-300 dark:border-gray-200 border-b py-8">
-											<th className="pl-8 text-gray-600 dark:text-gray-400 font-normal pr-6 text-left text-sm tracking-normal leading-4">
-												<input
-													type="checkbox"
-													className="cursor-pointer relative w-5 h-5 border rounded border-gray-400 dark:border-gray-200 bg-white dark:bg-gray-800 outline-none"
-													onclick="checkAll(this)"
-												/>
-											</th>
-											<th className="text-gray-600 dark:text-gray-400 font-normal pr-6 text-left text-sm tracking-normal leading-4">
+											<th className="pl-12 text-gray-600 dark:text-gray-400 font-normal pr-6 text-left text-sm tracking-normal leading-4">
 												Identification
 											</th>
 											<th className="text-gray-600 dark:text-gray-400 font-normal pr-6 text-left text-sm tracking-normal leading-4">
@@ -353,14 +351,7 @@ class ProductSetting extends React.Component {
 												key={product.id}
 												className="h-24 border-gray-300 dark:border-gray-200 border-b"
 											>
-												<td className="pl-8 pr-6 text-left whitespace-no-wrap text-sm text-gray-800 dark:text-gray-100 tracking-normal leading-4">
-													<input
-														type="checkbox"
-														className="cursor-pointer relative w-5 h-5 border rounded border-gray-400 dark:border-gray-200 bg-white dark:bg-gray-800 outline-none"
-														onclick="tableInteract(this)"
-													/>
-												</td>
-												<td className="text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal leading-4">
+												<td className="pl-12 text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal leading-4">
 													{product.product_id}
 												</td>
 												<td className="text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal leading-4">
@@ -411,16 +402,12 @@ class ProductSetting extends React.Component {
 													<button className="button-see-more text-gray-500 rounded cursor-pointer border border-transparent focus:outline-none">
 														<div className="seeMore absolute left-0 top-0 mt-2 -ml-20 shadow-md z-10 w-32">
 															<ul className="bg-white dark:bg-gray-800 shadow rounded p-2">
-																{/* <Link
-																	to={'/products/settings/'.concat(product.id)}
-																> */}
 																<li
 																	onClick={this.onModalToggleEdit(product.id)}
 																	className="cursor-pointer text-gray-600 dark:text-gray-400 text-sm leading-3 tracking-normal py-3 hover:bg-teal_custom hover:text-white px-3 font-normal"
 																>
 																	Edit
 																</li>
-																{/* </Link> */}
 																<li className="cursor-pointer text-gray-600 dark:text-gray-400 text-sm leading-3 tracking-normal py-3 hover:bg-teal_custom hover:text-white px-3 font-normal">
 																	Delete
 																</li>
@@ -456,7 +443,6 @@ class ProductSetting extends React.Component {
 				<ProductModal
 					modal={this.state.modal}
 					onModalToggleAdd={this.onModalToggleAdd}
-					// state={!EditButtonIsClicked ? this.state : this.props.product}
 					state={this.state}
 					onChange={this.onChange}
 					suppliers={this.props.suppliers}

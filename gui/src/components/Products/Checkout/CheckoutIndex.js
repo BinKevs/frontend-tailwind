@@ -14,6 +14,8 @@ import {
 	numberWithCommas,
 } from '../../../Helpers/functions';
 import PaymentCashModal from './PaymentCashModal';
+import ReactToPrint from 'react-to-print';
+import { ReceiptContent } from './ReceiptContent';
 
 class CheckoutIndex extends React.Component {
 	static propTypes = {
@@ -42,7 +44,7 @@ class CheckoutIndex extends React.Component {
 		let quantity = 0;
 		this.props.cartItems.map((item) => (quantity += item.quantity));
 		const { totalAmount, amount_tendered, change } = this.state;
-		const action_done = 'Transaction';
+		const action_done = 'Transaction Added';
 		const mode_of_payment = 'Cash';
 		const items = this.props.cartItems;
 		const data = {
@@ -157,7 +159,6 @@ class CheckoutIndex extends React.Component {
 							<h3 class="font-bold pl-2">Checkout</h3>
 						</div>
 					</div>
-
 					<div class="flex flex-col lg:flex-row">
 						<div class="lg:mx-4 -mt-4 w-full lg:w-3/5">
 							<div class="flex shadow-lg my-10">
@@ -299,6 +300,26 @@ class CheckoutIndex extends React.Component {
 							</div>
 						</div>
 					</div>
+					<ReactToPrint
+						trigger={() => {
+							// NOTE: could just as easily return <SomeComponent />. Do NOT pass an `onClick` prop
+							// to the root node of the returned component as it will be overwritten.
+							return <a href="#">Print this out!</a>;
+						}}
+						content={() => this.componentRef}
+					/>
+					;
+					<div className="hidden">
+						<ReceiptContent
+							cartItems={cartItems}
+							Subtotal={numberWithCommas(Subtotal)}
+							tax={numberWithCommas(tax)}
+							totalAmount={numberWithCommas(totalAmount)}
+							user={this.props.AuthReducer.user}
+							ref={(el) => (this.componentRef = el)}
+						/>
+						;
+					</div>
 				</div>
 				<PaymentCashModal
 					state={this.state}
@@ -313,6 +334,7 @@ class CheckoutIndex extends React.Component {
 }
 const mapToStateToProps = (state) => ({
 	cartItems: state.cartReducer.cartItems,
+	AuthReducer: state.AuthReducer,
 });
 export default connect(mapToStateToProps, {
 	removeFromCart,

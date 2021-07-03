@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 const SupplierModal = (props) => {
-	const { name, address, phone_number, id } = props.state;
+	const { name, address, phone_number, supplierID } = props.state;
 	const {
 		onChange,
 		onAddSubmit,
@@ -24,7 +24,9 @@ const SupplierModal = (props) => {
 							<div className="m-2 md:m-12">
 								<form
 									onSubmit={
-										!EditButtonIsClicked ? onAddSubmit : onUpdateSubmit(id)
+										!EditButtonIsClicked
+											? onAddSubmit
+											: onUpdateSubmit(supplierID)
 									}
 									class="mt-9"
 								>

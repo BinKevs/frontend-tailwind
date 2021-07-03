@@ -134,7 +134,7 @@ export const getAccountList = () => (dispatch, getState) => {
 // Fetching activity log
 export const getActivityLogList = () => (dispatch, getState) => {
 	axios
-		.get(URL_IMPORT + '/api/activity_log/', tokenConfig(getState))
+		.get(URL_IMPORT + '/api/activity_log/?ordering=-id', tokenConfig(getState))
 		.then((res) => {
 			dispatch({
 				type: GET_ACTIVITY_LOG_LIST,
@@ -146,7 +146,10 @@ export const getActivityLogList = () => (dispatch, getState) => {
 // Fetching attendance log
 export const getAttendanceLogList = () => (dispatch, getState) => {
 	axios
-		.get(URL_IMPORT + '/api/attendance_log/', tokenConfig(getState))
+		.get(
+			URL_IMPORT + '/api/attendance_log/?ordering=-id',
+			tokenConfig(getState)
+		)
 		.then((res) => {
 			dispatch({
 				type: GET_ATTENDANCE_LOG_LIST,

@@ -13,7 +13,7 @@ const InventoryModal = (props) => {
 		onModalToggleAdd,
 		modal,
 	} = props;
-	const { new_stock, product, supplier, id } = props.state;
+	const { new_stock, product, supplier, inventoryID } = props.state;
 	return (
 		<>
 			<div class={modal ? 'h-screen ' : 'h-screen hidden'}>
@@ -27,7 +27,9 @@ const InventoryModal = (props) => {
 							<div className="m-2 md:m-12">
 								<form
 									onSubmit={
-										!EditButtonIsClicked ? onAddSubmit : onUpdateSubmit(id)
+										!EditButtonIsClicked
+											? onAddSubmit
+											: onUpdateSubmit(inventoryID)
 									}
 								>
 									<div className="relative p-4 md:p-8 bg-white dark:bg-gray-800 dark:border-gray-700 shadow-md rounded border border-gray-400 ">

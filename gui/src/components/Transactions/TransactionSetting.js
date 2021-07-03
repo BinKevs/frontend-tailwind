@@ -48,7 +48,7 @@ class TransactionSettingIndex extends React.Component {
 							<h3 class="font-bold pl-2">Transactions</h3>
 						</div>
 					</div>
-					<div className="py-5 w-full">
+					<div className="p-5 w-full">
 						<div className="mx-auto bg-white dark:bg-gray-800 shadow rounded">
 							<div className="flex flex-col lg:flex-row p-4 lg:p-8 justify-end items-start lg:items-stretch w-full">
 								<div className="w-full lg:w-2/3 flex flex-col lg:flex-row items-start lg:items-center justify-end">
@@ -111,14 +111,7 @@ class TransactionSettingIndex extends React.Component {
 								<table className="min-w-full bg-white dark:bg-gray-800">
 									<thead>
 										<tr className="w-full h-16 border-gray-300 dark:border-gray-200 border-b py-8">
-											<th className="pl-8 text-gray-600 dark:text-gray-400 font-normal pr-6 text-left text-sm tracking-normal leading-4">
-												<input
-													type="checkbox"
-													className="cursor-pointer relative w-5 h-5 border rounded border-gray-400 dark:border-gray-200 bg-white dark:bg-gray-800 outline-none"
-													onclick="checkAll(this)"
-												/>
-											</th>
-											<th className="text-gray-600 dark:text-gray-400 font-normal pr-6 text-left text-sm tracking-normal leading-4">
+											<th className="pl-14 text-gray-600 dark:text-gray-400 font-normal pr-6 text-left text-sm tracking-normal leading-4">
 												Identification
 											</th>
 											<th className="text-gray-600 dark:text-gray-400 font-normal pr-6 text-left text-sm tracking-normal leading-4">
@@ -155,14 +148,7 @@ class TransactionSettingIndex extends React.Component {
 												key={transaction.id}
 												className="h-24 border-gray-300 dark:border-gray-200 border-b"
 											>
-												<td className="pl-8 pr-6 text-left whitespace-no-wrap text-sm text-gray-800 dark:text-gray-100 tracking-normal leading-4">
-													<input
-														type="checkbox"
-														className="cursor-pointer relative w-5 h-5 border rounded border-gray-400 dark:border-gray-200 bg-white dark:bg-gray-800 outline-none"
-														onclick="tableInteract(this)"
-													/>
-												</td>
-												<td className="text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal leading-4">
+												<td className="pl-14 text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal leading-4">
 													{transaction.transaction_id}
 												</td>
 												<td className="text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal leading-4">

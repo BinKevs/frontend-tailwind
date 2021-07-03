@@ -183,13 +183,16 @@ class MainLayout extends React.Component {
 										class="dropdownlist absolute bg-gray-800 text-white right-0 mt-3 p-3 overflow-auto z-30 w-36 invisible"
 									>
 										<div className="">
-											<Link
-												to="/accounts/settings/menu"
-												// to="/products"
-												class="p-2 hover:bg-gray-800 text-white text-sm hover:no-underline inline-block"
-											>
-												<i class="fa fa-cog fa-fw"></i> Settings
-											</Link>
+											{this.props.AuthReducer.is_superuser ? (
+												<Link
+													to="/accounts/settings/menu"
+													class="p-2 hover:bg-gray-800 text-white text-sm hover:no-underline inline-block"
+												>
+													<i class="fa fa-cog fa-fw"></i> Settings
+												</Link>
+											) : (
+												''
+											)}
 											{/* {this.props.AuthReducer.is_superuser ? (
 												<Link
 													to="/registerAccount"

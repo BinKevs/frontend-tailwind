@@ -12,6 +12,7 @@ import {
 } from '../../store/actions/supplier/suppliers';
 import SupplierModal from './SupplierModal';
 let EditButtonIsClicked = false;
+let ItemAdded = false;
 class SupplierSettingIndex extends React.Component {
 	state = {
 		name: '',
@@ -38,28 +39,29 @@ class SupplierSettingIndex extends React.Component {
 	// when the isEditButtonClicked status is change this.props.supplier
 	// *the supplier that will be edited* is being fetch because we trigger it in the bottom
 	// then we will set it to the state and being passed on the formupdate component
-	// componentDidUpdate(prevProps, prevState) {
-	// 	if (isEditButtonClicked) {
-	// 		EditButtonIsClicked = true;
-	// 		const { id, name, address, phone_number } = this.props.supplier;
-	// 		this.setState({
-	// 			name,
-	// 			address,
-	// 			phone_number,
-	// 			supplierID: id,
-	// 		});
-	// 		isEditButtonClicked = false;
-	// 	}
-	// 	if (this.props.supplier !== prevProps.supplier) {
-	// 		this.props.getSupplierList();
-	// 	}
-	// }
+	componentDidUpdate(prevProps, prevState) {
+		if (this.props.supplier !== prevProps.supplier) {
+			const { id, name, address, phone_number } = this.props.supplier;
+			this.setState({
+				name,
+				address,
+				phone_number,
+				supplierID: id,
+			});
+			this.props.getSupplierList();
+		}
+		if (ItemAdded === true) {
+			this.props.getSupplierList();
+			ItemAdded = false;
+		}
+	}
 	onChange = (e) => this.setState({ [e.target.name]: e.target.value });
 	// sending the product that will be added to this.props.addSupplier in the actions also reset the state
 	onAddSubmit = (e) => {
 		e.preventDefault();
 		const { name, address, phone_number } = this.state;
-		const supplier = { name, address, phone_number };
+		const action_done = 'Supplier Added';
+		const supplier = { name, address, phone_number, action_done };
 		this.props.addSupplier(supplier);
 		this.setState({
 			name: '',
@@ -67,6 +69,9 @@ class SupplierSettingIndex extends React.Component {
 			phone_number: '',
 			supplierID: 0,
 		});
+		this.ModalFunction();
+		ItemAdded = true;
+		this.props.getSupplierList();
 	};
 	//this will sent the updated product in the this.props.updateSupplier to the action and will reset the state
 	onUpdateSubmit = (supplierID) => {
@@ -84,6 +89,7 @@ class SupplierSettingIndex extends React.Component {
 				supplierID: 0,
 			});
 			EditButtonIsClicked = false;
+			this.ModalFunction();
 		};
 	};
 	// when edit button click this will fetch the supplier that will be edited and change the isEditButtonClicked status to true
@@ -165,7 +171,7 @@ class SupplierSettingIndex extends React.Component {
 							<h3 class="font-bold pl-2">Suppliers</h3>
 						</div>
 					</div>
-					<div className="py-5 w-full">
+					<div className="p-5 w-full">
 						<div className="mx-auto bg-white dark:bg-gray-800 shadow rounded">
 							<div className="flex flex-col lg:flex-row p-4 lg:p-8 justify-end items-start lg:items-stretch w-full">
 								<div className="w-full lg:w-2/3 flex flex-col lg:flex-row items-start lg:items-center justify-end">
@@ -249,14 +255,14 @@ class SupplierSettingIndex extends React.Component {
 								<table className="min-w-full bg-white dark:bg-gray-800">
 									<thead>
 										<tr className="w-full h-16 border-gray-300 dark:border-gray-200 border-b py-8">
-											<th className="pl-8 text-gray-600 dark:text-gray-400 font-normal pr-6 text-left text-sm tracking-normal leading-4">
+											{/* <th className="pl-8 text-gray-600 dark:text-gray-400 font-normal pr-6 text-left text-sm tracking-normal leading-4">
 												<input
 													type="checkbox"
 													className="cursor-pointer relative w-5 h-5 border rounded border-gray-400 dark:border-gray-200 bg-white dark:bg-gray-800 outline-none"
 													onclick="checkAll(this)"
 												/>
-											</th>
-											<th className="text-gray-600 dark:text-gray-400 font-normal pr-6 text-left text-sm tracking-normal leading-4">
+											</th> */}
+											<th className="pl-14 text-gray-600 dark:text-gray-400 font-normal pr-6 text-left text-sm tracking-normal leading-4">
 												Identification
 											</th>
 											<th className="text-gray-600 dark:text-gray-400 font-normal pr-6 text-left text-sm tracking-normal leading-4">
@@ -281,14 +287,14 @@ class SupplierSettingIndex extends React.Component {
 												key={supplier.id}
 												className="h-24 border-gray-300 dark:border-gray-200 border-b"
 											>
-												<td className="pl-8 pr-6 text-left whitespace-no-wrap text-sm text-gray-800 dark:text-gray-100 tracking-normal leading-4">
+												{/* <td className="pl-8 pr-6 text-left whitespace-no-wrap text-sm text-gray-800 dark:text-gray-100 tracking-normal leading-4">
 													<input
 														type="checkbox"
 														className="cursor-pointer relative w-5 h-5 border rounded border-gray-400 dark:border-gray-200 bg-white dark:bg-gray-800 outline-none"
 														onclick="tableInteract(this)"
 													/>
-												</td>
-												<td className="text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal leading-4">
+												</td> */}
+												<td className="pl-14 text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal leading-4">
 													{supplier.supplier_id}
 												</td>
 												<td className="text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal leading-4">
@@ -360,7 +366,7 @@ class SupplierSettingIndex extends React.Component {
 				<SupplierModal
 					modal={this.state.modal}
 					onModalToggleAdd={this.onModalToggleAdd}
-					state={!EditButtonIsClicked ? this.state : this.props.supplier}
+					state={this.state}
 					onChange={this.onChange}
 					onAddSubmit={this.onAddSubmit}
 					onUpdateSubmit={this.onUpdateSubmit}
